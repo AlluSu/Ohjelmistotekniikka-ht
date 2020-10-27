@@ -1,5 +1,5 @@
 # Ohjelmistotekniikka
-Tämä repositorio sisältää Helsingin yliopiston _ohjelmistotekniikka_-kurssin **harjoitustyön**
+Tämä repositorio sisältää Helsingin yliopiston _Ohjelmistotekniikka_-kurssin **harjoitustyön**
 
 ## Tehtävät
 
@@ -7,3 +7,5 @@ Tämä repositorio sisältää Helsingin yliopiston _ohjelmistotekniikka_-kurssi
 
 [gitlog.txt](https://github.com/AlluSu/Ohjelmistotekniikka-ht/blob/master/laskarit/gitlog.txt)  
 [komentorivi.txt](https://github.com/AlluSu/Ohjelmistotekniikka-ht/blob/master/laskarit/komentorivi.txt)
+
+### Viikko 2
