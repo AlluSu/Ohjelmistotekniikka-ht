@@ -5,5 +5,5 @@ Tämä repositorio sisältää Helsingin yliopiston _ohjelmistotekniikka_-kurssi
 
 ### Viikko 1
 
-[gitlog.txt](https://github.com/AlluSu/Ohjelmistotekniikka-ht/blob/master/laskarit/gitlog.txt)
+[gitlog.txt](https://github.com/AlluSu/Ohjelmistotekniikka-ht/blob/master/laskarit/gitlog.txt)  
 [komentorivi.txt](https://github.com/AlluSu/Ohjelmistotekniikka-ht/blob/master/laskarit/komentorivi.txt)
