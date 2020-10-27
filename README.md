@@ -9,3 +9,5 @@ Tämä repositorio sisältää Helsingin yliopiston _Ohjelmistotekniikka_-kurssi
 [komentorivi.txt](https://github.com/AlluSu/Ohjelmistotekniikka-ht/blob/master/laskarit/komentorivi.txt)
 
 ### Viikko 2
+
+Täyttyy joskus
