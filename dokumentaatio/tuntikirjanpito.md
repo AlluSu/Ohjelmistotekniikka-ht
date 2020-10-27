@@ -1,3 +1,3 @@
-Päivämäärä | käytetty aika | mitä tein
+Päivämäärä | käytetty aika tunneissa | mitä tein
 -----------|---------------|----------
-27.10 |  | määrittelydokumentti
+27.10 | 2 | määrittelydokumentti
