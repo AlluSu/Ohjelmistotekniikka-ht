@@ -8,8 +8,8 @@ Aluksi sovelluksessa on vain yhdenlaisia käyttäjiä eli normaaleita käyttäji
 poistamaan tietokannasta dataa esimerkiksi vaikka muita käyttäjiä yms.
 
 ## Käyttöliittymäluonnos
-![Kuva käyttöliittymästä](/OpintorekisterGUI1.jpg)
-![Kuva modaalisesta ikkunasta](/OpintorekisteriGUI2.jpg)
+![Kuva käyttöliittymästä](OpintorekisterGUI1.jpg)
+![Kuva modaalisesta ikkunasta](OpintorekisteriGUI2.jpg)
 
 Ensimmäisessä kuvassa on käyttöliittymä-luonnokset kirjautumisesta, uuden käyttäjän luomisesta ja näkymästä kun käyttäjä on kirjautunut onnistuneesti.  
 Toisessa kuvassa on luonnos millainen modaalinen ikkuna avautuu kun painetaan painiketta "ADD NEW".  
