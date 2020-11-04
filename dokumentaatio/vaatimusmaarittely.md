@@ -5,10 +5,14 @@ Sovelluksen tarkoitus on olla opintojen seurantajärjestelmä. Sovellusta voi k�
 
 ## Käyttäjät
 Aluksi sovelluksessa on vain yhdenlaisia käyttäjiä eli normaaleita käyttäjiä. Ajan puitteissa voitaisiin lisätä myös isommilla oikeuksilla varustettuja Admin-käyttäjiä. Adminit pystyisivät muun muassa
-poistamaan tietokannasta dataa tai jotain muuta kriittistä.
+poistamaan tietokannasta dataa esimerkiksi vaikka muita käyttäjiä yms.
 
 ## Käyttöliittymäluonnos
-Tulossa
+![Kuva käyttöliittymästä](/OpintorekisterGUI1.jpg)
+![Kuva modaalisesta ikkunasta](/OpintorekisteriGUI2.jpg)
+
+Ensimmäisessä kuvassa on käyttöliittymä-luonnokset kirjautumisesta, uuden käyttäjän luomisesta ja näkymästä kun käyttäjä on kirjautunut onnistuneesti.  
+Toisessa kuvassa on luonnos millainen modaalinen ikkuna avautuu kun painetaan painiketta "ADD NEW".  
 
 # Perusversion tarjoama toiminnallisuus
 
@@ -21,14 +25,19 @@ Tulossa
   * Jos käyttäjää ei ole olemassa, niin siitä ilmoitetaan
 
 ## Kirjautumisen jälkeen
-* Käyttäjä näkee omat aktiiviset kurssinsa kuluvassa periodissa
-* Käyttäjä näkee tulevat kurssinsa muissa perioideissa
+* Käyttäjä näkee omat aktiiviset kurssinsa
+* Käyttäjä voi lisätä uuden kurssin aktiivisten kurssien listaan
+* Käyttäjä voi merkitä aktiivisen kurssin epäaktiiviseksi jolloin se muuttuu menneeksi kurssiksi
+* Käyttäjä näkee menneet kurssinsa 
 * Käyttäjä voi kirjautua ulos järjestelmästä
 
 # Jatkokehitysideoita
 * Salasana kirjautumisen yhteyteen
 * Mahdollisuus käyttäjän ja käyttäjätietojen poistoon
+  * Admin-käyttäjä järjestelmään
 * Statistiikkaa kursseista ja opinnoista
   * Esimerkiksi kaikkien suoritettujen opintojen keskiarvo, opintopistelaskuri
+* Aktiivisten ja menneiden kurssien lajittelu ja haku
+* Info-painike aktiivisen ja menneen kurssin viereen, joka kertoo olennaista tietoa kurssista.
 
 
