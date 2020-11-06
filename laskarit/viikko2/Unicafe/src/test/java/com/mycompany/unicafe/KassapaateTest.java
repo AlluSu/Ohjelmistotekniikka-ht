@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- *
- * @author aleksi
+ * Ohjelmistotekniikka-kurssin laskarit vk2
+ * @author Aleksi Suuronen
  */
 public class KassapaateTest {
     Kassapaate paate;
