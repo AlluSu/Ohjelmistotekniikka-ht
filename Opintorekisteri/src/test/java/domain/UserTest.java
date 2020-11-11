@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package opintorekisteri.dao;
+package domain;
 
 /**
- *
- * @author aleksi
+ * 
+ * @author Aleksi Suuronen
  */
-public class UserDao {
+public class UserTest {
     
 }

@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package opintorekisteri.dao;
-import java.sql.*;
+package domain;
 
 /**
- * Luokka joka vastaa Course-luokkaan kohdistuvien tietokantaoperaatioiden toiminnasta.
- * @author Aleksi Suuronen
+ *
+ * @author aleksi
  */
-public class SqlCourseDao {
-   
+public class CourseServiceUserTest {
+    
 }

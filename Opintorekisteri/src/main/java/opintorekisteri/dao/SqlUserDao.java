@@ -5,9 +5,10 @@
  */
 package opintorekisteri.dao;
 import java.sql.*;
+
 /**
- *
- * @author aleksi
+ * Luokka joka vastaa User-luokkaan kohdistuvien metodien tietokantaoperaatioista
+ * @author Aleksi Suuronen
  */
 public class SqlUserDao {
     
