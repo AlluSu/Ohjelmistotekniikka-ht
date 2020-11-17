@@ -6,7 +6,7 @@ Opintorekisteri-sovellus on ohjelma, johon käyttäjän on mahdollista lisätä 
 
 ## Dokumentaatio
 [Vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)  
-[Työaikakirjanpito](dokumentaatio/tuntikirjanpito.md
+[Työaikakirjanpito](dokumentaatio/tuntikirjanpito.md)
 
 ## Komentorivitoiminnot
 
@@ -18,8 +18,5 @@ Oletetaan, että Opintorekisteri-hakemisto on imuroitu Git:istä omalle koneelle
 Testit voidaan suorittaa komennolla
 `mvn test`  
 
-Testikattavuusraportti voidaan luoda komennolla  
-`mvn jacoco:report`
-Raportti on luettavissa siirtymällä hakemistossa paikkaan  
-` target/site/jacoco/index.html`  
- ja avaamalla index.html esimerkiksi selaimessa.
+Testikattavuusraportti voidaan luoda komennolla `mvn jacoco:report` 
+Raportti on luettavissa siirtymällä hakemistossa paikkaan `target/site/jacoco/index.html` ja avaamalla index.html esimerkiksi selaimessa.
