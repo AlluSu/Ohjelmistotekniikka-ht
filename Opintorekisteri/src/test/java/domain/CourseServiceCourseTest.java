@@ -35,7 +35,7 @@ public class CourseServiceCourseTest {
         courseService.createCourse("Ohjelmistotekniikka", 5);
         courseService.createCourse("Pääsäiekimpuista ja Yang-Mills-teoriasta", 10);
         assertEquals(3, courseService.getCourses().size());
-        assertEquals("linis 1", courseService.getCourses().get(0).getName().toString());
+        assertEquals("linis 1", courseService.getCourses().get(0).getName());
     }
     
 }

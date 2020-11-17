@@ -67,6 +67,7 @@ public class CourseService {
     
        /**
      * Funktio joka hoitaa kurssin nimen käsittelyn
+     * @param reader
      * @return kurssin nimi jos se ei ole tyhjä, muuten nolla.
      */
     public String checkAndGetName(Scanner reader) {
@@ -122,6 +123,7 @@ public class CourseService {
     
     /**
      * Funktio joka hoitaa opintopisteiden käsittelyn käyttäjän syötteestä
+     * @param reader
      * @return Syötteenä tullut opintopisteiden määrä jos se on sallittu arvo, muuten -1
      */
     public int checkAndGetCredits(Scanner reader) {

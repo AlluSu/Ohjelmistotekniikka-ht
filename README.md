@@ -1,13 +1,23 @@
 # Ohjelmistotekniikka
-Tämä repositorio sisältää Helsingin yliopiston _Ohjelmistotekniikka_-kurssin **harjoitustyön**
+Tämä repositorio sisältää Helsingin yliopiston _Ohjelmistotekniikka_-kurssin **harjoitustyön** ja laskarit.
 
-## Tehtävät
+# Opintorekisteri
+Opintorekisteri-sovellus on ohjelma, johon käyttäjän on mahdollista lisätä kursseja ja siten pitää kirjaa tällä hetkellä meneillään olevista kursseista.
 
-### Viikko 1
+## Dokumentaatio
+[Vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)
+[Työaikakirjanpito](dokumentaatio/tuntikirjanpito.md
 
-[gitlog.txt](https://github.com/AlluSu/Ohjelmistotekniikka-ht/blob/master/laskarit/gitlog.txt)  
-[komentorivi.txt](https://github.com/AlluSu/Ohjelmistotekniikka-ht/blob/master/laskarit/komentorivi.txt)
+## Komentorivitoiminnot
 
-### Viikko 2
+### Ohjelman ajaminen komentoriviltä
+Oletetaan, että Opintorekisteri-hakemisto on imuroitu GIT:istä omalle koneelle. Mennään Opintrekisteri-hakmeistoon ja suoritetaan
+`mvn compile exec:java -Decex.mainClass=opintorekisteri.ui.StudyRegisterUi`
 
-Täyttyy joskus
+### Testaus
+Testit voidaan suorittaa komennolla
+`mvn test`
+
+Testikattavuusraportti voidaan luoda komennolla
+`mvn jacoco:report`
+Raportti on luettavissa siirtymällä hakemistossa paikkaan target/site/jacoco/index.html ja avaamalla index.html esimerkiksi selaimessa.
