@@ -4,3 +4,4 @@ Päivämäärä | käytetty aika tunneissa | mitä tein
 4.11 | 2 | määrittelydokumentin päivitys & käyttöliittymän suunnittelu
 6.11 | 4 | Ohjelman koodausta viikon 3 etappia varten
 11.11| 4 | Ohjelman koodausta, dokumentointia ja testejä tehty viikon 3 tavoitteita varten
+17.11| 3 | Refakotoroitu luokkia eriyttämällä sovelluslogiikkaa ja käyttöliittymää, dokumentaation kirjoittelu, lisätty testejä ja testattu viikon 3 palautusta varten että sovellus toimii kuten pitää.
