@@ -12,7 +12,7 @@ Opintorekisteri-sovellus on ohjelma, johon käyttäjän on mahdollista lisätä 
 
 ### Ohjelman ajaminen komentoriviltä
 Oletetaan, että Opintorekisteri-hakemisto on imuroitu Git:istä omalle koneelle. Mennään Opintorekisteri-hakemistoon ja suoritetaan  
-`mvn compile exec:java -Decex.mainClass=opintorekisteri.ui.StudyRegisterUi`  
+`mvn compile exec:java -Dexec.mainClass=opintorekisteri.ui.StudyRegisterUi`  
 
 ### Testaus
 Testit voidaan suorittaa komennolla
