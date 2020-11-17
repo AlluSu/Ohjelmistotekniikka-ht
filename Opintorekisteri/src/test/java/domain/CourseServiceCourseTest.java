@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import opintorekisteri.domain.Course;
 import opintorekisteri.domain.CourseService;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
@@ -23,19 +25,66 @@ public class CourseServiceCourseTest {
     
     @Test
     public void activeCoursesAreEmptyWhenStarted() {
-        CourseService courseService = new CourseService();
-        assertEquals(0, courseService.getCourses().size());
+        service = new CourseService();
+        assertEquals(0, service.getCourses().size());
     }
     
     
     @Test
     public void addingCoursesIsSuccessful() {
-        CourseService courseService = new CourseService();
-        courseService.createCourse("linis 1", "5");
-        courseService.createCourse("Ohjelmistotekniikka", "5");
-        courseService.createCourse("Pääsäiekimpuista ja Yang-Mills-teoriasta", "10");
-        assertEquals(3, courseService.getCourses().size());
-        assertEquals("linis 1", courseService.getCourses().get(0).getName());
+        service = new CourseService();
+        service.createCourse("linis 1", "5");
+        service.createCourse("Ohjelmistotekniikka", "5");
+        service.createCourse("Pääsäiekimpuista ja Yang-Mills-teoriasta", "10");
+        assertEquals(3, service.getCourses().size());
+        assertEquals("linis 1", service.getCourses().get(0).getName());
+    }
+    
+    
+    @Test
+    public void addingDuplicateCourseDoesNotChangeSize() {
+        service = new CourseService();
+        service.createCourse("linis 1", "5");
+        service.createCourse("Liquid milk products", "6");
+        service.createCourse("linis 1", "5");
+        assertEquals(2, service.getCourses().size());
+    }
+    
+    
+    @Test
+    public void negativeCreditsAsInputDoNotPass() {
+        service = new CourseService();
+        String credits = "-10";
+        assertEquals(-1, service.checkAndGetCredits("-10"));
+        assertTrue(service.isNegative(Integer.parseInt(credits)));
+    }
+    
+    
+    @Test
+    public void randomStringAsInputDoesNotPass() {
+        service = new CourseService();
+        String credits = "Kissa istuu puussa";
+        assertEquals(-1, service.checkAndGetCredits(credits));
+    }
+    
+    
+    @Test
+    public void emptyCourseNameDoesNotPass() {
+        service = new CourseService();
+        String name = "";
+        assertEquals(null, service.checkAndGetName(name));
+        assertTrue(service.isEmptyString(name));
+    }
+    
+    
+    @Test
+    public void courseIsDuplicate() {
+        service = new CourseService();
+        service.createCourse("JYM", "5");
+        service.createCourse("Linis 2", "5");
+        service.createCourse("JYM", "5");
+        assertTrue(service.isDuplicateCourse("JYM"));
+        assertFalse(service.createCourse("JYM", "5"));
     }
     
 }
