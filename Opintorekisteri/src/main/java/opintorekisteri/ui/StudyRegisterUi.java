@@ -81,7 +81,7 @@ public class StudyRegisterUi {
      */
     public void listCourses() {
         System.out.println("Aktiiviset kurssit:");
-        ArrayList<Course> courses = new ArrayList<Course>();
+        ArrayList<Course> courses = new ArrayList<>();
         courses = service.getCourses();
         if (courses.size() < 1) {
             System.out.println("Ei aktiivisia kursseja tällä hetkellä");
@@ -100,15 +100,9 @@ public class StudyRegisterUi {
     public void addCourse() {
         System.out.println("Syötä kurssin tiedot:");
         System.out.println("Kurssin nimi:");
-        String name = service.checkAndGetName(reader);
-        if (name == null) {
-            return;
-        }
+        String name = reader.nextLine();
         System.out.println("Kurssin laajuus opintopisteinä:");
-        int credits = service.checkAndGetCredits(reader);
-        if (credits == -1) {
-            return;
-        }
+        String credits = reader.nextLine();
         boolean added = service.createCourse(name, credits);
         if (added) {
             System.out.println("Kurssi on lisätty onnistuneesti");
@@ -122,9 +116,9 @@ public class StudyRegisterUi {
      * Funktio joka tulostaa sovelluksessa käytössä olevat komennot
      */
     public void printCommands() {
-        for (Map.Entry<String, String> entry: commands.entrySet()) {
+        commands.entrySet().forEach((entry) -> {
             System.out.println(entry.getKey() + " : " + entry.getValue());
-        }    
+        });    
     }
     
     

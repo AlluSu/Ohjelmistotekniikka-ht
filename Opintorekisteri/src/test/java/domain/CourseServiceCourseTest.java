@@ -31,9 +31,9 @@ public class CourseServiceCourseTest {
     @Test
     public void addingCoursesIsSuccessful() {
         CourseService courseService = new CourseService();
-        courseService.createCourse("linis 1", 5);
-        courseService.createCourse("Ohjelmistotekniikka", 5);
-        courseService.createCourse("Pääsäiekimpuista ja Yang-Mills-teoriasta", 10);
+        courseService.createCourse("linis 1", "5");
+        courseService.createCourse("Ohjelmistotekniikka", "5");
+        courseService.createCourse("Pääsäiekimpuista ja Yang-Mills-teoriasta", "10");
         assertEquals(3, courseService.getCourses().size());
         assertEquals("linis 1", courseService.getCourses().get(0).getName());
     }

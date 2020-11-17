@@ -18,10 +18,11 @@ public class CourseService {
     private ArrayList<Course> courses = new ArrayList<Course>();
     private ArrayList<Course> unactive = new ArrayList<Course>();
     
+    
     /**
-     * 
-     * @param courses
-     * @param unactive 
+     * CourseService-luokan konstruktori
+     * @param courses Aktiiviset kurssit
+     * @param unactive Epäaktiiviset kurssit
      */
     public CourseService(ArrayList<Course> courses, ArrayList<Course> unactive) {
         this.courses = courses;
@@ -30,14 +31,14 @@ public class CourseService {
     
     
     /**
-     * 
+     * Parametriton konstruktori
      */
     public CourseService() {}
     
     
     /**
-     * 
-     * @return 
+     * Funktio joka palauttaa listan aktiivisita kursseista.
+     * @return Listan COurse-olioita
      */
     public ArrayList<Course> getCourses() {
        return courses;
@@ -45,8 +46,8 @@ public class CourseService {
     
     
     /**
-     * 
-     * @return 
+     * Funktio joka palauttaa listan epäaktiivisista kursseista.
+     * @return Listan Course-olioita.
      */
     public ArrayList<Course> getUnactiveCourses() {
         return unactive;
@@ -54,42 +55,51 @@ public class CourseService {
     
     
     /**
-     * 
-     * @param name
-     * @param credits
-     * @return 
+     * Funktio joka lisää kurssin aktiiviseksi.
+     * Funtio kutsuu paria eri apufunktiota jotka tarkastavat syötettä.
+     * @param name Kurssin nimi joka halutaan lisätä
+     * @param credits Kurssin laajuus
+     * @return True jos lisäys onnistui, muuten false
      */
-    public boolean createCourse(String name, int credits) {
-        Course course = new Course(name, credits, true);
-        return courses.add(course);
-    }
-    
-    
-       /**
-     * Funktio joka hoitaa kurssin nimen käsittelyn
-     * @param reader
-     * @return kurssin nimi jos se ei ole tyhjä, muuten nolla.
-     */
-    public String checkAndGetName(Scanner reader) {
-        String name = reader.nextLine();
-        ArrayList<Course> courses = new ArrayList<>();
-        courses = getCourses();
-        if (isEmptyString(name)) {
-            System.out.println("Kurssin nimi ei saa olla tyhjä! Tarkista nimi");
-            return null;
+    public boolean createCourse(String name, String credits) {
+        String course = checkAndGetName(name);
+        if (course == null) {
+            return false;
         }
-        if (isDuplicateCourse(name)) {
-            System.out.println("Ei voi olla kaksi samannimistä kurssia!");
-            return null;
+        int parsedCredits = checkAndGetCredits(credits);
+        if (parsedCredits==-1) {
+            return false;
         }
-        return name;
+        Course newCourse = new Course(name, parsedCredits, true);
+        return courses.add(newCourse);
     }
     
     
     /**
-     * 
-     * @param name
-     * @return 
+     * Funktio joka hoitaa kurssin nimen käsittelyn ja tutkimisen.
+     * Tutkii onko tyhjä ja että onko saman nimistä kurssia olemassa.
+     * @param courseName Kurssin nimi jota tutkitaan
+     * @return kurssin nimi jos se ei ole tyhjä, muuten null.
+     */
+    public String checkAndGetName(String courseName) {
+        ArrayList<Course> courses = new ArrayList<>();
+        courses = getCourses();
+        if (isEmptyString(courseName)) {
+            System.out.println("Kurssin nimi ei saa olla tyhjä! Tarkista nimi");
+            return null;
+        }
+        if (isDuplicateCourse(courseName)) {
+            System.out.println("Ei voi olla kaksi samannimistä kurssia!");
+            return null;
+        }
+        return courseName;
+    }
+    
+    
+    /**
+     * Funktio joka tutkii onko aktiivisissa kursseissa jo samanniminen kurssi.
+     * @param name Kurssin nimi jota tutkitaan onko saman nimisiä.
+     * @return True jos parametrina tullut kurssin nimi on olemassa ja muuten false.
      */
     public boolean isDuplicateCourse(String name) {
         for (int i = 0; i < courses.size(); i++) {
@@ -112,7 +122,7 @@ public class CourseService {
     
     
     /**
-     * Funktio saa parametrina merkkijonon ja tutkii onko se tyhjä vai ei joka määrää paluuarvon
+     * Funktio saa parametrina merkkijonon ja tutkii onko se tyhjä vai ei joka määrää paluuarvon.
      * @param name Parametrina tuleva merkkijono jota halutaan tarkastella
      * @return True jos merkkijono on tyhjä ja muuten false 
      */
@@ -122,14 +132,14 @@ public class CourseService {
     
     
     /**
-     * Funktio joka hoitaa opintopisteiden käsittelyn käyttäjän syötteestä
-     * @param reader
+     * Funktio joka hoitaa opintopisteiden käsittelyn käyttäjän syötteestä.
+     * @param creditsAsString Merkkijonona tuleva opintopisteiden määrä
      * @return Syötteenä tullut opintopisteiden määrä jos se on sallittu arvo, muuten -1
      */
-    public int checkAndGetCredits(Scanner reader) {
+    public int checkAndGetCredits(String creditsAsString) {
         int credits = 0;
         try {
-            credits = Integer.parseInt(reader.nextLine());
+            credits = Integer.parseInt(creditsAsString);
             if (isNegative(credits)) {
                 System.out.println("Opintopistemäärä ei voi olla 0 tai negatiivinen! Tarkista opintopisteet");
                 return -1;
