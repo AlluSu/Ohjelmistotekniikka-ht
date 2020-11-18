@@ -14,7 +14,7 @@ import opintorekisteri.ui.StudyRegisterUi;
  */
 public class Main {
     public static void main(String[] args) {
-        Scanner reader = new Scanner (System.in);
+        Scanner reader = new Scanner(System.in);
         CourseService courseService = new CourseService();
         StudyRegisterUi studyRegister;
         studyRegister = new StudyRegisterUi(reader, courseService);
