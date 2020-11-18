@@ -11,5 +11,7 @@ import java.sql.*;
  * @author Aleksi Suuronen
  */
 public class SqlCourseDao {
+    
+    
    
 }

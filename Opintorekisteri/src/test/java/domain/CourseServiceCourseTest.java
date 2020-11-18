@@ -83,7 +83,7 @@ public class CourseServiceCourseTest {
         service.createCourse("JYM", "5");
         service.createCourse("Linis 2", "5");
         service.createCourse("JYM", "5");
-        assertTrue(service.isDuplicateCourse("JYM"));
+        assertTrue(service.courseExists("JYM"));
         assertFalse(service.createCourse("JYM", "5"));
     }
     

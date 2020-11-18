@@ -36,10 +36,12 @@ public class StudyRegisterUi {
         
         service = new CourseService();
         commands = new TreeMap<>();
-        commands.put("Poistu", "Poistu ohjelmasta");
-        commands.put("Apua", "Tulostaa ohjeet konsoliin");
-        commands.put("Lisaa", "Lisää kurssi aktiiviseksi");
-        commands.put("Listaa", "Listaa aktiiviset kurssit");
+        commands.put("poistu", "Poistu ohjelmasta");
+        commands.put("apua", "Tulostaa ohjeet konsoliin");
+        commands.put("lisaa", "Lisää kurssi aktiiviseksi");
+        commands.put("listaa", "Listaa kaikki kurssit");
+        commands.put("poista", "Poistaa aktiivisen kurssin listasta. HUOM! Ei merkitse sitä epäaktiiviseksi vaan poistaa kokonaan");
+        commands.put("tehty", "Merkitsee kurssin valmiiksi ja siirtää sen epäaktiiviseksi");
     }
 
     
@@ -49,30 +51,67 @@ public class StudyRegisterUi {
     public void run() {
         printWhenStarted();
         while (true) {
-            System.out.println("\n");
             System.out.println("Syötä komento:");
             String command = reader.nextLine();
             if (!commands.keySet().contains(command)) {
                 System.out.println("Virheellinen komento!");
                 printCommands();
             }
-            else if (command.equals("Poistu")) {
+            else if (command.equals("poistu")) {
                 break;
             }
-            else if (command.equals("Lisaa")) {
+            else if (command.equals("lisaa")) {
                 addCourse();
             }
-            else if (command.equals("Listaa")) {
+            else if (command.equals("listaa")) {
                 listCourses();
+                listUnactiveCourses();
             }
-            else if (command.equals("Apua")) {
+            else if (command.equals("apua")) {
                 printCommands();
+            }
+            else if (command.equals("poista")) {
+                deleteCourse();
+            }
+            else if (command.equals("tehty")) {
+                markDone();
             }
             else {
                 break;
             }
         }
         System.out.println("Poistutaan ohjelmasta!");
+    }
+    
+    
+    public void markDone() {
+        System.out.println("==================");
+        System.out.println("Anna suoritetun kurssin nimi joka muuttuu epäaktiiviseksi:");
+        String name = reader.nextLine();
+        boolean done = service.markCourseAsDone(name);
+        if (done) {
+            System.out.println("Kurssi merkitty onnistuneesti epäaktiiviseksi");
+        } else {
+            System.out.println("Kurssia ei voitu merkatao onnsituneesti epäaktiiviseksi");
+        }
+        System.out.println("==================");
+    }
+    
+    
+    /**
+     * 
+     */
+    public void deleteCourse() {
+        System.out.println("==================");
+        System.out.println("Anna poistettavan kurssin nimi:");
+        String name = reader.nextLine();
+        boolean deleted = service.deleteCourse(name);
+        if (deleted) {
+            System.out.println("Poisto oli onnistunut!");
+        } else {
+            System.out.println("Poisto epäonnistui. Tarkista kurssin nimi!");
+        }
+        System.out.println("==================");
     }
     
     
@@ -85,10 +124,30 @@ public class StudyRegisterUi {
         courses = service.getCourses();
         if (courses.size() < 1) {
             System.out.println("Ei aktiivisia kursseja tällä hetkellä");
+            return;
         }
         for (int i = 0; i < courses.size(); i++) {
-            System.out.println("\n");
-            System.out.println("Nimi: " + courses.get(i).getName() + " ");
+            System.out.println("==================");
+            System.out.println("Nimi: " + courses.get(i).getName());
+            System.out.println("Laajuus: " + courses.get(i).getCredits());
+        }
+    }
+    
+    
+    /**
+     * 
+     */
+    public void listUnactiveCourses() {
+        System.out.println("Suoritetut kurssit:");
+        ArrayList<Course> courses = new ArrayList<>();
+        courses = service.getUnactiveCourses();
+        if (courses.size() < 1) {
+            System.out.println("Ei yhtään suoritettua kurssia");
+            return;
+        }
+        for (int i = 0; i < courses.size(); i++) {
+            System.out.println("==================");
+            System.out.println("Nimi: " + courses.get(i).getName());
             System.out.println("Laajuus: " + courses.get(i).getCredits());
         }
     }
@@ -98,6 +157,7 @@ public class StudyRegisterUi {
      * Funktio joka lisää kurssin CourseService-luokan kursseihin aktiiviseksi
      */
     public void addCourse() {
+        System.out.println("==================");
         System.out.println("Syötä kurssin tiedot:");
         System.out.println("Kurssin nimi:");
         String name = reader.nextLine();
@@ -109,6 +169,7 @@ public class StudyRegisterUi {
         } else {
             System.out.println("Kurssin lisäys epäonnistui!");
         }
+        System.out.println("==================");
     }
    
      
@@ -126,9 +187,11 @@ public class StudyRegisterUi {
      * Funktio joka suoritetaan sovelluksen käynnistyessä ja tulostaa konsoliin tietoja ohjelmasta
      */
     public void printWhenStarted() {
-        System.out.println("Tervetuloa Opintorekisteri-ohjelmaan!\n");
-        System.out.println("Ohjelman tarkoitus on pitää käyttäjä kartalla omista aktiivisista opinnoistaan.\n");
-        System.out.println("Tekstikäyttöliittymä on hyvin helppokäyttöinen ja toimii seuraavilla suomenkielisillä komennoilla\n");
+        System.out.println("==================");
+        System.out.println("Tervetuloa Opintorekisteri-ohjelmaan!");
+        System.out.println("Ohjelman tarkoitus on pitää käyttäjä kartalla omista aktiivisista opinnoistaan.");
+        System.out.println("Tekstikäyttöliittymä on hyvin helppokäyttöinen ja toimii seuraavilla suomenkielisillä komennoilla.");
+        System.out.println("==================");
         printCommands();
     }
     

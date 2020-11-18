@@ -38,7 +38,7 @@ public class CourseService {
     
     /**
      * Funktio joka palauttaa listan aktiivisita kursseista.
-     * @return Listan COurse-olioita
+     * @return Listan Course-olioita
      */
     public ArrayList<Course> getCourses() {
        return courses;
@@ -76,19 +76,56 @@ public class CourseService {
     
     
     /**
+     * Funktio joka poistaa kurssin nimen perusteella.
+     * Nimen perusteella poisto on tässä yhteydessä turvallista, koska nimi on yksilöivä.
+     * Ei saa siis tällä hetkellä olla kahta samannimistä kurssia.
+     * @param name Kurssin nimi joka halutaan poistaa
+     * @return True jos poisto onnistui ja muuten false
+     */
+    public boolean deleteCourse(String name) {
+        for (int i = 0; i < courses.size(); i++) {
+            if (courses.get(i).getName().equals(name)) {
+                courses.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    
+    public boolean markCourseAsDone(String name) {
+        Course done = findCourseByName(name);
+        if (done == null) {
+            return false;
+        }
+        done.setUnactive();
+        courses.remove(done);
+        return unactive.add(done);   
+    }
+    
+    
+    public Course findCourseByName(String name) {
+        for (Course course:courses) {
+            if (course.getName().equals(name)) {
+                return course;
+            }
+        }
+        return null;
+    }
+    
+    
+    /**
      * Funktio joka hoitaa kurssin nimen käsittelyn ja tutkimisen.
      * Tutkii onko tyhjä ja että onko saman nimistä kurssia olemassa.
      * @param courseName Kurssin nimi jota tutkitaan
      * @return kurssin nimi jos se ei ole tyhjä, muuten null.
      */
     public String checkAndGetName(String courseName) {
-        ArrayList<Course> courses = new ArrayList<>();
-        courses = getCourses();
         if (isEmptyString(courseName)) {
             System.out.println("Kurssin nimi ei saa olla tyhjä! Tarkista nimi");
             return null;
         }
-        if (isDuplicateCourse(courseName)) {
+        if (courseExists(courseName)) {
             System.out.println("Ei voi olla kaksi samannimistä kurssia!");
             return null;
         }
@@ -101,13 +138,28 @@ public class CourseService {
      * @param name Kurssin nimi jota tutkitaan onko saman nimisiä.
      * @return True jos parametrina tullut kurssin nimi on olemassa ja muuten false.
      */
-    public boolean isDuplicateCourse(String name) {
+    public boolean courseExists(String name) {
         for (int i = 0; i < courses.size(); i++) {
             if (name.equals(courses.get(i).getName())) {
                 return true;
             }
         }
         return false;
+    }
+    
+    
+    /**
+     * Funktio joka saa parametrina kurssin nimen ja palauttaa missä kohtaa listaa se sijaitsee.
+     * @param name Kurssin nimi jonka indeksi halutaan
+     * @return indeksi missä kohtaa kurssi sijaitsee
+     */
+    public int getIndexOf(String name) {
+        for (int i = 0; i < courses.size(); i++) {
+            if (courses.get(i).getName().equals(name)) {
+                return i;
+            }
+        }
+        return -1;
     }
     
     
@@ -119,7 +171,7 @@ public class CourseService {
     public boolean isNegative(int credits) {
        return credits < 1;
     }
-    
+   
     
     /**
      * Funktio saa parametrina merkkijonon ja tutkii onko se tyhjä vai ei joka määrää paluuarvon.
