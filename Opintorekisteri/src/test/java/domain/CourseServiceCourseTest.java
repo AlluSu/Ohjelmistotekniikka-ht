@@ -87,4 +87,22 @@ public class CourseServiceCourseTest {
         assertFalse(service.createCourse("JYM", "5"));
     }
     
+    
+    @Test
+    public void unactiveCoursesAreEmptyWhenStarted() {
+        service = new CourseService();
+        assertEquals(0, service.getUnactiveCourses().size());
+    }
+    
+    
+    @Test
+    public void activeCourseIsSuccesfullySetToUnactive() {
+        service = new CourseService();
+        service.createCourse("linis", "5");
+        Course linis = service.findCourseByName("linis");
+        assertTrue(linis.isActive());
+        linis.setUnactive();
+        assertFalse(linis.isActive());
+    }
+    
 }

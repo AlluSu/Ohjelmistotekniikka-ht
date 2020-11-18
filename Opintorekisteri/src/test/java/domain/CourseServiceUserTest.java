@@ -7,7 +7,7 @@ package domain;
 
 /**
  *
- * @author aleksi
+ * @author Aleksi Suuronen
  */
 public class CourseServiceUserTest {
     

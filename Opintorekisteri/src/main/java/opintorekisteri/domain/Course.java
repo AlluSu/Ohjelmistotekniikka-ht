@@ -31,7 +31,7 @@ public class Course {
     public Course(String name, int credits, boolean active) {
         this.name = name;
         this.credits = credits;
-        this.user = user;
+        this.active = active;
     }
     
     

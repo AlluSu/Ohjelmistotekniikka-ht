@@ -28,5 +28,4 @@ public class CourseTest {
         Course course2 = new Course(2, "Lineaarialgebra ja matriisilaskenta 1", 5, true, null);
         assertFalse(course1.equals(course2));
     }
-    
 }

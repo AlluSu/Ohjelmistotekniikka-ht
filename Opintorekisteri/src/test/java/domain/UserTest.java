@@ -5,10 +5,27 @@
  */
 package domain;
 
+import opintorekisteri.domain.User;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+
 /**
  * 
  * @author Aleksi Suuronen
  */
 public class UserTest {
     
+    @Test
+    public void userExists() {
+        User user = new User("Keijo", "Zezima", 1);
+        assertTrue(null != user);
+    }
+    
+    
+    @Test
+    public void twoUsersWithDifferentId() {
+        User user1 = new User("Keijo", "Zezima", 1);
+        User user2 = new User("Keijo", "Zezima123", 2);
+        assertTrue(user1 != user2);
+    }
 }
