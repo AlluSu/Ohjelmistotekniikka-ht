@@ -26,9 +26,13 @@ Toisessa kuvassa on luonnos millainen modaalinen ikkuna avautuu kun painetaan pa
 
 ## Kirjautumisen jälkeen
 * Käyttäjä näkee omat aktiiviset kurssinsa
+** Tehty
 * Käyttäjä voi lisätä uuden kurssin aktiivisten kurssien listaan
+** Tehty
 * Käyttäjä voi merkitä aktiivisen kurssin epäaktiiviseksi jolloin se muuttuu menneeksi kurssiksi
+** Tehty
 * Käyttäjä näkee menneet kurssinsa 
+** Tehty
 * Käyttäjä voi kirjautua ulos järjestelmästä
 
 # Jatkokehitysideoita
