@@ -7,3 +7,4 @@ Päivämäärä | käytetty aika tunneissa | mitä tein
 17.11| 3 | Refakotoroitu luokkia eriyttämällä sovelluslogiikkaa ja käyttöliittymää, dokumentaation kirjoittelu, lisätty testejä ja testattu viikon 3 palautusta varten että sovellus toimii kuten pitää.
 18.11| 4 | Laajennettu toimintalogiikkaa käyttäjän kurssien osalta, dokumentoitu koodia, lisätty testejä uuden toiminnallisuuden pohjalta, lisätty checkstyle ja poistettu käyttöliittymä jacoco:n alaisuudesta. Lisäksi graafisen käyttölittymän suunnitelua ja visiointia PoC-javafx sovelluksen avulla.
 19.11| 2 | PoC JavaFX sovelluksen rakentelua vastaamaan omaa harjoitustyötä ja logiikkaa.
+22.11| 4 | PoC JavaFX sovelluksen viimeistely ja sen käyttöliittymän implementointi omaan harjoitustyöhön. Lisäksi peintä refaktorointia ja Pom.xml:n konfigurointia
