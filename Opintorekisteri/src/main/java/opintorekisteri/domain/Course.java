@@ -19,21 +19,21 @@ public class Course {
     private User user;
     
     
-//    /**
-//     * Course-olion konstruktori, jossa id & käyttäjä attribuutit mukana.
-//     * @param id Kurssin id, jolla se voidaan yksikäsitteisesti tunnistaa
-//     * @param name Kurssin nimi
-//     * @param credits Kurssin opintopisteet
-//     * @param active Onko kurssi aktviinen vai ei
-//     * @param user Keneen käyttäjään kurssi on liitetty
-//     */
-//    public Course(int id, String name, int credits, boolean active, User user) {
-//        this.id = id;
-//        this.name = name;
-//        this.credits = credits;
-//        this.active = active;
-//        this.user = user;
-//    }
+    /**
+     * Course-olion konstruktori, jossa id & käyttäjä attribuutit mukana.
+     * @param id Kurssin id, jolla se voidaan yksikäsitteisesti tunnistaa
+     * @param name Kurssin nimi
+     * @param credits Kurssin opintopisteet
+     * @param active Onko kurssi aktviinen vai ei
+     * @param user Keneen käyttäjään kurssi on liitetty
+     */
+    public Course(int id, String name, int credits, boolean active, User user) {
+        this.id = id;
+        this.name = name;
+        this.credits = credits;
+        this.active = active;
+        this.user = user;
+    }
     
     
     /**

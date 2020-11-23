@@ -5,6 +5,7 @@ import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -36,9 +37,70 @@ import opintorekisteri.domain.CourseService;
  */
 public class StudyRegisterUi extends Application{
     private final CourseService service = new CourseService();
+    private Scene mainScene;
+    private Scene newUserScene;
+    private Scene loginScene;
+ 
     
     @Override
     public void start(Stage stage) {
+  
+       // loginScene alkaa tästä eli ikkuna jossa kirjaudutaan sisään tai vaihtoehtoisesti luodaan uusi käyttäjä.
+       //=======================================================================
+       
+       VBox loginPane = new VBox(10);
+       HBox inputPane = new HBox(10);
+       loginPane.setPadding(new Insets(10));
+       Label loginLabel = new Label("Käyttäjätunnus");
+       TextField usernameInput = new TextField();
+       
+       inputPane.getChildren().addAll(loginLabel, usernameInput);
+       Label loginMessage = new Label();
+       
+       Button loginButton = new Button("Kirjaudu");
+       Button createButton = new Button("Luo uusi käyttäjä");
+       
+       loginButton.setOnAction((ActionEvent e) -> {
+           stage.setScene(mainScene);
+       });
+       
+       createButton.setOnAction((ActionEvent e) -> {
+          stage.setScene(newUserScene); 
+       });
+        
+       loginPane.getChildren().addAll(loginMessage, inputPane, loginButton, createButton);
+       loginScene = new Scene(loginPane, 300, 300);
+       
+       // newUserScene alkaa tämän jälkeen eli ikkuna jossa käyttäjä voi luoda uuden käyttäjän sovellukseen.
+       //=======================================================================
+       
+       VBox newUserPane = new VBox(10);
+       HBox newUsernamePane = new HBox(10);
+       newUsernamePane.setPadding(new Insets(10));
+       TextField newUsernameInput = new TextField();
+       Label newUsernameLabel = new Label("Käyttäjätunnus");
+       newUsernamePane.getChildren().addAll(newUsernameLabel, newUsernameInput);
+       
+       HBox newNamePane = new HBox(10);
+       newNamePane.setPadding(new Insets(10));
+       TextField newNameInput = new TextField();
+       Label newNameLabel = new Label("Nimi");
+       newNamePane.getChildren().addAll(newNameLabel, newNameInput);
+       
+       Label userCreateMessage = new Label();
+       Button createNewUserButton = new Button("Luo uusi käyttäjä");
+       createNewUserButton.setPadding(new Insets(10));
+       
+       createNewUserButton.setOnAction((ActionEvent e) -> {
+           stage.setScene(loginScene);
+       });
+       
+       newUserPane.getChildren().addAll(userCreateMessage, newUsernamePane, newNamePane, createNewUserButton);
+       newUserScene = new Scene(newUserPane, 300, 300);
+       
+       // mainScene alkaa tämän jälkeen eli siis ikkuna jossa suurin osa toiminnallisuudesta tapahtuu
+       //=======================================================================
+       
        BorderPane borderpane = new BorderPane();
        Insets padding = new Insets(10, 10, 10, 10);
        stage.setTitle("Opintorekisteri");
@@ -116,6 +178,12 @@ public class StudyRegisterUi extends Application{
        addCourseButton.setPadding(padding);
        Button removeCourseButton = new Button("Poista kurssi");
        removeCourseButton.setPadding(padding);
+       Button logoutButton = new Button("Kirjaudu ulos");
+       logoutButton.setPadding(padding);
+       
+       logoutButton.setOnAction ((ActionEvent e) -> {
+           stage.setScene(loginScene);
+       });
 
        removeCourseButton.setOnAction((ActionEvent e) -> {
           if (activeCoursesTable.getSelectionModel().getSelectedItem() == null) {
@@ -169,15 +237,14 @@ public class StudyRegisterUi extends Application{
            }
        });
        
-       middleVBox.getChildren().addAll(markAsDoneLabel, markCourseUnactiveButton, removeCourseButton);
- //      middleVBox.getChildren().addAll(markAsDoneLabel, markCourseUnactiveButton);
+       middleVBox.getChildren().addAll(markAsDoneLabel, markCourseUnactiveButton, removeCourseButton, logoutButton);
        borderpane.setLeft(leftSideVBox);
        borderpane.setRight(rightSideVBox);
        borderpane.setCenter(middleVBox);
        borderpane.setBottom(bottomHBox);
        
-       Scene nakyma = new Scene(borderpane);
-       stage.setScene(nakyma);
+       mainScene = new Scene(borderpane);
+       stage.setScene(loginScene);
        stage.show();
     }
     
@@ -187,6 +254,6 @@ public class StudyRegisterUi extends Application{
      * @param args Komentoriviparametrit
      */
     public static void main(String[] args) {
-          launch(StudyRegisterUi.class);
+          launch(args);
     }
 }
