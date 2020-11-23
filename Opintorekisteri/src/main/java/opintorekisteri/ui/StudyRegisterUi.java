@@ -105,6 +105,9 @@ public class StudyRegisterUi extends Application{
        leftSideVBox.getChildren().addAll(activeCoursesLabel, activeCoursesTable);
        rightSideVBox.getChildren().addAll(pastCoursesLabel, pastCoursesTable);
        
+       ObservableList<Course> activeCoursesAsObservableList = FXCollections.observableArrayList();
+       ObservableList<Course> pastCoursesAsObservableList = FXCollections.observableArrayList();
+       
        TextField courseNameInput = new TextField();
        TextField courseCreditsInput = new TextField();
        courseNameInput.setPadding(padding);
@@ -113,9 +116,7 @@ public class StudyRegisterUi extends Application{
        addCourseButton.setPadding(padding);
        Button removeCourseButton = new Button("Poista kurssi");
        removeCourseButton.setPadding(padding);
-       ObservableList<Course> activeCoursesAsObservableList = FXCollections.observableArrayList();
-       ObservableList<Course> pastCoursesAsObservableList = FXCollections.observableArrayList();
-       
+
        removeCourseButton.setOnAction((ActionEvent e) -> {
           if (activeCoursesTable.getSelectionModel().getSelectedItem() == null) {
               Alert alert = new Alert(AlertType.INFORMATION);
@@ -125,12 +126,10 @@ public class StudyRegisterUi extends Application{
               alert.showAndWait();
           }
           else {
-              TablePosition position = (TablePosition) activeCoursesTable.getSelectionModel().getSelectedCells().get(0);
-              int row = position.getRow();
-              TableColumn column = position.getTableColumn();
-              Course course = (Course) activeCoursesTable.getItems().get(row);
+              Course helperCourse = (Course) activeCoursesTable.getSelectionModel().getSelectedItem();
               activeCoursesTable.getItems().remove(activeCoursesTable.getSelectionModel().getSelectedItem());
-              //service.deleteCourse(column.getCellObservableValue(row));
+              String courseName = helperCourse.getName();
+              service.deleteCourse(courseName);
           }
        });
        
@@ -171,7 +170,7 @@ public class StudyRegisterUi extends Application{
        });
        
        middleVBox.getChildren().addAll(markAsDoneLabel, markCourseUnactiveButton, removeCourseButton);
-       
+ //      middleVBox.getChildren().addAll(markAsDoneLabel, markCourseUnactiveButton);
        borderpane.setLeft(leftSideVBox);
        borderpane.setRight(rightSideVBox);
        borderpane.setCenter(middleVBox);
