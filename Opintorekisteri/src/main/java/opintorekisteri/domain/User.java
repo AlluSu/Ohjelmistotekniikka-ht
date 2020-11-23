@@ -6,7 +6,7 @@ package opintorekisteri.domain;
  */
 
 /**
- * Luokka joka kuvaa yksittäistä käyttäjää
+ * Luokka joka kuvaa yksittäistä käyttäjää.
  * @author Aleksi Suuronen 
  */
 public class User {
@@ -16,7 +16,7 @@ public class User {
     private int id;
     
     /**
-     * User-luokan konstruktori
+     * User-luokan konstruktori.
      * @param name Käyttäjän oikea nimi
      * @param username Käyttäjän laatima käyttäjänimi ohjelmaan
      * @param id Käyttäjän id
@@ -29,7 +29,7 @@ public class User {
     
     
     /**
-     * Metodi joka palauttaa käyttäjän nimen
+     * Metodi joka palauttaa käyttäjän nimen.
      * @return käyttäjän oikea nimi
      */
     public String getName() {
@@ -38,7 +38,7 @@ public class User {
     
     
     /**
-     * Metodi joka palauttaa käyttäjän id:n
+     * Metodi joka palauttaa käyttäjän id:n.
      * @return käyttäjän id
      */
     public int getId() {
@@ -47,11 +47,10 @@ public class User {
     
     
     /**
-     * Metodi joka palauttaa käyttäjän käyttäjätunnuksen
+     * Metodi joka palauttaa käyttäjän käyttäjätunnuksen.
      * @return käyttäjän käyttäjätunnus
      */
     public String getUsername() {
         return username;
-    }
-    
+    }   
 }

@@ -10,7 +10,7 @@ import java.util.Scanner;
  */
 
 /**
- * Luokka joka vastaa sovelluslogiikasta
+ * Luokka joka vastaa sovelluslogiikasta.
  * @author Aleksi Suuronen
  */
 public class CourseService {
@@ -20,7 +20,7 @@ public class CourseService {
     
     
     /**
-     * CourseService-luokan konstruktori
+     * CourseService-luokan konstruktori.
      * @param courses Aktiiviset kurssit
      * @param unactive Epäaktiiviset kurssit
      */
@@ -31,7 +31,7 @@ public class CourseService {
     
     
     /**
-     * Parametriton konstruktori
+     * Parametriton konstruktori.
      */
     public CourseService() {}
     
@@ -41,7 +41,7 @@ public class CourseService {
      * @return Listan Course-olioita
      */
     public ArrayList<Course> getCourses() {
-       return courses;
+        return courses;
     }
     
     
@@ -67,7 +67,7 @@ public class CourseService {
             return false;
         }
         int parsedCredits = checkAndGetCredits(credits);
-        if (parsedCredits==-1) {
+        if (parsedCredits == -1) {
             return false;
         }
         Course newCourse = new Course(name, parsedCredits, true);
@@ -93,6 +93,11 @@ public class CourseService {
     }
     
     
+    /**
+     * Metodi joka palauttaa tiedon siitä onnistuttiinko muuttamaan kurssi aktiivisesta epäaktiiviseksi eli tehdyksi.
+     * @param name Kurssin nimi jonka statusta halutaan muuttaa
+     * @return True jos onnistui, muuten false
+     */
     public boolean markCourseAsDone(String name) {
         Course done = findCourseByName(name);
         if (done == null) {
@@ -104,6 +109,11 @@ public class CourseService {
     }
     
     
+    /**
+     * Metodi joka etsii kurssi-olion nimen perusteella.
+     * @param name Kurssin nimi jota etsitään.
+     * @return Nimeä vastaava kurssi-olio
+     */
     public Course findCourseByName(String name) {
         for (Course course:courses) {
             if (course.getName().equals(name)) {
@@ -164,12 +174,12 @@ public class CourseService {
     
     
     /**
-     * Funktio tutkii onko parametrina tuleva syöte negatiivinen (eli < 0)
+     * Funktio tutkii onko parametrina tuleva syöte negatiivinen (eli < 0).
      * @param credits Syötteenä tuleva opintopistemäärä
      * @return True jos oli negatiivinen arvo ja muuten false
      */
     public boolean isNegative(int credits) {
-       return credits < 1;
+        return credits < 1;
     }
    
     

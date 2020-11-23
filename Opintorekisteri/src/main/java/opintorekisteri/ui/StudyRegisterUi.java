@@ -1,13 +1,10 @@
 package opintorekisteri.ui;
 
-import java.util.Map;
-import java.util.Scanner;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,6 +12,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -45,11 +43,11 @@ public class StudyRegisterUi extends Application{
        Insets padding = new Insets(10, 10, 10, 10);
        stage.setTitle("Opintorekisteri");
        stage.setWidth(1000);
-       stage.setHeight(800);
+       stage.setHeight(500);
         
        TableView activeCoursesTable = new TableView();
        TableView pastCoursesTable = new TableView();
-       Label activeCoursesPlaceholder = new Label("Ei aktiivisia kursseja tällä hetkellä");
+       Label activeCoursesPlaceholder = new Label("Ei aktiivisia kursseja");
        activeCoursesTable.setPlaceholder(activeCoursesPlaceholder);
        Label pastCoursesPlaceholder = new Label("Ei epäaktiivisia kursseja");
        pastCoursesTable.setPlaceholder(pastCoursesPlaceholder);
@@ -60,7 +58,7 @@ public class StudyRegisterUi extends Application{
        pastCoursesTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
        
        TableColumn courseNameColumn = new TableColumn("Kurssin nimi");
-       TableColumn courseCreditsColumn = new TableColumn("Kurssin laajuus");
+       TableColumn courseCreditsColumn = new TableColumn("Kurssin laajuus)");
        courseNameColumn.setCellValueFactory(
                new PropertyValueFactory<Course, String>("name")
        );
@@ -95,14 +93,12 @@ public class StudyRegisterUi extends Application{
        Label markAsDoneLabel = new Label("Merkitse kurssi tehdyksi");
        Label pastCoursesLabel = new Label("Menneet kurssit");
        Label activeCoursesLabel = new Label("Aktiiviset kurssit");
-       Label showTextWhenButtonPressedLabel = new Label("");
        Label insertCourseNameLabel = new Label("Kurssin nimi");
-       Label insertCourseCreditsLabel = new Label("Kurssin laajuus");
+       Label insertCourseCreditsLabel = new Label("Kurssin laajuus (opintopisteinä)");
        courseInfoLabel.setPadding(padding);
        markAsDoneLabel.setPadding(padding);
        pastCoursesLabel.setPadding(padding);
        activeCoursesLabel.setPadding(padding);
-       showTextWhenButtonPressedLabel.setPadding(padding);
        insertCourseNameLabel.setPadding(padding);
        insertCourseCreditsLabel.setPadding(padding);
        
@@ -113,10 +109,30 @@ public class StudyRegisterUi extends Application{
        TextField courseCreditsInput = new TextField();
        courseNameInput.setPadding(padding);
        courseCreditsInput.setPadding(padding);
-       Button addCourseButton = new Button("lisää kurssi");
+       Button addCourseButton = new Button("Lisää kurssi");
        addCourseButton.setPadding(padding);
+       Button removeCourseButton = new Button("Poista kurssi");
+       removeCourseButton.setPadding(padding);
        ObservableList<Course> activeCoursesAsObservableList = FXCollections.observableArrayList();
        ObservableList<Course> pastCoursesAsObservableList = FXCollections.observableArrayList();
+       
+       removeCourseButton.setOnAction((ActionEvent e) -> {
+          if (activeCoursesTable.getSelectionModel().getSelectedItem() == null) {
+              Alert alert = new Alert(AlertType.INFORMATION);
+              alert.setTitle("Virhe");
+              alert.setHeaderText("Kurssin poisto epäonnistui!");
+              alert.setContentText("Mahdollisia syitä:\nKurssia ei ole valittu");
+              alert.showAndWait();
+          }
+          else {
+              TablePosition position = (TablePosition) activeCoursesTable.getSelectionModel().getSelectedCells().get(0);
+              int row = position.getRow();
+              TableColumn column = position.getTableColumn();
+              Course course = (Course) activeCoursesTable.getItems().get(row);
+              activeCoursesTable.getItems().remove(activeCoursesTable.getSelectionModel().getSelectedItem());
+              //service.deleteCourse(column.getCellObservableValue(row));
+          }
+       });
        
        addCourseButton.setOnAction((ActionEvent e) -> {
            String courseName = courseNameInput.getText();
@@ -128,9 +144,9 @@ public class StudyRegisterUi extends Application{
            }
            else {
                Alert alert = new Alert(AlertType.ERROR);
-               alert.setTitle("Virhedialogi");
-               alert.setHeaderText("Tapahtui virhe!");
-               alert.setContentText("Kurssin lisäämisessä tapahtui virhe! Mahdollisia virhetilanteita:\n Kurssi on jo olemassa\n tila täynnä\nvirhe syötteessä");
+               alert.setTitle("Virhe");
+               alert.setHeaderText("Kurssin lisäämisessä tapahtui virhe!");
+               alert.setContentText("Mahdollisia virhetilanteita:\nKurssi on jo olemassa\ntila täynnä\nvirhe syötteessä");
                alert.showAndWait();
            } 
        });
@@ -140,12 +156,11 @@ public class StudyRegisterUi extends Application{
        Button markCourseUnactiveButton = new Button("Siirrä kurssi epäaktiiviseksi");
        markCourseUnactiveButton.setPadding(padding);
        markCourseUnactiveButton.setOnAction ((ActionEvent e) -> {
-           showTextWhenButtonPressedLabel.setText("nappia painettiin");
            if (activeCoursesTable.getSelectionModel().getSelectedItem() == null) {
                Alert alert = new Alert(AlertType.INFORMATION);
-               alert.setTitle("Opintorekisteri");
-               alert.setHeaderText("HUOMIO!");
-               alert.setContentText("Valitse kurssi!");
+               alert.setTitle("Virhe!");
+               alert.setHeaderText("Kurssin epäaktivointi epäonnistui!");
+               alert.setContentText("Mahdollisia syitä:\nKurssia ei ole valittu");
                alert.showAndWait();
            }
            else {
@@ -155,7 +170,7 @@ public class StudyRegisterUi extends Application{
            }
        });
        
-       middleVBox.getChildren().addAll(markAsDoneLabel, markCourseUnactiveButton, showTextWhenButtonPressedLabel);
+       middleVBox.getChildren().addAll(markAsDoneLabel, markCourseUnactiveButton, removeCourseButton);
        
        borderpane.setLeft(leftSideVBox);
        borderpane.setRight(rightSideVBox);

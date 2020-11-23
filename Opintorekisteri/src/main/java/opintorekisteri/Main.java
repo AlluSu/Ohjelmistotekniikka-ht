@@ -6,10 +6,16 @@
 package opintorekisteri;
 
 /**
- *
+ * Main-luokka, josta koko sovellus lähtee liikkeelle ja käyntiin.
  * @author Aleksi Suuronen
  */
 public class Main {
+    
+    
+    /**
+     * Main-luokka ja pääohjelma joka kutsuu käyttöliittymä-luokan Main-luokkaa.
+     * @param args Komentoriviargumentit
+     */
     public static void main(String[] args) {
         opintorekisteri.ui.StudyRegisterUi.main(args);
     }
