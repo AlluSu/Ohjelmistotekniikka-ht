@@ -1,6 +1,6 @@
 Päivämäärä | käytetty aika tunneissa | mitä tein
 -----------|---------------|----------
-27.10 | 2 | määrittelydokumentti
+27.10| 2 | määrittelydokumentti
 4.11 | 2 | määrittelydokumentin päivitys & käyttöliittymän suunnittelu
 6.11 | 4 | Ohjelman koodausta viikon 3 etappia varten
 11.11| 4 | Ohjelman koodausta, dokumentointia ja testejä tehty viikon 3 tavoitteita varten
@@ -8,3 +8,5 @@ Päivämäärä | käytetty aika tunneissa | mitä tein
 18.11| 4 | Laajennettu toimintalogiikkaa käyttäjän kurssien osalta, dokumentoitu koodia, lisätty testejä uuden toiminnallisuuden pohjalta, lisätty checkstyle ja poistettu käyttöliittymä jacoco:n alaisuudesta. Lisäksi graafisen käyttölittymän suunnitelua ja visiointia PoC-javafx sovelluksen avulla.
 19.11| 2 | PoC JavaFX sovelluksen rakentelua vastaamaan omaa harjoitustyötä ja logiikkaa.
 22.11| 4 | PoC JavaFX sovelluksen viimeistely ja sen käyttöliittymän implementointi omaan harjoitustyöhön. Lisäksi peintä refaktorointia ja Pom.xml:n konfigurointia
+23.11| 4 | Lisätty ominaisuus jolla aktiivinen kurssi voidaan poistaa, korjattu checkstylen ilmoittamat virheet, tehty dokumentaatiota sovelluksen arkkitehtuurista sekä rakenneltu käyttöliittymää kirjautumisominaisuutta varten
+TUNNIT YHTEENSÄ | 29 | TUNNIT YHTEENSÄ

@@ -7,7 +7,8 @@ Opintorekisteri-sovellus on ohjelma, johon käyttäjän on mahdollista lisätä 
 ## Dokumentaatio
 [Vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)  
 [Työaikakirjanpito](dokumentaatio/tuntikirjanpito.md)
-
+[Arkkitehtuurikuvaus](dokumentaatio/arkkitehtuuri.md)
+[Työaikakirjanpito](dokumentaatio/tuntikirjanpito.md)
 ## Komentorivitoiminnot
 
 ### Ohjelman ajaminen komentoriviltä
@@ -20,3 +21,8 @@ Testit voidaan suorittaa komennolla
 
 Testikattavuusraportti voidaan luoda komennolla `mvn jacoco:report` 
 Raportti on luettavissa siirtymällä hakemistossa paikkaan `target/site/jacoco/index.html` ja avaamalla index.html esimerkiksi selaimessa.
+
+### Checkstyle
+Tiedostoon [checkstyle.xml](checkstyle.xml) määrittelemät tarkistukset suoritetaan komennolla  
+`mvn jxr:jxr checkstyle:checkstyle`  
+Raportti voidaan avata selaimessa ja raportti löytyy paikasta `target/site/checkstyle.html`
