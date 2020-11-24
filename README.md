@@ -12,17 +12,16 @@ Opintorekisteri-sovellus on ohjelma, johon käyttäjän on mahdollista lisätä 
 ## Komentorivitoiminnot
 
 ### Ohjelman ajaminen komentoriviltä
-Oletetaan, että Opintorekisteri-hakemisto on imuroitu Git:istä omalle koneelle. Mennään Opintorekisteri-hakemistoon ja suoritetaan  
+Oletetaan, että Opintorekisteri-hakemisto on käyttäjän koneella.Tämän saa esimerkiksi komennolla `git clone` ja perään vielä repositorion linkki. Mennään Opintorekisteri-hakemistoon ja suoritetaan  
 `mvn compile exec:java -Dexec.mainClass=opintorekisteri.ui.StudyRegisterUi`  
 
 ### Testaus
 Testit voidaan suorittaa komennolla
-`mvn test`  
+`mvn test`.  
 
-Testikattavuusraportti voidaan luoda komennolla `mvn jacoco:report` 
+Testikattavuusraportti voidaan luoda komennolla `mvn jacoco:report`. 
 Raportti on luettavissa siirtymällä hakemistossa paikkaan `target/site/jacoco/index.html` ja avaamalla index.html esimerkiksi selaimessa.
 
 ### Checkstyle
-Tiedostoon [checkstyle.xml](Opintorekisteri/checkstyle.xml) määrittelemät tarkistukset suoritetaan komennolla  
-`mvn jxr:jxr checkstyle:checkstyle`  
-Raportti voidaan avata esimerkiksi selaimessa ja raportti löytyy paikasta `target/site/checkstyle.html`
+Tiedostoon [checkstyle.xml](Opintorekisteri/checkstyle.xml) määrittelemät tarkistukset suoritetaan komennolla `mvn jxr:jxr checkstyle:checkstyle`.  
+Raportti voidaan avata esimerkiksi selaimessa ja raportti löytyy paikasta `target/site/checkstyle.html`.
