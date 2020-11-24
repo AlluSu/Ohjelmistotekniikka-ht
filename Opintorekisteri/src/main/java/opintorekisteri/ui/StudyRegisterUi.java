@@ -19,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import opintorekisteri.domain.Course;
@@ -59,6 +60,18 @@ public class StudyRegisterUi extends Application{
        
        Button loginButton = new Button("Kirjaudu");
        Button createButton = new Button("Luo uusi käyttäjä");
+       Button helpButton = new Button("Ohje");
+       
+       helpButton.setOnAction((ActionEvent e) -> {
+           Alert alert = new Alert(AlertType.INFORMATION);
+           alert.setTitle("Opintorekisterin ohjeet");
+           alert.setHeaderText(null);
+           alert.setContentText("Tervetuloa opintorekisteri-ohjelmaan.\n" +  
+                   "Tämän hetkisessä versiossa kirjautuminen ei ole vielä käytössä.\n" + 
+                   "Painamalla kirjaudu-painiketta pääset käyttämään ohjelmaa normaalisti.");
+           alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+           alert.showAndWait();
+       });
        
        loginButton.setOnAction((ActionEvent e) -> {
            stage.setScene(mainScene);
@@ -68,7 +81,7 @@ public class StudyRegisterUi extends Application{
           stage.setScene(newUserScene); 
        });
         
-       loginPane.getChildren().addAll(loginMessage, inputPane, loginButton, createButton);
+       loginPane.getChildren().addAll(loginMessage, inputPane, loginButton, createButton, helpButton);
        loginScene = new Scene(loginPane, 300, 300);
        
        // newUserScene alkaa tämän jälkeen eli ikkuna jossa käyttäjä voi luoda uuden käyttäjän sovellukseen.
