@@ -1,7 +1,10 @@
 package opintorekisteri.domain;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import opintorekisteri.dao.SqlUserDao;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,9 +17,37 @@ import java.util.Scanner;
  * @author Aleksi Suuronen
  */
 public class CourseService {
-    private Scanner reader;
     private ArrayList<Course> courses = new ArrayList<Course>();
     private ArrayList<Course> unactive = new ArrayList<Course>();
+    private ArrayList<User> users = new ArrayList<User>();
+    private User loggedIn;
+    private SqlUserDao userDao;
+    
+    
+    public void printAll() {
+        printCourses();
+        printUsers();
+        printUnactive();
+    }
+    
+    public void printCourses() {
+        for (Course c: courses) {
+            System.out.println(c.toString());
+        }
+    }
+    
+    public void printUsers() {
+        for (User u: users) {
+            System.out.println(u.toString());
+        }
+    }
+    
+    
+    public void printUnactive() {
+        for (Course c: unactive) {
+            System.out.println(c.toString());
+        }
+    }
     
     
     /**
@@ -41,7 +72,10 @@ public class CourseService {
      * @return Listan Course-olioita
      */
     public ArrayList<Course> getCourses() {
-        return courses;
+        if (loggedIn == null) {
+            return new ArrayList<>();
+        }
+        return getActiveCoursesByUser(loggedIn);
     }
     
     
@@ -50,7 +84,42 @@ public class CourseService {
      * @return Listan Course-olioita.
      */
     public ArrayList<Course> getUnactiveCourses() {
-        return unactive;
+        if (loggedIn == null) {
+            return new ArrayList<>();
+        }
+        return getUnactiveCoursesByUser(loggedIn);
+    }
+    
+    
+    /**
+     * Funktio joka palauttaa listan parametrina tulevan käyttäjän kursseista.
+     * @param user Käyttäjä kenen kurssit halutaan
+     * @return Lista Course-olioita.
+     */
+    public ArrayList<Course> getActiveCoursesByUser(User user) {
+        ArrayList<Course> usersActiveCourses = new ArrayList<>();
+        for (Course course: courses) {
+            if (course.getUser().getUsername().equals(user.getUsername())) {
+                usersActiveCourses.add(course);
+            }
+        }
+        return usersActiveCourses;
+    }
+    
+    
+    /**
+     * Funktio joka palauttaa listan parametrina tulevan käyttäjän epäaktiivista kursseista.
+     * @param user Käyttäjä kenen epäaktiiviset kurssit halutaan
+     * @return Lista käyttäjän epäaktiivista kursseista
+     */
+    public ArrayList<Course> getUnactiveCoursesByUser(User user) {
+        ArrayList<Course> usersUnactiveCourses = new ArrayList<>();
+        for (Course course: unactive) {
+            if (course.getUser().getUsername().equals(user.getUsername())) {
+                usersUnactiveCourses.add(course);
+            }
+        }
+        return usersUnactiveCourses;
     }
     
     
@@ -70,8 +139,10 @@ public class CourseService {
         if (parsedCredits == -1) {
             return false;
         }
-        Course newCourse = new Course(name, parsedCredits, true);
-        return courses.add(newCourse);
+        Course newCourse = new Course(name, parsedCredits, true, loggedIn);
+        courses.add(newCourse);
+        System.out.println(courses.size());
+        return true;
     }
     
     
@@ -95,11 +166,11 @@ public class CourseService {
     
     /**
      * Metodi joka palauttaa tiedon siitä onnistuttiinko muuttamaan kurssi aktiivisesta epäaktiiviseksi eli tehdyksi.
-     * @param name Kurssin nimi jonka statusta halutaan muuttaa
+     * @param data datapötkö
      * @return True jos onnistui, muuten false
      */
-    public boolean markCourseAsDone(String name) {
-        Course done = findCourseByName(name);
+    public boolean markCourseAsDone(String data) {
+        Course done = findCourseByName(data);
         if (done == null) {
             return false;
         }
@@ -107,7 +178,6 @@ public class CourseService {
         courses.remove(done);
         return unactive.add(done);   
     }
-    
     
     /**
      * Metodi joka etsii kurssi-olion nimen perusteella.
@@ -211,5 +281,93 @@ public class CourseService {
             return -1;
         }
         return credits;
+    }
+    
+    
+    /**
+     * Funktio joka luo uuden käyttäjän sovellukseen.
+     * @param username Käyttäjän käyttäjätunnus
+     * @param name Käyttäjän oikea nimi
+     * @return True jos käyttäjän luonti onnistui, muuten false
+     */
+    public boolean createUser(String name, String username) {
+        if (!usernameExists(username)) {
+            User user = new User(name, username);
+            return users.add(user);
+        }               
+        return false;
+    }
+    
+    
+    /**
+     * Palauttaa listan sovellukseen luoduista käyttäjistä.
+     * @return Lista User-olioita
+     */
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+    
+    
+    /**
+     * Funktio palauttaa kirjautuneena olevan käyttäjä-olion.
+     * @return kirjautuneena oleva käyttäjä-olio
+     */
+    public User getLoggedUser() {
+        return loggedIn;
+    }
+    
+    
+    /**
+     * Funktio joka hoitaa käyttäjän uloskirjautumisen.
+     */
+    public void logout() {
+        loggedIn = null;
+    }
+    
+    
+    /**
+     * Funktio joka tutkii onko parametrina tuleva käyttäjätunnus uniikki vai ei.
+     * @param username Käyttäjätunnus jonka yksikäsitteisyys tahdotaan selvittää
+     * @return True jos käyttäjätunnus ei ole varattu, muuten false.
+     */
+    public boolean usernameExists(String username) {
+        for (User user: users) {
+            if (user.getName().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    
+    /**
+     * Funktio joka palauttaa User-olion käyttäjänimen perusteella.
+     * @param username Minkä nimistä käyttäjätunnusta etsitään.
+     * @return User-olio jolla on etsttävä käyttäjätunnus ja jos ei löydy niin null
+     */
+    public User getUserByUsername(String username) {
+        for (User user: users) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
+    
+    
+    /**
+     * Funktio joka hoitaa kirjautumisen.
+     * Etsii siis onko käyttäjätunnus jolla yritetään kirjautua olemassa ja jos on niin
+     * kyseisestä käyttäjästä tulee tällöin "loggedIn"
+     * @param username Käyttäjätunnus joka yrittää kirjautua
+     * @return True jos kirjautuminen onnistui, muuten false.
+     */
+    public boolean login(String username) {
+        User user = getUserByUsername(username);
+        if (user == null) {
+            return false;
+        }
+        loggedIn = user;
+        return true;
     }
 }

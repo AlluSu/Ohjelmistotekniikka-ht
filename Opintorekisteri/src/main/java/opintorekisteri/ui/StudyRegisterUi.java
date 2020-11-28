@@ -1,11 +1,11 @@
 package opintorekisteri.ui;
 
+import java.util.ArrayList;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -41,14 +41,31 @@ public class StudyRegisterUi extends Application{
     private Scene mainScene;
     private Scene newUserScene;
     private Scene loginScene;
- 
+    private TableView activeCoursesTable;
+    private TableView pastCoursesTable;
+    private ObservableList<Course> activeCoursesAsObservableList;
+    private ObservableList<Course> pastCoursesAsObservableList;
+    
+    
+    public void refreshData() {
+       activeCoursesTable.getItems().clear();
+       pastCoursesTable.getItems().clear();
+       activeCoursesAsObservableList = FXCollections.observableArrayList();
+       pastCoursesAsObservableList = FXCollections.observableArrayList();
+       
+       activeCoursesAsObservableList.addAll(service.getCourses());
+       pastCoursesAsObservableList.addAll(service.getUnactiveCourses());
+       activeCoursesTable.setItems(activeCoursesAsObservableList);
+       pastCoursesTable.setItems(pastCoursesAsObservableList);
+    }
+    
     
     @Override
     public void start(Stage stage) {
   
        // loginScene alkaa tästä eli ikkuna jossa kirjaudutaan sisään tai vaihtoehtoisesti luodaan uusi käyttäjä.
        //=======================================================================
-       
+       Label logged = new Label("");
        VBox loginPane = new VBox(10);
        HBox inputPane = new HBox(10);
        loginPane.setPadding(new Insets(10));
@@ -74,11 +91,19 @@ public class StudyRegisterUi extends Application{
        });
        
        loginButton.setOnAction((ActionEvent e) -> {
-           stage.setScene(mainScene);
+           String username = usernameInput.getText();
+           if (service.login(username)) {
+                stage.setScene(mainScene);
+                usernameInput.setText("");
+                logged.setText("Kirjautuneena: " + service.getLoggedUser().getUsername());
+                refreshData();
+           }
+           service.printAll();
        });
        
        createButton.setOnAction((ActionEvent e) -> {
-          stage.setScene(newUserScene); 
+          stage.setScene(newUserScene);
+          service.printAll();
        });
         
        loginPane.getChildren().addAll(loginMessage, inputPane, loginButton, createButton, helpButton);
@@ -104,11 +129,34 @@ public class StudyRegisterUi extends Application{
        Button createNewUserButton = new Button("Luo uusi käyttäjä");
        createNewUserButton.setPadding(new Insets(10));
        
+       Button cancelButton = new Button("Peruuta");
+       cancelButton.setPadding(new Insets(10));
+       
+       Label notificationLabel = new Label();
+       
+       cancelButton.setOnAction((ActionEvent e) -> {
+           stage.setScene(loginScene); 
+        });
+       
        createNewUserButton.setOnAction((ActionEvent e) -> {
+           String username = newUsernameInput.getText();
+           String name = newNameInput.getText();
+           if (username.length() < 3) {
+               notificationLabel.setText("Käyttäjätunnuksen minimipituus on 3 merkkiä!");
+           }
+           else if (name.length() < 3) {
+               notificationLabel.setText("Nimen minimipituus on 3 merkkiä!");
+           }
+           else {
+               service.createUser(name, username);
+               newUsernameInput.setText("");
+               newNameInput.setText("");
+           }
+           service.printAll();
            stage.setScene(loginScene);
        });
        
-       newUserPane.getChildren().addAll(userCreateMessage, newUsernamePane, newNamePane, createNewUserButton);
+       newUserPane.getChildren().addAll(userCreateMessage, newUsernamePane, newNamePane, createNewUserButton, cancelButton, notificationLabel);
        newUserScene = new Scene(newUserPane, 300, 300);
        
        // mainScene alkaa tämän jälkeen eli siis ikkuna jossa suurin osa toiminnallisuudesta tapahtuu
@@ -119,9 +167,9 @@ public class StudyRegisterUi extends Application{
        stage.setTitle("Opintorekisteri");
        stage.setWidth(1000);
        stage.setHeight(500);
-        
-       TableView activeCoursesTable = new TableView();
-       TableView pastCoursesTable = new TableView();
+              
+       activeCoursesTable = new TableView();
+       pastCoursesTable = new TableView();
        Label activeCoursesPlaceholder = new Label("Ei aktiivisia kursseja");
        activeCoursesTable.setPlaceholder(activeCoursesPlaceholder);
        Label pastCoursesPlaceholder = new Label("Ei epäaktiivisia kursseja");
@@ -180,8 +228,15 @@ public class StudyRegisterUi extends Application{
        leftSideVBox.getChildren().addAll(activeCoursesLabel, activeCoursesTable);
        rightSideVBox.getChildren().addAll(pastCoursesLabel, pastCoursesTable);
        
-       ObservableList<Course> activeCoursesAsObservableList = FXCollections.observableArrayList();
-       ObservableList<Course> pastCoursesAsObservableList = FXCollections.observableArrayList();
+       
+       
+//       activeCoursesAsObservableList = FXCollections.observableArrayList();
+//       pastCoursesAsObservableList = FXCollections.observableArrayList();
+//       
+//       activeCoursesAsObservableList.addAll(service.getCourses());
+//       pastCoursesAsObservableList.addAll(service.getUnactiveCourses());
+//       activeCoursesTable.setItems(activeCoursesAsObservableList);
+//       pastCoursesTable.setItems(pastCoursesAsObservableList);
        
        TextField courseNameInput = new TextField();
        TextField courseCreditsInput = new TextField();
@@ -195,6 +250,8 @@ public class StudyRegisterUi extends Application{
        logoutButton.setPadding(padding);
        
        logoutButton.setOnAction ((ActionEvent e) -> {
+           service.logout();
+           service.printAll();
            stage.setScene(loginScene);
        });
 
@@ -212,6 +269,7 @@ public class StudyRegisterUi extends Application{
               String courseName = helperCourse.getName();
               service.deleteCourse(courseName);
           }
+          service.printAll();
        });
        
        addCourseButton.setOnAction((ActionEvent e) -> {
@@ -221,6 +279,8 @@ public class StudyRegisterUi extends Application{
            if (added) {
                activeCoursesAsObservableList.add(service.findCourseByName(courseName));
                activeCoursesTable.setItems(activeCoursesAsObservableList);
+               courseNameInput.setText("");
+               courseCreditsInput.setText("");
            }
            else {
                Alert alert = new Alert(AlertType.ERROR);
@@ -229,6 +289,7 @@ public class StudyRegisterUi extends Application{
                alert.setContentText("Mahdollisia virhetilanteita:\nKurssi on jo olemassa\ntila täynnä\nvirhe syötteessä");
                alert.showAndWait();
            } 
+           service.printAll();
        });
        
        bottomHBox.getChildren().addAll(courseInfoLabel, insertCourseNameLabel, courseNameInput, insertCourseCreditsLabel, courseCreditsInput, addCourseButton);
@@ -244,13 +305,16 @@ public class StudyRegisterUi extends Application{
                alert.showAndWait();
            }
            else {
+               Course course = (Course) activeCoursesTable.getSelectionModel().selectedItemProperty().get();
+               String data = (String) course.getName();
+               service.markCourseAsDone(data);
                pastCoursesAsObservableList.add((Course)activeCoursesTable.getSelectionModel().getSelectedItem());
                pastCoursesTable.setItems(pastCoursesAsObservableList);
-               activeCoursesTable.getItems().remove((Course)activeCoursesTable.getSelectionModel().getSelectedItem());
+               activeCoursesTable.getItems().remove((Course)activeCoursesTable.getSelectionModel().getSelectedItem());       
            }
+           service.printAll();
        });
-       
-       middleVBox.getChildren().addAll(markAsDoneLabel, markCourseUnactiveButton, removeCourseButton, logoutButton);
+       middleVBox.getChildren().addAll(markAsDoneLabel, markCourseUnactiveButton, removeCourseButton, logoutButton, logged);
        borderpane.setLeft(leftSideVBox);
        borderpane.setRight(rightSideVBox);
        borderpane.setCenter(middleVBox);

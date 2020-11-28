@@ -8,6 +8,7 @@ package domain;
 import java.util.ArrayList;
 import opintorekisteri.domain.Course;
 import opintorekisteri.domain.CourseService;
+import opintorekisteri.domain.User;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -19,8 +20,9 @@ import org.junit.Test;
  */
 public class CourseServiceCourseTest {
     CourseService service;
-    ArrayList<Course> courses = new ArrayList<>();
-    ArrayList<Course> unactive = new ArrayList<>();
+    ArrayList<Course> courses;
+    ArrayList<Course> unactive;
+    User user;
     
     
     @Test

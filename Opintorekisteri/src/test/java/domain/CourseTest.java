@@ -6,6 +6,7 @@
 package domain;
 
 import opintorekisteri.domain.Course;
+import opintorekisteri.domain.User;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -14,18 +15,13 @@ import org.junit.Test;
  * @author Aleksi Suuronen
  */
 public class CourseTest {
+    User user;
     
     @Test
     public void courseExists() {
-        Course course = new Course(1, "Ohjelmistotekniikka", 5, true, null);
+        user = new User("keijo", "Johtaja88");
+        Course course = new Course("Ohjelmistotekniikka", 5, true, user);
         assertTrue(null != course);
     }
     
-    
-    @Test
-    public void notEqualWhenDifferentId() {
-        Course course1 = new Course(1, "Lineaarialgebra ja matriisilaskenta 1", 5, true, null);
-        Course course2 = new Course(2, "Lineaarialgebra ja matriisilaskenta 1", 5, true, null);
-        assertFalse(course1.equals(course2));
-    }
 }

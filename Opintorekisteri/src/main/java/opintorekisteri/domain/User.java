@@ -15,6 +15,7 @@ public class User {
     private String username;
     private int id;
     
+    
     /**
      * User-luokan konstruktori.
      * @param name Käyttäjän oikea nimi
@@ -29,11 +30,28 @@ public class User {
     
     
     /**
+     * User-luokan konstruktori ilman id attribuuttia
+     * @param name Käyttäjän oikea nimi
+     * @param username Käyttäjän käyttäjänimi
+     */
+    public User(String name, String username) {
+        this.name = name;
+        this.username = username;
+    }
+    
+    
+    /**
      * Metodi joka palauttaa käyttäjän nimen.
      * @return käyttäjän oikea nimi
      */
     public String getName() {
         return name;
+    }
+    
+    
+    @Override
+    public String toString() {
+        return this.name + " " + this.username;
     }
     
     

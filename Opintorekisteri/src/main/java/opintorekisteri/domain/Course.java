@@ -21,14 +21,12 @@ public class Course {
     
     /**
      * Course-olion konstruktori, jossa id & käyttäjä attribuutit mukana.
-     * @param id Kurssin id, jolla se voidaan yksikäsitteisesti tunnistaa
      * @param name Kurssin nimi
      * @param credits Kurssin opintopisteet
      * @param active Onko kurssi aktviinen vai ei
      * @param user Keneen käyttäjään kurssi on liitetty
      */
-    public Course(int id, String name, int credits, boolean active, User user) {
-        this.id = id;
+    public Course(String name, int credits, boolean active, User user) {
         this.name = name;
         this.credits = credits;
         this.active = active;
@@ -36,17 +34,17 @@ public class Course {
     }
     
     
-    /**
-     * Course-olion konstruktori.
-     * @param name Kurssin nimi
-     * @param credits Kurssin opintopisteet
-     * @param active Onko kurssi aktiivinen vai ei
-     */
-    public Course(String name, int credits, boolean active) {
-        this.name = name;
-        this.credits = credits;
-        this.active = active;
-    }
+//    /**
+//     * Course-olion konstruktori.
+//     * @param name Kurssin nimi
+//     * @param credits Kurssin opintopisteet
+//     * @param active Onko kurssi aktiivinen vai ei
+//     */
+//    public Course(String name, int credits, boolean active) {
+//        this.name = name;
+//        this.credits = credits;
+//        this.active = active;
+//    }
     
     
     /**
@@ -102,5 +100,9 @@ public class Course {
     }
     
     
+    @Override
+    public String toString() {
+        return this.name + " " + this.credits + " "+ this.active + " " + this.user.toString();
+    }
 }
 
