@@ -12,4 +12,5 @@ Päivämäärä | käytetty aika tunneissa | mitä tein
 24.11| 1 | Laitettu käyttöliittymään ohje-dialogi ohjelman tarkastajaa varten. Lisäksi testaamista, että projekti toimii kuten pitää etätyöasemassa.
 27.11| 2 | Kirjautumis-ominaisuuden implementointia ja bugien korjaamista
 28.11| 3 | Kirjautumis-ominaisuuden implementointi valmiiksi ja bugien korjaamista
-TUNNIT YHTEENSÄ | 35 | TUNNIT YHTEENSÄ
+29.11| 4 | PoC SQLITE sovelluksen rakentelua.
+TUNNIT YHTEENSÄ | 39 | TUNNIT YHTEENSÄ

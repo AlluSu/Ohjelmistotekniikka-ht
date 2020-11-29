@@ -1,6 +1,9 @@
 package opintorekisteri.ui;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
@@ -12,6 +15,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
@@ -47,12 +51,15 @@ public class StudyRegisterUi extends Application{
     private ObservableList<Course> pastCoursesAsObservableList;
     
     
+    /**
+     * Funktio joka aina kirjautumisen yhdessä tyhjentää TableView-komponentit, 
+     * että uuden kirjautujan data tulee oikein näkyviin.
+     */
     public void refreshData() {
        activeCoursesTable.getItems().clear();
        pastCoursesTable.getItems().clear();
        activeCoursesAsObservableList = FXCollections.observableArrayList();
        pastCoursesAsObservableList = FXCollections.observableArrayList();
-       
        activeCoursesAsObservableList.addAll(service.getCourses());
        pastCoursesAsObservableList.addAll(service.getUnactiveCourses());
        activeCoursesTable.setItems(activeCoursesAsObservableList);
@@ -104,8 +111,8 @@ public class StudyRegisterUi extends Application{
        createButton.setOnAction((ActionEvent e) -> {
           stage.setScene(newUserScene);
           service.printAll();
-       });
-        
+       }); 
+       
        loginPane.getChildren().addAll(loginMessage, inputPane, loginButton, createButton, helpButton);
        loginScene = new Scene(loginPane, 300, 300);
        
