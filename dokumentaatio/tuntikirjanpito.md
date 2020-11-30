@@ -13,4 +13,5 @@ Päivämäärä | käytetty aika tunneissa | mitä tein
 27.11| 2 | Kirjautumis-ominaisuuden implementointia ja bugien korjaamista
 28.11| 3 | Kirjautumis-ominaisuuden implementointi valmiiksi ja bugien korjaamista
 29.11| 4 | PoC SQLITE sovelluksen rakentelua.
+30.11| 2 | PoC SQLITE sovelluksen rakentelua.
 TUNNIT YHTEENSÄ | 39 | TUNNIT YHTEENSÄ
