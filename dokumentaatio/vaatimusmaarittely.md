@@ -43,7 +43,8 @@ Toisessa kuvassa on luonnos millainen modaalinen ikkuna avautuu kun painetaan pa
   * Admin-käyttäjä järjestelmään
 * Statistiikkaa kursseista ja opinnoista
   * Esimerkiksi kaikkien suoritettujen opintojen keskiarvo, opintopistelaskuri
-* Aktiivisten ja menneiden kurssien lajittelu ja haku
+* Aktiivisten ja menneiden kurssien lajittelu ja haku  
+** TableView-komponentti osaa lajitella joten käytännössä 1/2 tehty
 * Kurssin luomiseen erillinen ikkuna/lomake, johon voi tallettaa enemmän tietoja kurssista, kuten suoritustapa, tiedekunta, aloituspäivämäärä yms.
 
 
