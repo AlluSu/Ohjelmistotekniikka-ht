@@ -12,6 +12,7 @@ import opintorekisteri.domain.User;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -21,8 +22,18 @@ import org.junit.Test;
 public class CourseServiceCourseTest {
     CourseService service;
     ArrayList<Course> courses;
-    ArrayList<Course> unactive;
-    User user;
+    ArrayList<Course> unactive;  
+    
+    @Before
+    public void setUp() {
+        service = new CourseService();
+        courses = new ArrayList<>();
+        unactive = new ArrayList<>();
+        service.createUser("keijo kesämies", "markkanen");
+        service.createUser("Kari Grandi", "kartsa");
+//        User user1 = new User("Keijo kesämies", "markkanen");
+//        User user2 = new User("Kari Grandi", "kartsa");
+    }
     
     
     @Test
@@ -32,25 +43,31 @@ public class CourseServiceCourseTest {
     }
     
     
-//    @Test
-//    public void addingCoursesIsSuccessful() {
-//        service = new CourseService();
-//        service.createCourse("linis 1", "5");
-//        service.createCourse("Ohjelmistotekniikka", "5");
-//        service.createCourse("Pääsäiekimpuista ja Yang-Mills-teoriasta", "10");
-//        assertEquals(3, service.getCourses().size());
-//        assertEquals("linis 1", service.getCourses().get(0).getName());
-//    }
-//    
-//    
-//    @Test
-//    public void addingDuplicateCourseDoesNotChangeSize() {
-//        service = new CourseService();
-//        service.createCourse("linis 1", "5");
-//        service.createCourse("Liquid milk products", "6");
-//        service.createCourse("linis 1", "5");
-//        assertEquals(2, service.getCourses().size());
-//    }
+    @Test
+    public void addingCoursesIsSuccessful() {
+        service = new CourseService();
+        service.createUser("tom cruise", "topgun");
+        service.login("topgun");
+        assertTrue(service.getLoggedUser() != null);
+        service.createCourse("linis 1", "5");
+        service.createCourse("Ohjelmistotekniikka", "5");
+        service.createCourse("Pääsäiekimpuista ja Yang-Mills-teoriasta", "10");
+        assertEquals(3, service.getCourses().size());
+        assertEquals("linis 1", service.getCourses().get(0).getName());
+    }
+    
+    
+    @Test
+    public void addingDuplicateCourseDoesNotChangeSize() {
+        service = new CourseService();
+        service.createUser("lauri markkanen", "finnisher");
+        service.login("finnisher");
+        assertTrue(service.getLoggedUser() != null);
+        service.createCourse("linis 1", "5");
+        service.createCourse("Liquid milk products", "6");
+        service.createCourse("linis 1", "5");
+        assertEquals(2, service.getCourses().size());
+    }
     
     
     @Test

@@ -1,9 +1,6 @@
 package opintorekisteri.domain;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import opintorekisteri.dao.SqlUserDao;
 
 /*
@@ -22,32 +19,6 @@ public class CourseService {
     private ArrayList<User> users = new ArrayList<User>();
     private User loggedIn;
     private SqlUserDao userDao;
-    
-    
-    public void printAll() {
-        printCourses();
-        printUsers();
-        printUnactive();
-    }
-    
-    public void printCourses() {
-        for (Course c: courses) {
-            System.out.println(c.toString());
-        }
-    }
-    
-    public void printUsers() {
-        for (User u: users) {
-            System.out.println(u.toString());
-        }
-    }
-    
-    
-    public void printUnactive() {
-        for (Course c: unactive) {
-            System.out.println(c.toString());
-        }
-    }
     
     
     /**
@@ -332,7 +303,7 @@ public class CourseService {
      */
     public boolean usernameExists(String username) {
         for (User user: users) {
-            if (user.getName().equals(username)) {
+            if (user.getUsername().equals(username)) {
                 return true;
             }
         }

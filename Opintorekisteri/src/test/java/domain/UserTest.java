@@ -23,9 +23,9 @@ public class UserTest {
     
     
     @Test
-    public void twoUsersWithDifferentId() {
-        User user1 = new User("Keijo", "Zezima", 1);
-        User user2 = new User("Keijo", "Zezima123", 2);
+    public void twoUsersWithDifferentNames() {
+        User user1 = new User("Keijo", "Zezima");
+        User user2 = new User("Keijo", "Zezima123");
         assertTrue(user1 != user2);
     }
 }

@@ -18,23 +18,25 @@ Toisessa kuvassa on luonnos millainen modaalinen ikkuna avautuu kun painetaan pa
 
 ## Ennen kirjautumista
 * Käyttäjä voi luoda sovellukseen käyttäjätunnuksen
-  * täytyy olla uniikki, tarvittaessa järjestelmä ilmoittaa onko käyttäjä varattu vai ei
+  * täytyy olla uniikki, järjestelmä ilmoittaa onko käyttäjä varattu vai ei  
+** Tehty
 
 * Käyttäjä voi kirjautua järjestelmään
-  * Jos kirjautuminen ei onnistu, niin siitä ilmoitetaan
+  * Jos kirjautuminen ei onnistu, niin siitä ilmoitetaan  
+** Tehty
   * Jos käyttäjää ei ole olemassa, niin siitä ilmoitetaan
 
 ## Kirjautumisen jälkeen
-* Käyttäjä näkee omat aktiiviset kurssinsa
+* Käyttäjä näkee omat aktiiviset kurssinsa  
 ** Tehty
-* Käyttäjä voi lisätä uuden kurssin aktiivisten kurssien listaan
+* Käyttäjä voi lisätä uuden kurssin aktiivisten kurssien listaan  
 ** Tehty
-* Käyttäjä voi merkitä aktiivisen kurssin epäaktiiviseksi jolloin se muuttuu menneeksi kurssiksi
+* Käyttäjä voi merkitä aktiivisen kurssin epäaktiiviseksi jolloin se muuttuu menneeksi kurssiksi  
 ** Tehty
-* Käyttäjä näkee menneet kurssinsa 
+* Käyttäjä näkee menneet kurssinsa  
 ** Tehty
-* Käyttäjä voi kirjautua ulos järjestelmästä
-
+* Käyttäjä voi kirjautua ulos järjestelmästä  
+** tehty
 # Jatkokehitysideoita
 * Salasana kirjautumisen yhteyteen
 * Mahdollisuus käyttäjän ja käyttäjätietojen poistoon
@@ -42,6 +44,6 @@ Toisessa kuvassa on luonnos millainen modaalinen ikkuna avautuu kun painetaan pa
 * Statistiikkaa kursseista ja opinnoista
   * Esimerkiksi kaikkien suoritettujen opintojen keskiarvo, opintopistelaskuri
 * Aktiivisten ja menneiden kurssien lajittelu ja haku
-* Info-painike aktiivisen ja menneen kurssin viereen, joka kertoo olennaista tietoa kurssista.
+* Kurssin luomiseen erillinen ikkuna/lomake, johon voi tallettaa enemmän tietoja kurssista, kuten suoritustapa, tiedekunta, aloituspäivämäärä yms.
 
 

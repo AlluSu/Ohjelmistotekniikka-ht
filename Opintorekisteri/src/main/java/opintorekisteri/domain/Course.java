@@ -11,8 +11,6 @@ package opintorekisteri.domain;
  */
 public class Course {
     
-    
-    private int id;
     private String name;
     private int credits;
     private boolean active;
@@ -31,28 +29,6 @@ public class Course {
         this.credits = credits;
         this.active = active;
         this.user = user;
-    }
-    
-    
-//    /**
-//     * Course-olion konstruktori.
-//     * @param name Kurssin nimi
-//     * @param credits Kurssin opintopisteet
-//     * @param active Onko kurssi aktiivinen vai ei
-//     */
-//    public Course(String name, int credits, boolean active) {
-//        this.name = name;
-//        this.credits = credits;
-//        this.active = active;
-//    }
-    
-    
-    /**
-     * Metodi joka asettaa id:n kurssioliolle.
-     * @param id id-numero jonka kurssi-olio saa
-     */
-    public void setId(int id) {
-        this.id = id;
     }
     
     
