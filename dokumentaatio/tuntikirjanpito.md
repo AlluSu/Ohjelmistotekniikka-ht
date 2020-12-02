@@ -15,4 +15,5 @@ Päivämäärä | käytetty aika tunneissa | mitä tein
 29.11| 4 | PoC SQLITE sovelluksen rakentelua.
 30.11| 2 | PoC SQLITE sovelluksen rakentelua.
 1.12 | 2 | Testikattavuuden parantelua tekemällä lisää testejä ja korjaamalla vanhoja. Parannettu käyttöliittymän käytettävyyttä.
-TUNNIT YHTEENSÄ | 41 | TUNNIT YHTEENSÄ
+2.12 | 2 | Sekvenssikaavio kirjautumisesta, dokumentaation päivittelyä, työn testausta etätyöasemassa viikon 5 palautusta varten.
+TUNNIT YHTEENSÄ | 43 | TUNNIT YHTEENSÄ
