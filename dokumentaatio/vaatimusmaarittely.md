@@ -5,7 +5,7 @@ Sovelluksen tarkoitus on olla opintojen seurantajärjestelmä. Sovellusta voi k�
 
 ## Käyttäjät
 Aluksi sovelluksessa on vain yhdenlaisia käyttäjiä eli normaaleita käyttäjiä. Ajan puitteissa voitaisiin lisätä myös isommilla oikeuksilla varustettuja Admin-käyttäjiä. Adminit pystyisivät muun muassa
-poistamaan tietokannasta dataa esimerkiksi vaikka muita käyttäjiä yms.
+poistamaan tietokannasta esimerkiksi muita käyttäjiä tms.
 
 ## Käyttöliittymäluonnos
 ![Kuva käyttöliittymästä](kuvat/OpintorekisterGUI1.jpg)
@@ -39,10 +39,11 @@ Toisessa kuvassa on luonnos millainen modaalinen ikkuna avautuu kun painetaan pa
 ** tehty
 # Jatkokehitysideoita
 * Salasana kirjautumisen yhteyteen
+* Kirjautumisnäkymään lista aktiivista käyttäjistä
 * Mahdollisuus käyttäjän ja käyttäjätietojen poistoon
   * Admin-käyttäjä järjestelmään
 * Statistiikkaa kursseista ja opinnoista
   * Esimerkiksi kaikkien suoritettujen opintojen keskiarvo, opintopistelaskuri
 * Aktiivisten ja menneiden kurssien lajittelu ja haku  
-** TableView-komponentti osaa lajitella joten käytännössä 1/2 tehty
+** TableView-komponentti osaa lajitella sarakkeittain suuruusjärjestykseen itsessään, joten käytännössä lajittelu on tehty
 * Kurssin luomiseen erillinen ikkuna/lomake, johon voi tallettaa enemmän tietoja kurssista, kuten suoritustapa, tiedekunta, aloituspäivämäärä yms.
