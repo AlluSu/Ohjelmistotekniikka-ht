@@ -11,7 +11,7 @@ Opintorekisteri-sovellus on ohjelma, johon käyttäjän on mahdollista lisätä 
 [Työaikakirjanpito](dokumentaatio/tuntikirjanpito.md)  
 
 ## Releaset
-[viikko 5](releases)
+[viikko 5](releases/tag/viikko5)
 
 ## Komentorivitoiminnot
 
