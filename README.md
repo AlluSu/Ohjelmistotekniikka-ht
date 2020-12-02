@@ -6,8 +6,11 @@ Opintorekisteri-sovellus on ohjelma, johon käyttäjän on mahdollista lisätä 
 
 ## Dokumentaatio
 [Vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)  
+
 [Työaikakirjanpito](dokumentaatio/tuntikirjanpito.md)  
+
 [Arkkitehtuurikuvaus](dokumentaatio/arkkitehtuuri.md)  
+
 [Työaikakirjanpito](dokumentaatio/tuntikirjanpito.md)  
 
 ## Releaset
@@ -18,7 +21,8 @@ Opintorekisteri-sovellus on ohjelma, johon käyttäjän on mahdollista lisätä 
 ### Ohjelman ajaminen komentoriviltä
 Oletetaan, että Opintorekisteri-hakemisto on käyttäjän koneella. Jos näin ei ole, niin tämän saa esimerkiksi komentoriviltä komennolla `git clone https://github.com/AlluSu/Ohjelmistotekniikka-ht.git`.   
 Mennään Opintorekisteri-hakemistoon ja suoritetaan  
-`mvn compile exec:java -Dexec.mainClass=opintorekisteri.ui.StudyRegisterUi`  
+`mvn compile exec:java -Dexec.mainClass=opintorekisteri.ui.StudyRegisterUi`.  
+Vaihtoehtoisesti lataa paikasta *Releases* tiedoston `opintorekisteri.jar` ja menee komentorivillä samaan hakemistoon ja suorittaa komennon `java -jar opintorekisteri.jar`.  
 
 ### Suoritettavan jarin generointi  
 Mene komentorivillä projektihakemistoon `Opintorekisteri` ja suorita komento `mvn package`.  
