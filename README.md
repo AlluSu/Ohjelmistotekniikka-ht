@@ -7,8 +7,6 @@ Opintorekisteri-sovellus on ohjelma, johon käyttäjän on mahdollista lisätä 
 ## Dokumentaatio
 [Vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)  
 
-[Työaikakirjanpito](dokumentaatio/tuntikirjanpito.md)  
-
 [Arkkitehtuurikuvaus](dokumentaatio/arkkitehtuuri.md)  
 
 [Työaikakirjanpito](dokumentaatio/tuntikirjanpito.md)  
