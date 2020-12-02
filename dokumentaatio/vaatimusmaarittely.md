@@ -8,8 +8,8 @@ Aluksi sovelluksessa on vain yhdenlaisia käyttäjiä eli normaaleita käyttäji
 poistamaan tietokannasta dataa esimerkiksi vaikka muita käyttäjiä yms.
 
 ## Käyttöliittymäluonnos
-![Kuva käyttöliittymästä](OpintorekisterGUI1.jpg)
-![Kuva modaalisesta ikkunasta](OpintorekisteriGUI2.jpg)
+![Kuva käyttöliittymästä](kuvat/OpintorekisterGUI1.jpg)
+![Kuva modaalisesta ikkunasta](kuvat/OpintorekisteriGUI2.jpg)
 
 Ensimmäisessä kuvassa on käyttöliittymä-luonnokset kirjautumisesta, uuden käyttäjän luomisesta ja näkymästä kun käyttäjä on kirjautunut onnistuneesti.  
 Toisessa kuvassa on luonnos millainen modaalinen ikkuna avautuu kun painetaan painiketta "ADD NEW".  
@@ -46,5 +46,3 @@ Toisessa kuvassa on luonnos millainen modaalinen ikkuna avautuu kun painetaan pa
 * Aktiivisten ja menneiden kurssien lajittelu ja haku  
 ** TableView-komponentti osaa lajitella joten käytännössä 1/2 tehty
 * Kurssin luomiseen erillinen ikkuna/lomake, johon voi tallettaa enemmän tietoja kurssista, kuten suoritustapa, tiedekunta, aloituspäivämäärä yms.
-
-
