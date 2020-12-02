@@ -10,8 +10,6 @@ import java.sql.*;
  * Luokka joka vastaa Course-luokkaan kohdistuvista tietokantaoperaatioista.
  * @author Aleksi Suuronen
  */
-public class SqlCourseDao {
-    
-    
+public class SqlCourseDao {    
    
 }

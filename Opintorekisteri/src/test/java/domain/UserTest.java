@@ -10,20 +10,20 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
- * 
+ * Testiluokka User-luokalle.
  * @author Aleksi Suuronen
  */
 public class UserTest {
     
     @Test
-    public void userExists() {
-        User user = new User("Keijo", "Zezima", 1);
+    public void userExistsAfterCreating() {
+        User user = new User("Keijo", "Zezima");
         assertTrue(null != user);
     }
     
     
     @Test
-    public void twoUsersWithDifferentNames() {
+    public void twoUsersAreDifferentWithDifferentNames() {
         User user1 = new User("Keijo", "Zezima");
         User user2 = new User("Keijo", "Zezima123");
         assertTrue(user1 != user2);

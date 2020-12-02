@@ -78,7 +78,7 @@ public class Course {
     
     @Override
     public String toString() {
-        return this.name + " " + this.credits + " "+ this.active + " " + this.user.toString();
+        return this.name + " " + this.credits + " " + this.active + " " + this.user.toString();
     }
 }
 

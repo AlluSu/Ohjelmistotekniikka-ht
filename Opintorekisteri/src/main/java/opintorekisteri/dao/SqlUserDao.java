@@ -4,9 +4,6 @@
  * and open the template in the editor.
  */
 package opintorekisteri.dao;
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +11,7 @@ import opintorekisteri.domain.User;
 
 /**
  * Luokka joka vastaa User-luokkaan kohdistuvista tietokantaoperaatioista.
+ * ATM EI KÄYTÖSSÄ (Viikko5)
  * @author Aleksi Suuronen
  */
 public class SqlUserDao {
@@ -24,35 +22,33 @@ public class SqlUserDao {
     private String courseDBName;
     
     /**
-     * 
-     * @return 
-     * @throws SQLException 
+     * Funktio joka muodostaa tietokantayhteyden ja luo Users-taulun jos sitä ei ole olemassa.
+     * @return True, jos luonti onnistui, muuten false.
+     * @throws SQLException Poikkeuskäsittely
      */
     public boolean createUsersTable() throws SQLException {
-        File file = new File("users.db");
-        if (file.exists()) {
-            return true;
-        }
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SqlUserDao.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
-        connection = DriverManager.getConnection("jdbc:sqlite:users.db");
+        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
         if (connection == null) {
             System.out.println("Virhe");
+            return false;
         }
         statement = connection.createStatement();
-        statement.execute("CREATE TABLE Users (id INTEGER PRIMARY KEY, name TEXT, username TEXT, course_id REFERENCES Courses)");
-        return false;
+        statement.execute("CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY, name TEXT, username TEXT, course_id REFERENCES Courses)");
+        return true;
     }
     
     
     /**
-     * 
-     * @param user
-     * @return 
-     * @throws java.sql.SQLException 
+     * Funktio joka lisää parametrina tulevan käytttäjän tietokantaan.
+     * @param user User-olio joka halutaan lisätä tietokantaan.
+     * @return True jos lisäys onnistui, muuten false.
+     * @throws SQLException Poikkeuskäsittely
      */
     public boolean addUserToUserTable(User user) throws SQLException {
         connection = DriverManager.getConnection("jdbc:sqlite:users.db");
@@ -71,19 +67,22 @@ public class SqlUserDao {
     }
     
     
+    /**
+     * Funktio joka tarkastaa käyttäjätunnuksen perusteella, onko käyttäjätunnus jo tietokannassa ja siten varattu.
+     * @param username Käyttäjätunnus jota selvitetään onko varattu
+     * @return True jos on varattu, muuten false
+     * @throws SQLException Poikkeuskäsittely
+     */
     public boolean userNameExists(String username) throws SQLException {
         connection = DriverManager.getConnection("jdbc:sqlite:users.db");
         if (connection == null) {
-           return false; 
+            return false; 
         }
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT username FROM Users WHERE username=?");
         preparedStatement.setString(1, username);
         try {
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return true;
-            }
-            return false;
+            return resultSet.next();
         } catch (SQLException exception) {
             return false;
         }
