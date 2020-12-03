@@ -5,6 +5,7 @@
  */
 package domain;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import opintorekisteri.domain.Course;
 import opintorekisteri.domain.CourseService;
@@ -25,26 +26,24 @@ public class CourseServiceCourseTest {
     ArrayList<Course> unactive;  
     
     @Before
-    public void setUp() {
+    public void setUp() throws SQLException {
         service = new CourseService();
         courses = new ArrayList<>();
         unactive = new ArrayList<>();
         service.createUser("keijo kesämies", "markkanen");
         service.createUser("Kari Grandi", "kartsa");
-//        User user1 = new User("Keijo kesämies", "markkanen");
-//        User user2 = new User("Kari Grandi", "kartsa");
     }
     
     
     @Test
-    public void activeCoursesAreEmptyWhenStarted() {
+    public void activeCoursesAreEmptyWhenStarted() throws SQLException {
         service = new CourseService();
         assertEquals(0, service.getCourses().size());
     }
     
     
     @Test
-    public void addingCoursesIsSuccessful() {
+    public void addingCoursesIsSuccessful() throws SQLException {
         service = new CourseService();
         service.createUser("tom cruise", "topgun");
         service.login("topgun");
@@ -58,7 +57,7 @@ public class CourseServiceCourseTest {
     
     
     @Test
-    public void addingDuplicateCourseDoesNotChangeSize() {
+    public void addingDuplicateCourseDoesNotChangeSize() throws SQLException {
         service = new CourseService();
         service.createUser("lauri markkanen", "finnisher");
         service.login("finnisher");
@@ -88,34 +87,34 @@ public class CourseServiceCourseTest {
     
     
     @Test
-    public void emptyCourseNameDoesNotPass() {
+    public void emptyCourseNameDoesNotPass() throws SQLException {
         service = new CourseService();
         String name = "";
-        assertEquals(null, service.checkAndGetName(name));
+        assertEquals(null, service.checkAndGetName(name, service.getLoggedUser()));
         assertTrue(service.isEmptyString(name));
     }
     
     
     @Test
-    public void courseIsDuplicate() {
+    public void courseIsDuplicate() throws SQLException {
         service = new CourseService();
         service.createCourse("JYM", "5");
         service.createCourse("Linis 2", "5");
         service.createCourse("JYM", "5");
-        assertTrue(service.courseExists("JYM"));
+        assertTrue(service.courseExists("JYM", service.getLoggedUser()));
         assertFalse(service.createCourse("JYM", "5"));
     }
     
     
     @Test
-    public void unactiveCoursesAreEmptyWhenStarted() {
+    public void unactiveCoursesAreEmptyWhenStarted() throws SQLException {
         service = new CourseService();
         assertEquals(0, service.getUnactiveCourses().size());
     }
     
     
     @Test
-    public void activeCourseIsSuccesfullySetToUnactive() {
+    public void activeCourseIsSuccesfullySetToUnactive() throws SQLException {
         service = new CourseService();
         service.createCourse("linis", "5");
         Course linis = service.findCourseByName("linis");

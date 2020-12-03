@@ -11,81 +11,117 @@ import opintorekisteri.domain.User;
 
 /**
  * Luokka joka vastaa User-luokkaan kohdistuvista tietokantaoperaatioista.
- * ATM EI KÄYTÖSSÄ (Viikko5)
  * @author Aleksi Suuronen
  */
 public class SqlUserDao {
     
     private Connection connection;
     private Statement statement;
-    private String userDBName;
-    private String courseDBName;
+    
     
     /**
-     * Funktio joka muodostaa tietokantayhteyden ja luo Users-taulun jos sitä ei ole olemassa.
-     * @return True, jos luonti onnistui, muuten false.
-     * @throws SQLException Poikkeuskäsittely
+     * Funktio joka luo tietokantataulun käyttäjille.
+     * @return True jos taulun lunoti onnistui, muuten false
+     * @throws SQLException poikkeuskäsittely
      */
-    public boolean createUsersTable() throws SQLException {
+    public boolean creatingUsersTableIsSuccesful() throws SQLException {
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SqlUserDao.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
         }
         connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
         if (connection == null) {
-            System.out.println("Virhe");
+            System.out.println("Yhteyttä ei voitu muodostaa!");
+            connection.close();
             return false;
         }
         statement = connection.createStatement();
-        statement.execute("CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY, name TEXT, username TEXT, course_id REFERENCES Courses)");
+        statement.execute("CREATE TABLE IF NOT EXISTS Users (id INTEGER PRIMARY KEY, name TEXT, username TEXT)");
+        connection.close();
         return true;
     }
     
     
     /**
-     * Funktio joka lisää parametrina tulevan käytttäjän tietokantaan.
-     * @param user User-olio joka halutaan lisätä tietokantaan.
-     * @return True jos lisäys onnistui, muuten false.
+     * Funktio joka lisää parametrina tulevan käyttäjän tietokantaan.
+     * @param user Käyttäjä joka halutaan lisätä
+     * @return True jos lisääminen onnistui, muuten false
      * @throws SQLException Poikkeuskäsittely
      */
-    public boolean addUserToUserTable(User user) throws SQLException {
-        connection = DriverManager.getConnection("jdbc:sqlite:users.db");
+    public boolean addUser(User user) throws SQLException {
+        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
         if (connection == null) {
+            System.out.println("Yhteyttä ei voitu muodostaa");
             return false;
         }
         PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Users(name, username) VALUES (?,?)");
         preparedStatement.setString(1, user.getName());
-        preparedStatement.setString(2, user.getName());
+        preparedStatement.setString(2, user.getUsername());
         try {
-            ResultSet resultset = preparedStatement.executeQuery();
-            return true;
+            int n = preparedStatement.executeUpdate();
+            if (n == 1) {
+                connection.close();
+                return true;
+            }
         } catch (SQLException exception) {
+            System.out.println("Lisäys epäonnistui " + exception);
+            connection.close();
             return false;
         }
+        return false;
     }
     
     
     /**
-     * Funktio joka tarkastaa käyttäjätunnuksen perusteella, onko käyttäjätunnus jo tietokannassa ja siten varattu.
-     * @param username Käyttäjätunnus jota selvitetään onko varattu
-     * @return True jos on varattu, muuten false
-     * @throws SQLException Poikkeuskäsittely
+     * Funktio joka etsii käyttäjätunnuksen tietokannasta.
+     * @param username Käyttäjätunnus jota etsitään
+     * @return User-olio jos löytyi, muuten null
+     * @throws java.sql.SQLException Poikkeuskäsittely
      */
-    public boolean userNameExists(String username) throws SQLException {
-        connection = DriverManager.getConnection("jdbc:sqlite:users.db");
+    public User getUserByUsername(String username) throws SQLException {
+        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
         if (connection == null) {
-            return false; 
+            System.out.println("Yhteyttä ei voitu muodostaa");
+            return null;
+        }
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT name,username FROM Users WHERE username=?");
+        preparedStatement.setString(1, username);
+        try {
+            ResultSet result = preparedStatement.executeQuery();
+            User user = new User(result.getString("name"), result.getString("username"));
+            connection.close();
+            return user;
+        } catch (SQLException exception) {
+            System.out.println("Virhe " + exception);
+            connection.close();
+            return null;
+        }       
+    }
+    
+    
+    /**
+     * Funktio joka etsii onko tietokannassa kyseistä käyttäjätunnusta.
+     * @param username Käyttäjätunnus jota etsitään
+     * @return True jos käyttäjä on olemassa ja muuten false
+     * @throws SQLException Poikkeuskäsittely jos jokin menee pieleen
+     */
+    public boolean usernameExists(String username) throws SQLException {
+        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        if (connection == null) {
+            System.out.println("Yhteyttä ei voitu muodostaa");
+            return false;
         }
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT username FROM Users WHERE username=?");
         preparedStatement.setString(1, username);
         try {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.next();
+            ResultSet result = preparedStatement.executeQuery();
+            connection.close();
+            return result.next();
         } catch (SQLException exception) {
+            System.out.println("Tapahtui virhe " + exception);
+            connection.close();
             return false;
         }
     }
-    
 }

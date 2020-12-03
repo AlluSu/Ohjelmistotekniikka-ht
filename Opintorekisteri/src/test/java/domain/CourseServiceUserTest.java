@@ -5,6 +5,7 @@
  */
 package domain;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import opintorekisteri.domain.Course;
 import opintorekisteri.domain.CourseService;
@@ -32,13 +33,12 @@ public class CourseServiceUserTest {
         service = new CourseService(courses, unactive);
         courses = new ArrayList<>();
         unactive = new ArrayList<>();
-        users = new ArrayList<>();
-    
+        users = new ArrayList<>();   
     }
     
     
     @Test
-    public void nonexistingUserCantLogin() {
+    public void nonexistingUserCantLogin() throws SQLException {
         boolean login = service.login("testuser");
         assertFalse(login);
         assertEquals(null, service.getLoggedUser());
@@ -46,7 +46,7 @@ public class CourseServiceUserTest {
     
     
     @Test
-    public void createdUserCanLogin() {
+    public void createdUserCanLogin() throws SQLException {
         boolean succesfullyCreated = service.createUser("Antti Suuronen", "Repa");
         assertTrue(succesfullyCreated);
         boolean login = service.login("Repa");
@@ -58,7 +58,7 @@ public class CourseServiceUserTest {
     
     
     @Test
-    public void nonuniqueUsernameCantBeCreated() {
+    public void nonuniqueUsernameCantBeCreated() throws SQLException {
         boolean result1 = service.createUser("Reima Kuisla", "Repa");
         assertTrue(result1);
         boolean result2 = service.createUser("Antti Suuronen", "Repa");
@@ -67,7 +67,7 @@ public class CourseServiceUserTest {
     
     
     @Test
-    public void UserLoggedinCanLogout() {
+    public void UserLoggedinCanLogout() throws SQLException {
         service.login("Repa");
         service.logout();
         assertEquals(null, service.getLoggedUser());

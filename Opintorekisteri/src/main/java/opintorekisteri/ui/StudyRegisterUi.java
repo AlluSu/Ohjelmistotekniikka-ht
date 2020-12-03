@@ -1,7 +1,12 @@
 package opintorekisteri.ui;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -43,19 +48,40 @@ public class StudyRegisterUi extends Application{
     private TableView pastCoursesTable;
     private ObservableList<Course> activeCoursesAsObservableList;
     private ObservableList<Course> pastCoursesAsObservableList;
-    
+    private ArrayList<Course> helperList;
+    private Course helperCourse;
     
     /**
-     * Funktio joka aina kirjautumisen yhdessä tyhjentää TableView-komponentit, 
-     * että uuden kirjautujan data tulee oikein näkyviin.
+     * Funktio joka hakee jokaiselle käyttäjälle datan.
+     * @throws java.sql.SQLException poikkeuskäsittely
      */
-    public void refreshData() {
+    public void refreshData() throws SQLException {
        activeCoursesTable.getItems().clear();
        pastCoursesTable.getItems().clear();
+       
        activeCoursesAsObservableList = FXCollections.observableArrayList();
        pastCoursesAsObservableList = FXCollections.observableArrayList();
-       activeCoursesAsObservableList.addAll(service.getCourses());
-       pastCoursesAsObservableList.addAll(service.getUnactiveCourses());
+       
+       helperList = service.getCourses();
+       if (helperList == null) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Virhe");
+            alert.setHeaderText(null);
+            alert.setContentText("Virhe haettaessa käyttäjän tietoja!");
+            alert.showAndWait();
+       }
+       activeCoursesAsObservableList.addAll(helperList);
+       
+       helperList = service.getUnactiveCourses();
+       if (helperList == null) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Virhe");
+            alert.setHeaderText(null);
+            alert.setContentText("Virhe haettaessa käyttäjän tietoja!");
+            alert.showAndWait();
+       }
+       pastCoursesAsObservableList.addAll(helperList);
+       
        activeCoursesTable.setItems(activeCoursesAsObservableList);
        pastCoursesTable.setItems(pastCoursesAsObservableList);
     }
@@ -82,7 +108,7 @@ public class StudyRegisterUi extends Application{
        Button exitButton = new Button("Poistu");
        
        exitButton.setOnAction((ActionEvent e) -> {
-          stage.close(); 
+          Platform.exit();
        });
        
        helpButton.setOnAction((ActionEvent e) -> {
@@ -90,39 +116,37 @@ public class StudyRegisterUi extends Application{
            alert.setTitle("Opintorekisterin ohjeet");
            alert.setHeaderText(null);
            alert.setContentText("Tervetuloa opintorekisteri-ohjelmaan.\n" +  
-                   "Tämän hetkisessä versiossa kirjautuminen on jo käytössä.\n" + 
-                   "Tämä versio ei vielä käytä tietokantaa, joten käyttäjät ja tiedot häviävät joka ajon jälkeen.\n" +
-                   "Luo ensin käyttäjä, ja sitten kirjaudu sillä käyttäjällä sisään. Voit luoda useita käyttäjiä.\n" + 
-                   "Lisäksi tietokannan puuttumisen takia, usealla eri käyttäjällä ei voi olla aktiivisena tismalleen samannimistä kurssia.");
+                   "Jos et omista käyttäjää, luo käyttäjä. Sitten kirjaudu käyttäjällä.");
            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
            alert.showAndWait();
        });
        
        loginButton.setOnAction((ActionEvent e) -> {
            String username = usernameInput.getText();
-           if (username.trim().equals("")) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Virhe kirjautumisessa");
-                alert.setHeaderText(null);
-                alert.setContentText("Syötä käyttäjätunnus!");
-                alert.showAndWait();
-                usernameInput.setText("");
-           }
-           if (service.login(username)) {
-                stage.setScene(mainScene);
-                usernameInput.setText("");
-                logged.setText("Kirjautuneena: " + service.getLoggedUser().getUsername());
-                refreshData();
+           try {
+               if (service.login(username)) {
+                   stage.setScene(mainScene);
+                   usernameInput.setText("");
+                   logged.setText("Kirjautuneena: " + service.getLoggedUser().getUsername());
+                   refreshData();
+               }
+               else {
+                 Alert alert = new Alert(AlertType.ERROR);
+                 alert.setTitle("Virhe");
+                 alert.setHeaderText(null);
+                 alert.setContentText("Käyttäjää ei löytynyt!");
+                 alert.showAndWait();
+               }
+           } catch (SQLException ex) {
+               Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
            }
        });
        
        createButton.setOnAction((ActionEvent e) -> {
           stage.setScene(newUserScene);
-       }); 
-       
-       Label userCreateMessage = new Label();
-       
-       loginPane.getChildren().addAll(userCreateMessage, inputPane, loginButton, createButton, helpButton, exitButton);
+       });
+        
+       loginPane.getChildren().addAll(loginMessage, inputPane, loginButton, createButton, helpButton, exitButton);
        loginScene = new Scene(loginPane, 300, 300);
        
        // newUserScene alkaa tämän jälkeen eli ikkuna jossa käyttäjä voi luoda uuden käyttäjän sovellukseen.
@@ -141,6 +165,7 @@ public class StudyRegisterUi extends Application{
        Label newNameLabel = new Label("Nimi");
        newNamePane.getChildren().addAll(newNameLabel, newNameInput);
        
+       Label userCreateMessage = new Label();
        Button createNewUserButton = new Button("Luo uusi käyttäjä");
        createNewUserButton.setPadding(new Insets(10));
        
@@ -156,42 +181,32 @@ public class StudyRegisterUi extends Application{
        createNewUserButton.setOnAction((ActionEvent e) -> {
            String username = newUsernameInput.getText();
            String name = newNameInput.getText();
-           if (username.trim().length() < 3) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Virhe käyttäjän luomisessa");
-                alert.setHeaderText(null);
-                alert.setContentText("Käyttäjätunnus on oltava vähintään 3 merkkiä pitkä");
-                alert.showAndWait();
-                newUsernameInput.setText("");
-                newNameInput.setText("");
+           if (username.length() < 3) {
+               notificationLabel.setText("Käyttäjätunnuksen minimipituus on 3 merkkiä!");
            }
-           else if (name.trim().length() < 3) {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Virhe käyttäjän luomisessa");
-                alert.setHeaderText(null);
-                alert.setContentText("Nimi on oltava vähintään 3 merkkiä pitkä");
-                alert.showAndWait();
-                newUsernameInput.setText("");
-                newNameInput.setText("");
+           else if (name.length() < 3) {
+               notificationLabel.setText("Nimen minimipituus on 3 merkkiä!");
            }
            else {
-               if (service.createUser(name, username)) {
-                    newUsernameInput.setText("");
-                    newNameInput.setText("");
-                    userCreateMessage.setText("Käyttäjä " + username + " luotu onnistuneesti");
+               try {
+                   if(!service.createUser(name, username)) {
+                       Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Virhe");
+                        alert.setHeaderText("Käyttäjän luonti epäonnistui!");
+                        alert.setContentText("Käyttäjätunnus on varattu! Valitse jokin muu.");
+                        alert.showAndWait();
+                   }
+               } catch (SQLException ex) {
+                   Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
                }
-               else {
-                    Alert alert = new Alert(AlertType.INFORMATION);
-                    alert.setTitle("Virhe");
-                    alert.setHeaderText("Käyttäjän luonti epäonnistui!");
-                    alert.setContentText("Mahdollisia syitä:\nKäyttäjäntunnus on jo varattu!! Valitse jokin muu!");
-                    alert.showAndWait();
-               }
+               loginMessage.setText("Käyttäjä " + username + " luotu onnistuneesti!");
+               newUsernameInput.setText("");
+               newNameInput.setText("");
+               stage.setScene(loginScene);
            }
-           stage.setScene(loginScene);
        });
        
-       newUserPane.getChildren().addAll(newUsernamePane, newNamePane, createNewUserButton, cancelButton, notificationLabel);
+       newUserPane.getChildren().addAll(userCreateMessage, newUsernamePane, newNamePane, createNewUserButton, cancelButton, notificationLabel);
        newUserScene = new Scene(newUserPane, 300, 300);
        
        // mainScene alkaa tämän jälkeen eli siis ikkuna jossa suurin osa toiminnallisuudesta tapahtuu
@@ -262,7 +277,7 @@ public class StudyRegisterUi extends Application{
        
        leftSideVBox.getChildren().addAll(activeCoursesLabel, activeCoursesTable);
        rightSideVBox.getChildren().addAll(pastCoursesLabel, pastCoursesTable);
-       
+          
        TextField courseNameInput = new TextField();
        TextField courseCreditsInput = new TextField();
        courseNameInput.setPadding(padding);
@@ -288,20 +303,32 @@ public class StudyRegisterUi extends Application{
               alert.showAndWait();
           }
           else {
-              Course helperCourse = (Course) activeCoursesTable.getSelectionModel().getSelectedItem();
-              activeCoursesTable.getItems().remove(activeCoursesTable.getSelectionModel().getSelectedItem());
-              String courseName = helperCourse.getName();
-              service.deleteCourse(courseName);
+              helperCourse = (Course) activeCoursesTable.getSelectionModel().getSelectedItem();
+              try {
+                  if (service.deleteCourse(helperCourse)) {
+                    activeCoursesTable.getItems().remove(activeCoursesTable.getSelectionModel().getSelectedItem());
+                  }
+              } catch (SQLException ex) {
+                  Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
+              }
           }
        });
        
        addCourseButton.setOnAction((ActionEvent e) -> {
            String courseName = courseNameInput.getText();
            String courseCredits = courseCreditsInput.getText();
-           boolean added = service.createCourse(courseName, courseCredits);
+           boolean added = false;
+           try {
+               added = service.createCourse(courseName, courseCredits);
+           } catch (SQLException ex) {
+               Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
+           }
            if (added) {
-               activeCoursesAsObservableList.add(service.findCourseByName(courseName));
-               activeCoursesTable.setItems(activeCoursesAsObservableList);
+               try {
+                    refreshData();
+               } catch (SQLException ex) {
+                   Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
+               }
                courseNameInput.setText("");
                courseCreditsInput.setText("");
            }
@@ -311,13 +338,14 @@ public class StudyRegisterUi extends Application{
                alert.setHeaderText("Kurssin lisäämisessä tapahtui virhe!");
                alert.setContentText("Mahdollisia virhetilanteita:\nKurssi on jo olemassa\ntila täynnä\nvirhe syötteessä");
                alert.showAndWait();
-           } 
+           }
        });
        
        bottomHBox.getChildren().addAll(courseInfoLabel, insertCourseNameLabel, courseNameInput, insertCourseCreditsLabel, courseCreditsInput, addCourseButton);
        
        Button markCourseUnactiveButton = new Button("Siirrä kurssi epäaktiiviseksi");
        markCourseUnactiveButton.setPadding(padding);
+       
        markCourseUnactiveButton.setOnAction ((ActionEvent e) -> {
            if (activeCoursesTable.getSelectionModel().getSelectedItem() == null) {
                Alert alert = new Alert(AlertType.INFORMATION);
@@ -327,14 +355,19 @@ public class StudyRegisterUi extends Application{
                alert.showAndWait();
            }
            else {
-               Course course = (Course) activeCoursesTable.getSelectionModel().selectedItemProperty().get();
-               String data = (String) course.getName();
-               service.markCourseAsDone(data);
-               pastCoursesAsObservableList.add((Course)activeCoursesTable.getSelectionModel().getSelectedItem());
-               pastCoursesTable.setItems(pastCoursesAsObservableList);
-               activeCoursesTable.getItems().remove((Course)activeCoursesTable.getSelectionModel().getSelectedItem());       
+               helperCourse = (Course) activeCoursesTable.getSelectionModel().selectedItemProperty().get();
+               try {
+                   if (service.markCourseAsDone(helperCourse)) {
+                       pastCoursesAsObservableList.add((Course)activeCoursesTable.getSelectionModel().getSelectedItem());
+                       pastCoursesTable.setItems(pastCoursesAsObservableList);
+                       activeCoursesTable.getItems().remove((Course)activeCoursesTable.getSelectionModel().getSelectedItem());
+                   }
+               } catch (SQLException ex) {
+                   Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
+               }
            }
        });
+       
        middleVBox.getChildren().addAll(markAsDoneLabel, markCourseUnactiveButton, removeCourseButton, logoutButton, logged);
        borderpane.setLeft(leftSideVBox);
        borderpane.setRight(rightSideVBox);

@@ -5,11 +5,222 @@
  */
 package opintorekisteri.dao;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import opintorekisteri.domain.Course;
+import opintorekisteri.domain.User;
 
 /**
  * Luokka joka vastaa Course-luokkaan kohdistuvista tietokantaoperaatioista.
  * @author Aleksi Suuronen
  */
-public class SqlCourseDao {    
+public class SqlCourseDao {
+    
+    private Connection connection;
+    private Statement statement;
+    
+    
+    /**
+     * Funktio joka luo tietokantaan Courses-taulun kursseja varten.
+     * @return True jos luonti onnistuu, muute false
+     * @throws SQLException poikkeuskäsittely
+     */
+    public boolean creatingCoursesTableIsSuccesful() throws SQLException {
+                try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SqlUserDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        if (connection == null) {
+            System.out.println("Yhteyttä ei voitu muodostaa!");
+            connection.close();
+            return false;
+        }
+        statement = connection.createStatement();
+        statement.execute("CREATE TABLE IF NOT EXISTS Courses (id INTEGER PRIMARY KEY, name TEXT, credits INTEGER, active BOOLEAN, owner_name REFERENCES Users)");
+        connection.close();
+        return true;
+    }
+    
+    
+    /**
+     * Funktio joka tarkastaa, onko kirjautuneella käyttäjällä olemassa samanniminen kurssi kuin mitä yritetään lisätä.
+     * @param courseName Kurssin nimi jota etsitään
+     * @param user Kirjautuneena oleva käyttäjä
+     * @return True, jos samanniminen kurssi on jo liitetty käyttäjään, muuten false
+     * @throws SQLException poikkeuskäsittely
+     */
+    public boolean courseExistsWithUser(String courseName, User user) throws SQLException {
+        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        if (connection == null) {
+            System.out.println("Yhteyttä ei voitu muodostaa");
+            return false;
+        }
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Courses WHERE name=? AND owner_name=?");
+        preparedStatement.setString(1, courseName);
+        preparedStatement.setString(2, user.getUsername());
+        try {
+            ResultSet results = preparedStatement.executeQuery();
+            if (results.next()) {
+                connection.close();
+                return true;
+            }
+        } catch (SQLException exception) {
+            System.out.println("Virhe!");
+            connection.close();
+            return false;
+        }
+        connection.close();
+        return false;
+    }
+    
+    
+    /**
+     * Funktio joka vaihtaa parametrina tulevan kurssin statuksen aktiivisesta epäaktiiviseksi.
+     * @param course Course-olio jonka status halutaan vaihtaa
+     * @return True jos vaihto onnistui, muuten false
+     * @throws SQLException poikkeuskäsittely
+     */
+    public boolean changeActiveToUnactive(Course course) throws SQLException {
+        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        if (connection == null) {
+            System.out.println("Yhteyttä ei voitu muodostaa");
+            return false;
+        }
+        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Courses SET active=FALSE WHERE name=? AND owner_name=?");
+        preparedStatement.setString(1, course.getName());
+        preparedStatement.setString(2, course.getUser().getUsername());
+        try {
+            int n = preparedStatement.executeUpdate();
+            connection.close();
+            return true;
+        } catch (SQLException exception) {
+            System.out.println("virhe " + exception);
+            connection.close();
+            return false;
+        }
+    }
+    
+    
+    /**
+     * Funktio joka poistaa Course-olion tietokannasta.
+     * @param course Course-olio joka poistetaan
+     * @return True jos poistaminen onnistui ja muuten false
+     * @throws SQLException Poikkeuskäsittely
+     */
+    public boolean deleteCourse(Course course) throws SQLException {
+        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        if (connection == null) {
+            System.out.println("Yhteyttä ei voitu muodostaa");
+            return false;
+        }
+        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Courses WHERE name=? AND owner_name=?");
+        preparedStatement.setString(1, course.getName());
+        preparedStatement.setString(2, course.getUser().getUsername());
+        try {
+            int n = preparedStatement.executeUpdate();
+            connection.close();
+            return true;
+        } catch (SQLException exception) {
+            System.out.println("Virhe " + exception);
+            connection.close();
+            return false;
+        }
+    }
+    
+    
+    /**
+     * Funktio joka lisää kurssin tietokantaan kirjautuneelle käyttäjälle.
+     * @param course Kurssi joka lisätään tietokantaan
+     * @return TRue jos onnistui, muuten false
+     * @throws SQLException poikkeuskäsittely
+     */
+    public boolean addCourse(Course course) throws SQLException {
+        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        if (connection == null) {
+            System.out.println("Yhteyttä ei voitu muodostaa");
+            return false;
+        }
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Courses(name, credits, active, owner_name) VALUES (?,?,?,?)");
+        preparedStatement.setString(1, course.getName());
+        preparedStatement.setInt(2, course.getCredits());
+        preparedStatement.setBoolean(3, course.isActive());
+        preparedStatement.setString(4, course.getUser().getUsername());
+        try {
+            int n = preparedStatement.executeUpdate();
+            if ( n == 1) {
+                connection.close();
+                return true;
+            }
+        } catch (SQLException exception) {
+            System.out.println("Virhe " + exception);
+            connection.close();
+            return false;
+        }
+        return false;
+    }
+
+    
+    /**
+     * Funktio joka hakee tietokannasta annetun käyttäjän tiedot.
+     * @param user Käyttäjä-olio kenen tiedot halutaan
+     * @return Lista Course-olioita
+     * @throws SQLException Poikkeuskäsittely
+     */
+    public ArrayList<Course> getActiveCoursesByUser(User user) throws SQLException {
+        ArrayList<Course> activeCourses = new ArrayList<>();
+        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        if (connection == null) {
+            System.out.println("Yhteyttä ei voitu muodostaa");
+            return null;
+        }
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Courses WHERE owner_name=? AND active=1");
+        preparedStatement.setString(1, user.getUsername());
+        try {
+            ResultSet results = preparedStatement.executeQuery();
+            while(results.next()) {
+                Course course  = new Course(results.getString("name"), results.getInt("credits"), results.getBoolean("active"), user);
+                activeCourses.add(course);
+            }
+            connection.close();
+            return activeCourses;
+        } catch (SQLException exception) {
+            System.out.println("virhe hakemisessa");
+            return null;
+            }
+    }
+
+    
+    /**
+     * Hakee tietokannasta halutun käyttäjän epäaktiiviset kurssit.
+     * @param user User-olio kenen epäaktiiviset kurssit halutaan
+     * @return Lista Course-olioita
+     * @throws SQLException Poikkeuskäsittely
+     */
+    public ArrayList<Course> getUnactiveCoursesByUser(User user) throws SQLException {
+        ArrayList<Course> unactiveCourses = new ArrayList<>();
+        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        if (connection == null) {
+            System.out.println("Yhteyttä ei voitu muodostaa");
+            return null;
+        }
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Courses WHERE owner_name=? AND active=0");
+        preparedStatement.setString(1, user.getUsername());
+        try {
+            ResultSet results = preparedStatement.executeQuery();
+            while(results.next()) {
+                Course course = new Course(results.getString("name"), results.getInt("credits"), results.getBoolean("active"), user);
+                unactiveCourses.add(course);
+            }
+            connection.close();
+            return unactiveCourses;
+        } catch (SQLException exception) {
+            System.out.println("Virhe hakemisessa " + exception);
+            return null;
+        }
+    }
    
 }
+
