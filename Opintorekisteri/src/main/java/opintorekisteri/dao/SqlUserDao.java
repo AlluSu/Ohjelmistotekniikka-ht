@@ -77,7 +77,7 @@ public class SqlUserDao {
      * Funktio joka etsii käyttäjätunnuksen tietokannasta.
      * @param username Käyttäjätunnus jota etsitään
      * @return User-olio jos löytyi, muuten null
-     * @throws java.sql.SQLException Poikkeuskäsittely
+     * @throws SQLException Poikkeuskäsittely
      */
     public User getUserByUsername(String username) throws SQLException {
         connection = DriverManager.getConnection("jdbc:sqlite:courses.db");

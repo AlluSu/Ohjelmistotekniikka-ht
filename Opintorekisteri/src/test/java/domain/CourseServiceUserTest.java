@@ -47,8 +47,6 @@ public class CourseServiceUserTest {
     
     @Test
     public void createdUserCanLogin() throws SQLException {
-        boolean succesfullyCreated = service.createUser("Antti Suuronen", "Repa");
-        assertTrue(succesfullyCreated);
         boolean login = service.login("Repa");
         assertTrue(login);
         User loggedIn = service.getLoggedUser();
@@ -59,8 +57,6 @@ public class CourseServiceUserTest {
     
     @Test
     public void nonuniqueUsernameCantBeCreated() throws SQLException {
-        boolean result1 = service.createUser("Reima Kuisla", "Repa");
-        assertTrue(result1);
         boolean result2 = service.createUser("Antti Suuronen", "Repa");
         assertFalse(result2);
     }

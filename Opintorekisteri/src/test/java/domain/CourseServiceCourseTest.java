@@ -98,6 +98,9 @@ public class CourseServiceCourseTest {
     @Test
     public void courseIsDuplicate() throws SQLException {
         service = new CourseService();
+        service.createUser("teppo testaaja", "hackerman");
+        boolean login = service.login("hackerman");
+        assertTrue(login);
         service.createCourse("JYM", "5");
         service.createCourse("Linis 2", "5");
         service.createCourse("JYM", "5");
@@ -116,6 +119,7 @@ public class CourseServiceCourseTest {
     @Test
     public void activeCourseIsSuccesfullySetToUnactive() throws SQLException {
         service = new CourseService();
+        boolean login = service.login("häkkimies");
         service.createCourse("linis", "5");
         Course linis = service.findCourseByName("linis");
         assertTrue(linis.isActive());

@@ -27,7 +27,7 @@ public class SqlCourseDao {
      * @throws SQLException poikkeuskäsittely
      */
     public boolean creatingCoursesTableIsSuccesful() throws SQLException {
-                try {
+        try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SqlUserDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -150,7 +150,7 @@ public class SqlCourseDao {
         preparedStatement.setString(4, course.getUser().getUsername());
         try {
             int n = preparedStatement.executeUpdate();
-            if ( n == 1) {
+            if (n == 1) {
                 connection.close();
                 return true;
             }
@@ -180,7 +180,7 @@ public class SqlCourseDao {
         preparedStatement.setString(1, user.getUsername());
         try {
             ResultSet results = preparedStatement.executeQuery();
-            while(results.next()) {
+            while (results.next()) {
                 Course course  = new Course(results.getString("name"), results.getInt("credits"), results.getBoolean("active"), user);
                 activeCourses.add(course);
             }
@@ -189,7 +189,7 @@ public class SqlCourseDao {
         } catch (SQLException exception) {
             System.out.println("virhe hakemisessa");
             return null;
-            }
+        }
     }
 
     
@@ -210,7 +210,7 @@ public class SqlCourseDao {
         preparedStatement.setString(1, user.getUsername());
         try {
             ResultSet results = preparedStatement.executeQuery();
-            while(results.next()) {
+            while (results.next()) {
                 Course course = new Course(results.getString("name"), results.getInt("credits"), results.getBoolean("active"), user);
                 unactiveCourses.add(course);
             }

@@ -6,15 +6,15 @@ package opintorekisteri.domain;
  */
 
 /**
- * Yksittäistä kurssia kuvaava luokka.
+ * Luokka joka kuvaa yksittäistä kurssia.
  * @author Aleksi Suuronen
  */
 public class Course {
     
-    private String name;
-    private int credits;
+    private final String name;
+    private final int credits;
     private boolean active;
-    private User user;
+    private final User user;
     
     
     /**

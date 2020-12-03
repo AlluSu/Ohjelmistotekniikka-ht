@@ -16,13 +16,12 @@ import opintorekisteri.dao.SqlUserDao;
  * @author Aleksi Suuronen
  */
 public class CourseService {
-    private ArrayList<Course> courses = new ArrayList<Course>();
-    private ArrayList<Course> unactive = new ArrayList<Course>();
-    private ArrayList<User> users = new ArrayList<User>();
+    private ArrayList<Course> courses;
+    private ArrayList<Course> unactive;
+    private ArrayList<User> users;
     private User loggedIn;
     private SqlUserDao userDao;
     private SqlCourseDao courseDao;
-    private Course helperCourse;
     
     
     /**
@@ -45,7 +44,7 @@ public class CourseService {
     /**
      * Funktio joka palauttaa listan aktiivisita kursseista.
      * @return Listan Course-olioita
-     * @throws java.sql.SQLException Poikkeuskäsittely
+     * @throws SQLException Poikkeuskäsittely
      */
     public ArrayList<Course> getCourses() throws SQLException {
         if (loggedIn == null) {
@@ -58,7 +57,7 @@ public class CourseService {
     /**
      * Funktio joka palauttaa listan epäaktiivisista kursseista.
      * @return Listan Course-olioita.
-     * @throws java.sql.SQLException poikkeuskäsittely
+     * @throws SQLException poikkeuskäsittely
      */
     public ArrayList<Course> getUnactiveCourses() throws SQLException {
         if (loggedIn == null) {
@@ -72,7 +71,7 @@ public class CourseService {
      * Funktio joka palauttaa listan parametrina tulevan käyttäjän kursseista.
      * @param user Käyttäjä kenen kurssit halutaan
      * @return Lista Course-olioita.
-     * @throws java.sql.SQLException Poikkeuskäsittely
+     * @throws SQLException Poikkeuskäsittely
      */
     public ArrayList<Course> getActiveCoursesByUser(User user) throws SQLException {
         courseDao = new SqlCourseDao();
@@ -87,7 +86,7 @@ public class CourseService {
      * Funktio joka palauttaa listan parametrina tulevan käyttäjän epäaktiivista kursseista.
      * @param user Käyttäjä kenen epäaktiiviset kurssit halutaan
      * @return Lista käyttäjän epäaktiivista kursseista
-     * @throws java.sql.SQLException poikkeuskäsittely
+     * @throws SQLException poikkeuskäsittely
      */
     public ArrayList<Course> getUnactiveCoursesByUser(User user) throws SQLException {
         courseDao = new SqlCourseDao();
@@ -100,7 +99,7 @@ public class CourseService {
      * @param name Kurssin nimi joka halutaan lisätä
      * @param credits Kurssin laajuus
      * @return True jos lisäys onnistui, muuten false
-     * @throws java.sql.SQLException poikkeuskäsittely
+     * @throws SQLException poikkeuskäsittely
      */
     public boolean createCourse(String name, String credits) throws SQLException {
         courseDao = new SqlCourseDao();
@@ -127,7 +126,7 @@ public class CourseService {
      * Funktio joka poistaa kurssin nimen perusteella.Nimen perusteella poisto on tässä yhteydessä turvallista, koska nimi on yksilöivä.Ei saa siis tällä hetkellä olla kahta samannimistä kurssia.
      * @param course Kurssi joka poistetaan.
      * @return True jos poisto onnistui ja muuten false
-     * @throws java.sql.SQLException Poikkeuskäsittely
+     * @throws SQLException Poikkeuskäsittely
      */
     public boolean deleteCourse(Course course) throws SQLException {
         if (course == null) {
@@ -142,7 +141,7 @@ public class CourseService {
      * Metodi joka palauttaa tiedon siitä onnistuttiinko muuttamaan kurssi aktiivisesta epäaktiiviseksi eli tehdyksi.
      * @param course Course-olio jonka status halutaan vaihtaa
      * @return True jos onnistui, muuten false
-     * @throws java.sql.SQLException Poikkeuskäsittely
+     * @throws SQLException Poikkeuskäsittely
      */
     public boolean markCourseAsDone(Course course) throws SQLException {
         courseDao = new SqlCourseDao();
@@ -158,9 +157,12 @@ public class CourseService {
      * Metodi joka etsii kurssi-olion nimen perusteella.
      * @param name Kurssin nimi jota etsitään.
      * @return Nimeä vastaava kurssi-olio
+     * @throws SQLException poikkeuskäsittely
      */
-    public Course findCourseByName(String name) {
-        for (Course course:courses) {
+    public Course findCourseByName(String name) throws SQLException {
+        courseDao = new SqlCourseDao();
+        courses = courseDao.getActiveCoursesByUser(loggedIn);
+        for (Course course: courses) {
             if (course.getName().equals(name)) {
                 return course;
             }
@@ -174,7 +176,7 @@ public class CourseService {
      * @param courseName Kurssin nimi jota tutkitaan
      * @param loggedUser kirjautuneena olevak äyttäjä
      * @return kurssin nimi jos se ei ole tyhjä, muuten null.
-     * @throws java.sql.SQLException poikkeuskäsittely
+     * @throws SQLException poikkeuskäsittely
      */
     public String checkAndGetName(String courseName, User loggedUser) throws SQLException {
         if (isEmptyString(courseName)) {
@@ -194,28 +196,13 @@ public class CourseService {
      * @param name Kurssin nimi jota tutkitaan onko saman nimisiä.
      * @param loggedUser kirjautuneena oleva käyttäjä
      * @return True jos parametrina tullut kurssin nimi on olemassa ja muuten false.
-     * @throws java.sql.SQLException poikkeuskäsittely
+     * @throws SQLException poikkeuskäsittely
      */
     public boolean courseExists(String name, User loggedUser) throws SQLException {
         courseDao = new SqlCourseDao();
         return courseDao.courseExistsWithUser(name, loggedUser);
     }
-    
-    
-    /**
-     * Funktio joka saa parametrina kurssin nimen ja palauttaa missä kohtaa listaa se sijaitsee.
-     * @param name Kurssin nimi jonka indeksi halutaan
-     * @return indeksi missä kohtaa kurssi sijaitsee
-     */
-    public int getIndexOf(String name) {
-        for (int i = 0; i < courses.size(); i++) {
-            if (courses.get(i).getName().equals(name)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-    
+
     
     /**
      * Funktio tutkii onko parametrina tuleva syöte negatiivinen (eli < 0).
@@ -263,7 +250,7 @@ public class CourseService {
      * @param username Käyttäjän käyttäjätunnus
      * @param name Käyttäjän oikea nimi
      * @return True jos käyttäjän luonti onnistui, muuten false
-     * @throws java.sql.SQLException
+     * @throws SQLException poikkeuskäsittely
      */
     public boolean createUser(String name, String username) throws SQLException {
         userDao = new SqlUserDao();
@@ -305,26 +292,11 @@ public class CourseService {
     
     
     /**
-     * Funktio joka tutkii onko parametrina tuleva käyttäjätunnus uniikki vai ei.
-     * @param username Käyttäjätunnus jonka yksikäsitteisyys tahdotaan selvittää
-     * @return True jos käyttäjätunnus ei ole varattu, muuten false.
-     */
-    public boolean usernameExists(String username) {
-        for (User user: users) {
-            if (user.getName().equals(username)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    
-    /**
      * Funktio joka hoitaa kirjautumisen.Etsii siis onko käyttäjätunnus jolla yritetään kirjautua olemassa ja jos on niin
-        kyseisestä käyttäjästä tulee tällöin "loggedIn"
+        kyseisestä käyttäjästä tulee tällöin "loggedIn".
      * @param username Käyttäjätunnus joka yrittää kirjautua
      * @return True jos kirjautuminen onnistui, muuten false.
-     * @throws java.sql.SQLException
+     * @throws SQLException poikkeuskäsittely
      */
     public boolean login(String username) throws SQLException {
         userDao = new SqlUserDao();
@@ -337,9 +309,5 @@ public class CourseService {
             return true;
         }
         return false;
-    }
-
-    public Object checkAndGetName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

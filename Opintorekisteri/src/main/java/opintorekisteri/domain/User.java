@@ -11,8 +11,8 @@ package opintorekisteri.domain;
  */
 public class User {
     
-    private String name;
-    private String username;
+    private final String name;
+    private final String username;
     
     /**
      * User-luokan konstruktori.
