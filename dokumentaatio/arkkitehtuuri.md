@@ -23,5 +23,5 @@ Seuraavaksi kuvataan ohjelman päätoiminnallisuuksia sekvenssikaavioina.
  
 Kun kirjautumisnäkymässä syötetään käyttäjätunnus joka on järjestelmässä muistissa, tapahtuu suunnilleen seuraavanlainen tapahtumaketju:  
 
-![Kirjautuminen](kuvat/kirjautuminen.png)
+![Kirjautuminen](kuvat/Kirjautuminen.png)
 Eli kun painetaan "kirjaudu"-painiketta, CourseService-luokka tarkastaa, että sellainen käyttäjätunnus on olemassa. Sen jälkeen näkymä vaihtuu loginScenestä mainSceneksi. Sen jälkeen suoritetaan refreshdata()-kutsu, missä CourseService hakee käyttäjätunnukseen liitetyt aktiiviset ja epäaktiiviset kurssit. Sen jälkeen ne näytetään käyttöliittymän komponenteissa käyttäjälle. Tämän kaiken välissä tapahtuu myös kaikkea pientä, kuten käyttöliittymäkomponenttien luonti ja tekstikenttien tyhjennyksiä.
