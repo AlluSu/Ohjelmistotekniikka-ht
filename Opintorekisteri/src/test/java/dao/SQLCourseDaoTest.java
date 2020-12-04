@@ -5,10 +5,30 @@
  */
 package dao;
 
+import java.sql.*;
+import opintorekisteri.dao.SqlCourseDao;
+import org.junit.Before;
+
 /**
- *
- * @author aleksi
+ * Testiluokka kurssien SQL-operaatioille.
+ * @author Aleksi Suuronen
  */
 public class SQLCourseDaoTest {
+    
+    private Connection connection;
+    private String db = "jdbc:sqlite::memory:"; 
+    SqlCourseDao courseDao;
+    
+    
+    @Before
+    public void setUp() throws Exception {
+        connection = DriverManager.getConnection(db);
+        if (connection == null) {
+            System.out.println("Virhe yhteydessä!");
+        }
+        courseDao = new SqlCourseDao();
+        
+        
+    }
     
 }
