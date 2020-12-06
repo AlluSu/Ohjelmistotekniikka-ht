@@ -5,6 +5,7 @@
  */
 package opintorekisteri.dao;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import opintorekisteri.domain.User;
@@ -17,6 +18,7 @@ public class SqlUserDao {
     
     private Connection connection;
     private Statement statement;
+    private String db = "jdbc:sqlite:courses.db";
     
     
     /**
@@ -30,9 +32,8 @@ public class SqlUserDao {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SqlUserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        connection = DriverManager.getConnection(db);
         if (connection == null) {
-            System.out.println("Yhteyttä ei voitu muodostaa!");
             connection.close();
             return false;
         }
@@ -50,9 +51,8 @@ public class SqlUserDao {
      * @throws SQLException Poikkeuskäsittely
      */
     public boolean addUser(User user) throws SQLException {
-        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        connection = DriverManager.getConnection(db);
         if (connection == null) {
-            System.out.println("Yhteyttä ei voitu muodostaa");
             return false;
         }
         PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Users(name, username) VALUES (?,?)");
@@ -65,7 +65,6 @@ public class SqlUserDao {
                 return true;
             }
         } catch (SQLException exception) {
-            System.out.println("Lisäys epäonnistui " + exception);
             connection.close();
             return false;
         }
@@ -80,12 +79,11 @@ public class SqlUserDao {
      * @throws SQLException Poikkeuskäsittely
      */
     public User getUserByUsername(String username) throws SQLException {
-        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        connection = DriverManager.getConnection(db);
         if (connection == null) {
-            System.out.println("Yhteyttä ei voitu muodostaa");
             return null;
         }
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT name,username FROM Users WHERE username=?");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT name, username FROM Users WHERE username=?");
         preparedStatement.setString(1, username);
         try {
             ResultSet result = preparedStatement.executeQuery();
@@ -93,7 +91,6 @@ public class SqlUserDao {
             connection.close();
             return user;
         } catch (SQLException exception) {
-            System.out.println("Virhe " + exception);
             connection.close();
             return null;
         }       
@@ -107,9 +104,8 @@ public class SqlUserDao {
      * @throws SQLException Poikkeuskäsittely jos jokin menee pieleen
      */
     public boolean usernameExists(String username) throws SQLException {
-        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        connection = DriverManager.getConnection(db);
         if (connection == null) {
-            System.out.println("Yhteyttä ei voitu muodostaa");
             return false;
         }
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT username FROM Users WHERE username=?");
@@ -119,9 +115,35 @@ public class SqlUserDao {
             connection.close();
             return result.next();
         } catch (SQLException exception) {
-            System.out.println("Tapahtui virhe " + exception);
             connection.close();
             return false;
+        }
+    }
+    
+    
+    /**
+     * Funktio joka palauttaa käyttäjät jotka ovat sovelluksen tietokannassa.
+     * @return Lista User-olioita
+     * @throws SQLException Poikkeuskäsittely
+     */
+    public ArrayList<User> getUsers() throws SQLException {
+        ArrayList<User> users = new ArrayList<>();
+        connection = DriverManager.getConnection(db);
+        if (connection == null) {
+            return users;
+        }
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT username FROM Users");
+        try {
+            ResultSet results = preparedStatement.executeQuery();
+            while(results.next()) {
+                User user = new User(results.getString("name"), results.getString("username"));
+                users.add(user);
+            }
+            connection.close();
+            return users;
+        } catch (SQLException exception) {
+            connection.close();
+            return users;
         }
     }
 }

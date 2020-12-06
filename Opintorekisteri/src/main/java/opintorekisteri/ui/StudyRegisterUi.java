@@ -27,6 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import opintorekisteri.domain.Course;
 import opintorekisteri.domain.CourseService;
+import opintorekisteri.domain.UserService;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -40,7 +41,7 @@ import opintorekisteri.domain.CourseService;
  * @author Aleksi Suuronen
  */
 public class StudyRegisterUi extends Application{
-    private final CourseService service = new CourseService();
+    private final CourseService courseService = new CourseService();
     private Scene mainScene;
     private Scene newUserScene;
     private Scene loginScene;
@@ -50,6 +51,7 @@ public class StudyRegisterUi extends Application{
     private ObservableList<Course> pastCoursesAsObservableList;
     private ArrayList<Course> helperList;
     private Course helperCourse;
+    private final UserService userService = new UserService();
     
     /**
      * Funktio joka hakee jokaiselle käyttäjälle datan.
@@ -62,7 +64,7 @@ public class StudyRegisterUi extends Application{
        activeCoursesAsObservableList = FXCollections.observableArrayList();
        pastCoursesAsObservableList = FXCollections.observableArrayList();
        
-       helperList = service.getCourses();
+       helperList = courseService.getCourses();
        if (helperList == null) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Virhe");
@@ -72,7 +74,7 @@ public class StudyRegisterUi extends Application{
        }
        activeCoursesAsObservableList.addAll(helperList);
        
-       helperList = service.getUnactiveCourses();
+       helperList = courseService.getUnactiveCourses();
        if (helperList == null) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Virhe");
@@ -124,10 +126,10 @@ public class StudyRegisterUi extends Application{
        loginButton.setOnAction((ActionEvent e) -> {
            String username = usernameInput.getText();
            try {
-               if (service.login(username)) {
+               if (userService.login(username)) {
                    stage.setScene(mainScene);
                    usernameInput.setText("");
-                   logged.setText("Kirjautuneena: " + service.getLoggedUser().getUsername());
+                   logged.setText("Kirjautuneena: " + userService.getLoggedUser().getUsername());
                    refreshData();
                }
                else {
@@ -189,7 +191,7 @@ public class StudyRegisterUi extends Application{
            }
            else {
                try {
-                   if(!service.createUser(name, username)) {
+                   if(!userService.createUser(name, username)) {
                        Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Virhe");
                         alert.setHeaderText("Käyttäjän luonti epäonnistui!");
@@ -290,7 +292,7 @@ public class StudyRegisterUi extends Application{
        logoutButton.setPadding(padding);
        
        logoutButton.setOnAction ((ActionEvent e) -> {
-           service.logout();
+           userService.logout();
            stage.setScene(loginScene);
        });
 
@@ -305,7 +307,7 @@ public class StudyRegisterUi extends Application{
           else {
               helperCourse = (Course) activeCoursesTable.getSelectionModel().getSelectedItem();
               try {
-                  if (service.deleteCourse(helperCourse)) {
+                  if (courseService.deleteCourse(helperCourse)) {
                     activeCoursesTable.getItems().remove(activeCoursesTable.getSelectionModel().getSelectedItem());
                   }
               } catch (SQLException ex) {
@@ -319,7 +321,7 @@ public class StudyRegisterUi extends Application{
            String courseCredits = courseCreditsInput.getText();
            boolean added = false;
            try {
-               added = service.createCourse(courseName, courseCredits);
+               added = courseService.createCourse(courseName, courseCredits);
            } catch (SQLException ex) {
                Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
            }
@@ -357,7 +359,7 @@ public class StudyRegisterUi extends Application{
            else {
                helperCourse = (Course) activeCoursesTable.getSelectionModel().selectedItemProperty().get();
                try {
-                   if (service.markCourseAsDone(helperCourse)) {
+                   if (courseService.markCourseAsDone(helperCourse)) {
                        pastCoursesAsObservableList.add((Course)activeCoursesTable.getSelectionModel().getSelectedItem());
                        pastCoursesTable.setItems(pastCoursesAsObservableList);
                        activeCoursesTable.getItems().remove((Course)activeCoursesTable.getSelectionModel().getSelectedItem());

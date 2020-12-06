@@ -19,6 +19,7 @@ public class SqlCourseDao {
     
     private Connection connection;
     private Statement statement;
+    private String db = "jdbc:sqlite:courses.db";
     
     
     /**
@@ -32,9 +33,8 @@ public class SqlCourseDao {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SqlUserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        connection = DriverManager.getConnection(db);
         if (connection == null) {
-            System.out.println("Yhteyttä ei voitu muodostaa!");
             connection.close();
             return false;
         }
@@ -53,9 +53,8 @@ public class SqlCourseDao {
      * @throws SQLException poikkeuskäsittely
      */
     public boolean courseExistsWithUser(String courseName, User user) throws SQLException {
-        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        connection = DriverManager.getConnection(db);
         if (connection == null) {
-            System.out.println("Yhteyttä ei voitu muodostaa");
             return false;
         }
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Courses WHERE name=? AND owner_name=?");
@@ -68,7 +67,6 @@ public class SqlCourseDao {
                 return true;
             }
         } catch (SQLException exception) {
-            System.out.println("Virhe!");
             connection.close();
             return false;
         }
@@ -84,9 +82,8 @@ public class SqlCourseDao {
      * @throws SQLException poikkeuskäsittely
      */
     public boolean changeActiveToUnactive(Course course) throws SQLException {
-        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        connection = DriverManager.getConnection(db);
         if (connection == null) {
-            System.out.println("Yhteyttä ei voitu muodostaa");
             return false;
         }
         PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Courses SET active=FALSE WHERE name=? AND owner_name=?");
@@ -97,7 +94,6 @@ public class SqlCourseDao {
             connection.close();
             return true;
         } catch (SQLException exception) {
-            System.out.println("virhe " + exception);
             connection.close();
             return false;
         }
@@ -111,9 +107,8 @@ public class SqlCourseDao {
      * @throws SQLException Poikkeuskäsittely
      */
     public boolean deleteCourse(Course course) throws SQLException {
-        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        connection = DriverManager.getConnection(db);
         if (connection == null) {
-            System.out.println("Yhteyttä ei voitu muodostaa");
             return false;
         }
         PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Courses WHERE name=? AND owner_name=?");
@@ -124,7 +119,6 @@ public class SqlCourseDao {
             connection.close();
             return true;
         } catch (SQLException exception) {
-            System.out.println("Virhe " + exception);
             connection.close();
             return false;
         }
@@ -138,9 +132,8 @@ public class SqlCourseDao {
      * @throws SQLException poikkeuskäsittely
      */
     public boolean addCourse(Course course) throws SQLException {
-        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        connection = DriverManager.getConnection(db);
         if (connection == null) {
-            System.out.println("Yhteyttä ei voitu muodostaa");
             return false;
         }
         PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Courses(name, credits, active, owner_name) VALUES (?,?,?,?)");
@@ -155,7 +148,6 @@ public class SqlCourseDao {
                 return true;
             }
         } catch (SQLException exception) {
-            System.out.println("Virhe " + exception);
             connection.close();
             return false;
         }
@@ -171,9 +163,8 @@ public class SqlCourseDao {
      */
     public ArrayList<Course> getActiveCoursesByUser(User user) throws SQLException {
         ArrayList<Course> activeCourses = new ArrayList<>();
-        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        connection = DriverManager.getConnection(db);
         if (connection == null) {
-            System.out.println("Yhteyttä ei voitu muodostaa");
             return null;
         }
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Courses WHERE owner_name=? AND active=1");
@@ -187,7 +178,6 @@ public class SqlCourseDao {
             connection.close();
             return activeCourses;
         } catch (SQLException exception) {
-            System.out.println("virhe hakemisessa");
             return null;
         }
     }
@@ -201,9 +191,8 @@ public class SqlCourseDao {
      */
     public ArrayList<Course> getUnactiveCoursesByUser(User user) throws SQLException {
         ArrayList<Course> unactiveCourses = new ArrayList<>();
-        connection = DriverManager.getConnection("jdbc:sqlite:courses.db");
+        connection = DriverManager.getConnection(db);
         if (connection == null) {
-            System.out.println("Yhteyttä ei voitu muodostaa");
             return null;
         }
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Courses WHERE owner_name=? AND active=0");
@@ -217,10 +206,8 @@ public class SqlCourseDao {
             connection.close();
             return unactiveCourses;
         } catch (SQLException exception) {
-            System.out.println("Virhe hakemisessa " + exception);
             return null;
         }
     }
    
 }
-

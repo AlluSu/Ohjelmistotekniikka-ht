@@ -17,4 +17,5 @@ Päivämäärä | käytetty aika tunneissa | mitä tein
 1.12 | 2 | Testikattavuuden parantelua tekemällä lisää testejä ja korjaamalla vanhoja. Parannettu käyttöliittymän käytettävyyttä.
 2.12 | 2 | Sekvenssikaavio kirjautumisesta, dokumentaation päivittelyä, työn testausta etätyöasemassa viikon 5 palautusta varten.
 3.12 | 4 | Tietokannan implementointi harjoitustyöhön, uusia sekvenssikaavioita, korjattu checkstyle-virheet, korjattu testejä
-TUNNIT YHTEENSÄ | 47 | TUNNIT YHTEENSÄ
+6.12 | 2 | Luokkien refaktorointia ja sen jäljiltä testien kirjoittamista sekä uusien testiluokkien tekemistä
+TUNNIT YHTEENSÄ | 49 | TUNNIT YHTEENSÄ

@@ -2,3 +2,4 @@
 /Opintorekisteri/target/
 /laskarit/viikko3
 *.db
+*.save

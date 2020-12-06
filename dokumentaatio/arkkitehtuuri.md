@@ -21,7 +21,7 @@ Seuraavaksi kuvataan ohjelman päätoiminnallisuuksia sekvenssikaavioina.
 
 #### Käyttäjän kirjautuminen (oletetaan että käyttäjä on olemassa)
  
-Kun kirjautumisnäkymässä syötetään käyttäjätunnus joka on järjestelmässä muistissa, tapahtuu suunnilleen seuraavanlainen tapahtumaketju:  
+Kun kirjautumisnäkymässä syötetään käyttäjätunnus joka on tietokannassa, tapahtuu suunnilleen seuraavanlainen tapahtumaketju:  
 
-![Kirjautuminen](kuvat/Kirjautuminen.png)
-Eli kun painetaan "kirjaudu"-painiketta, CourseService-luokka tarkastaa, että sellainen käyttäjätunnus on olemassa. Sen jälkeen näkymä vaihtuu loginScenestä mainSceneksi. Sen jälkeen suoritetaan refreshdata()-kutsu, missä CourseService hakee käyttäjätunnukseen liitetyt aktiiviset ja epäaktiiviset kurssit. Sen jälkeen ne näytetään käyttöliittymän komponenteissa käyttäjälle. Tämän kaiken välissä tapahtuu myös kaikkea pientä, kuten käyttöliittymäkomponenttien luonti ja tekstikenttien tyhjennyksiä.
+![Kirjautuminen](kuvat/Kirjautuminen.png)  
+Eli kun painetaan "kirjaudu"-painiketta, CourseService-luokka pyytää SqlUserDao-luokkaa tarkastamaan, että sellainen käyttäjätunnus on olemassa. Sen jälkeen luodaan tiedosita uusi User-olio, jotta saadaa loggedIn-muuttujaan oikea käyttäjä. Sen jälkeen näkymä vaihtuu loginScenestä mainSceneksi. Sen jälkeen suoritetaan refreshdata()-kutsu, missä CourseService hakee SqlCourseDao-luokan avustuksella käyttäjätunnukseen liitetyt aktiiviset ja epäaktiiviset kurssit kirjautuneelle käyttäjälle. Sen jälkeen ne näytetään käyttöliittymän komponenteissa käyttäjälle. Tämän kaiken välissä tapahtuu myös kaikkea pientä, kuten käyttöliittymäkomponenttien luontia ja tekstikenttien tyhjennyksiä.

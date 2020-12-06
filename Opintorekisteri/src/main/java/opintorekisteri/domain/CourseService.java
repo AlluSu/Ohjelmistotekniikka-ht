@@ -12,7 +12,7 @@ import opintorekisteri.dao.SqlUserDao;
  */
 
 /**
- * Luokka joka vastaa sovelluslogiikasta.
+ * Luokka joka vastaa kurssien sovelluslogiikasta.
  * @author Aleksi Suuronen
  */
 public class CourseService {
@@ -26,14 +26,24 @@ public class CourseService {
     
     /**
      * CourseService-luokan konstruktori.
-     * @param courses Aktiiviset kurssit
-     * @param unactive Epäaktiiviset kurssit
+     * @param userDao userdao
+     * @param courseDao coursedao
      */
-    public CourseService(ArrayList<Course> courses, ArrayList<Course> unactive) {
-        this.courses = courses;
-        this.unactive = unactive;
+    public CourseService(SqlUserDao userDao, SqlCourseDao courseDao) {
+        this.userDao = userDao;
+        this.courseDao = courseDao;
     }
     
+    
+    /**
+     * CourseService-luokan konstruktori.
+     * @param active aktiiviset
+     * @param unactive epäaktiiviset
+     */
+    public CourseService(ArrayList<Course> active, ArrayList<Course> unactive) {
+        this.courses = active;
+        this.unactive = unactive;
+    }
     
     /**
      * Parametriton konstruktori.
@@ -170,40 +180,7 @@ public class CourseService {
         return null;
     }
     
-    
-    /**
-     * Funktio joka hoitaa kurssin nimen käsittelyn ja tutkimisen.Tutkii onko tyhjä ja että onko saman nimistä kurssia olemassa.
-     * @param courseName Kurssin nimi jota tutkitaan
-     * @param loggedUser kirjautuneena olevak äyttäjä
-     * @return kurssin nimi jos se ei ole tyhjä, muuten null.
-     * @throws SQLException poikkeuskäsittely
-     */
-    public String checkAndGetName(String courseName, User loggedUser) throws SQLException {
-        if (isEmptyString(courseName)) {
-            System.out.println("Kurssin nimi ei saa olla tyhjä! Tarkista nimi");
-            return null;
-        }
-        if (courseExists(courseName, loggedUser)) {
-            System.out.println("Ei voi olla kaksi samannimistä kurssia!");
-            return null;
-        }
-        return courseName;
-    }
-    
-    
-    /**
-     * Funktio joka tutkii onko aktiivisissa kursseissa jo samanniminen kurssi.
-     * @param name Kurssin nimi jota tutkitaan onko saman nimisiä.
-     * @param loggedUser kirjautuneena oleva käyttäjä
-     * @return True jos parametrina tullut kurssin nimi on olemassa ja muuten false.
-     * @throws SQLException poikkeuskäsittely
-     */
-    public boolean courseExists(String name, User loggedUser) throws SQLException {
-        courseDao = new SqlCourseDao();
-        return courseDao.courseExistsWithUser(name, loggedUser);
-    }
-
-    
+        
     /**
      * Funktio tutkii onko parametrina tuleva syöte negatiivinen (eli < 0).
      * @param credits Syötteenä tuleva opintopistemäärä
@@ -225,6 +202,36 @@ public class CourseService {
     
     
     /**
+     * Funktio joka hoitaa kurssin nimen käsittelyn ja tutkimisen.Tutkii onko tyhjä ja että onko saman nimistä kurssia olemassa.
+     * @param courseName Kurssin nimi jota tutkitaan
+     * @param loggedUser kirjautuneena olevak äyttäjä
+     * @return kurssin nimi jos se ei ole tyhjä, muuten null.
+     * @throws SQLException poikkeuskäsittely
+     */
+    public String checkAndGetName(String courseName, User loggedUser) throws SQLException {
+        if (isEmptyString(courseName)) {
+            return null;
+        }
+        if (courseExists(courseName, loggedUser)) {
+            return null;
+        }
+        return courseName;
+    }
+    
+    /**
+     * Funktio joka tutkii onko aktiivisissa kursseissa jo samanniminen kurssi.
+     * @param name Kurssin nimi jota tutkitaan onko saman nimisiä.
+     * @param loggedUser kirjautuneena oleva käyttäjä
+     * @return True jos parametrina tullut kurssin nimi on olemassa ja muuten false.
+     * @throws SQLException poikkeuskäsittely
+     */
+    public boolean courseExists(String name, User loggedUser) throws SQLException {
+        courseDao = new SqlCourseDao();
+        return courseDao.courseExistsWithUser(name, loggedUser);
+    }
+    
+    
+        /**
      * Funktio joka hoitaa opintopisteiden käsittelyn käyttäjän syötteestä.
      * @param creditsAsString Merkkijonona tuleva opintopisteiden määrä
      * @return Syötteenä tullut opintopisteiden määrä jos se on sallittu arvo, muuten -1
@@ -234,80 +241,12 @@ public class CourseService {
         try {
             credits = Integer.parseInt(creditsAsString);
             if (isNegative(credits)) {
-                System.out.println("Opintopistemäärä ei voi olla 0 tai negatiivinen! Tarkista opintopisteet");
                 return -1;
             }
         } catch (NumberFormatException exception) {
-            System.out.println("Anna opintopisteet numeroina! Tarkista syöte!");
             return -1;
         }
         return credits;
     }
-    
-    
-    /**
-     * Funktio joka luo uuden käyttäjän sovellukseen.
-     * @param username Käyttäjän käyttäjätunnus
-     * @param name Käyttäjän oikea nimi
-     * @return True jos käyttäjän luonti onnistui, muuten false
-     * @throws SQLException poikkeuskäsittely
-     */
-    public boolean createUser(String name, String username) throws SQLException {
-        userDao = new SqlUserDao();
-        if (!userDao.creatingUsersTableIsSuccesful()) {
-            return false;
-        }
-        if (userDao.usernameExists(username)) {
-            return false;
-        }               
-        User user = new User(name, username);
-        return userDao.addUser(user);
-    }
-    
-    
-    /**
-     * Palauttaa listan sovellukseen luoduista käyttäjistä.
-     * @return Lista User-olioita
-     */
-    public ArrayList<User> getUsers() {
-        return users;
-    }
-    
-    
-    /**
-     * Funktio palauttaa kirjautuneena olevan käyttäjä-olion.
-     * @return kirjautuneena oleva käyttäjä-olio
-     */
-    public User getLoggedUser() {
-        return loggedIn;
-    }
-    
-    
-    /**
-     * Funktio joka hoitaa käyttäjän uloskirjautumisen.
-     */
-    public void logout() {
-        loggedIn = null;
-    }
-    
-    
-    /**
-     * Funktio joka hoitaa kirjautumisen.Etsii siis onko käyttäjätunnus jolla yritetään kirjautua olemassa ja jos on niin
-        kyseisestä käyttäjästä tulee tällöin "loggedIn".
-     * @param username Käyttäjätunnus joka yrittää kirjautua
-     * @return True jos kirjautuminen onnistui, muuten false.
-     * @throws SQLException poikkeuskäsittely
-     */
-    public boolean login(String username) throws SQLException {
-        userDao = new SqlUserDao();
-        if (userDao.creatingUsersTableIsSuccesful()) {
-            User user = userDao.getUserByUsername(username);
-            if (user == null) {
-                return false;
-            }
-            loggedIn = user;
-            return true;
-        }
-        return false;
-    }
+
 }

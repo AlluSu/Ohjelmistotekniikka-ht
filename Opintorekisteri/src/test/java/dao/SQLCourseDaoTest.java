@@ -18,17 +18,5 @@ public class SQLCourseDaoTest {
     private Connection connection;
     private String db = "jdbc:sqlite::memory:"; 
     SqlCourseDao courseDao;
-    
-    
-    @Before
-    public void setUp() throws Exception {
-        connection = DriverManager.getConnection(db);
-        if (connection == null) {
-            System.out.println("Virhe yhteydessä!");
-        }
-        courseDao = new SqlCourseDao();
-        
-        
-    }
-    
+
 }
