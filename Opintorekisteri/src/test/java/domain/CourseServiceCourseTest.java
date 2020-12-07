@@ -52,14 +52,14 @@ public class CourseServiceCourseTest {
     @Test
     public void activeCoursesAreEmptyWhenStarted() throws SQLException{
         courseService = new CourseService();
-        assertEquals(0, courseService.getCourses().size());
+        assertEquals(0, courseService.getCourses(userService.getLoggedUser()).size());
     }
     
     
     @Test
     public void cannotCreateCourseWithEmptyName() throws SQLException {
         courseService = new CourseService();
-        assertFalse(courseService.createCourse("", "10"));     
+        assertFalse(courseService.createCourse("", "10", userService.getLoggedUser()));     
     }
     
     

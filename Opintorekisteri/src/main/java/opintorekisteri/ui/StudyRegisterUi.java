@@ -27,6 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import opintorekisteri.domain.Course;
 import opintorekisteri.domain.CourseService;
+import opintorekisteri.domain.User;
 import opintorekisteri.domain.UserService;
 
 /*
@@ -36,8 +37,7 @@ import opintorekisteri.domain.UserService;
  */
 
 /**
- * Luokka joka vastaa käyttöliittymästä
- * ATM graafinen JavaFX-käyttöliittymä
+ * Luokka joka vastaa käyttöliittymästä.
  * @author Aleksi Suuronen
  */
 public class StudyRegisterUi extends Application{
@@ -55,16 +55,17 @@ public class StudyRegisterUi extends Application{
     
     /**
      * Funktio joka hakee jokaiselle käyttäjälle datan.
+     * @param loggedUser kirjautunut käyttäjä
      * @throws java.sql.SQLException poikkeuskäsittely
      */
-    public void refreshData() throws SQLException {
+    public void refreshData(User loggedUser) throws SQLException {
        activeCoursesTable.getItems().clear();
        pastCoursesTable.getItems().clear();
        
        activeCoursesAsObservableList = FXCollections.observableArrayList();
        pastCoursesAsObservableList = FXCollections.observableArrayList();
        
-       helperList = courseService.getCourses();
+       helperList = courseService.getCourses(loggedUser);
        if (helperList == null) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Virhe");
@@ -130,7 +131,7 @@ public class StudyRegisterUi extends Application{
                    stage.setScene(mainScene);
                    usernameInput.setText("");
                    logged.setText("Kirjautuneena: " + userService.getLoggedUser().getUsername());
-                   refreshData();
+                   refreshData(userService.getLoggedUser());
                }
                else {
                  Alert alert = new Alert(AlertType.ERROR);
@@ -298,11 +299,23 @@ public class StudyRegisterUi extends Application{
 
        removeCourseButton.setOnAction((ActionEvent e) -> {
           if (activeCoursesTable.getSelectionModel().getSelectedItem() == null) {
+              if (pastCoursesTable.getSelectionModel().getSelectedItem() == null) {
               Alert alert = new Alert(AlertType.INFORMATION);
               alert.setTitle("Virhe");
               alert.setHeaderText("Kurssin poisto epäonnistui!");
               alert.setContentText("Mahdollisia syitä:\nKurssia ei ole valittu");
-              alert.showAndWait();
+              alert.showAndWait();   
+              }
+              else {
+                    helperCourse = (Course) pastCoursesTable.getSelectionModel().getSelectedItem();
+              try {
+                  if (courseService.deleteCourse(helperCourse)) {
+                    pastCoursesTable.getItems().remove(pastCoursesTable.getSelectionModel().getSelectedItem());
+                  }
+              } catch (SQLException ex) {
+                  Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
+              }
+              }
           }
           else {
               helperCourse = (Course) activeCoursesTable.getSelectionModel().getSelectedItem();
@@ -321,13 +334,13 @@ public class StudyRegisterUi extends Application{
            String courseCredits = courseCreditsInput.getText();
            boolean added = false;
            try {
-               added = courseService.createCourse(courseName, courseCredits);
+               added = courseService.createCourse(courseName, courseCredits, userService.getLoggedUser());
            } catch (SQLException ex) {
                Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
            }
            if (added) {
                try {
-                    refreshData();
+                    refreshData(userService.getLoggedUser());
                } catch (SQLException ex) {
                    Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
                }

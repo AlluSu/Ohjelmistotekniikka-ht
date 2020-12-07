@@ -37,3 +37,6 @@ Raportti on luettavissa siirtymällä hakemistossa paikkaan `target/site/jacoco/
 ### Checkstyle
 Tiedostoon [checkstyle.xml](Opintorekisteri/checkstyle.xml) määrittelemät tarkistukset suoritetaan komennolla `mvn jxr:jxr checkstyle:checkstyle`.  
 Raportti voidaan avata esimerkiksi selaimessa ja raportti löytyy paikasta `target/site/checkstyle.html`.
+
+### JavaDoc  
+JavaDoc tehdään komennolla `mvn javadoc:javadoc`. JavaDocia voi tarkastella esimerkiksi selaimella ja se löytyy paikasta *target/site/apidocs/index.html*.

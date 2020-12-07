@@ -56,7 +56,7 @@ public class CourseService {
      * @return Listan Course-olioita
      * @throws SQLException Poikkeuskäsittely
      */
-    public ArrayList<Course> getCourses() throws SQLException {
+    public ArrayList<Course> getCourses(User loggedIn) throws SQLException {
         if (loggedIn == null) {
             return new ArrayList<>();
         }
@@ -111,12 +111,12 @@ public class CourseService {
      * @return True jos lisäys onnistui, muuten false
      * @throws SQLException poikkeuskäsittely
      */
-    public boolean createCourse(String name, String credits) throws SQLException {
+    public boolean createCourse(String name, String credits, User loggedUser) throws SQLException {
         courseDao = new SqlCourseDao();
         if (!courseDao.creatingCoursesTableIsSuccesful()) {
             return false;
         }
-        String course = checkAndGetName(name, loggedIn);
+        String course = checkAndGetName(name, loggedUser);
         if (course == null) {
             return false;
         }
@@ -124,7 +124,7 @@ public class CourseService {
         if (parsedCredits == -1) {
             return false;
         }
-        Course newCourse = new Course(name, parsedCredits, true, loggedIn);
+        Course newCourse = new Course(name, parsedCredits, true, loggedUser);
         if (!courseDao.creatingCoursesTableIsSuccesful()) {
             return false;
         }
