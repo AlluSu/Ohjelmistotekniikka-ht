@@ -21,6 +21,7 @@ public class FakeUserDao {
         users.add(new User("antti suuronen", "zezima"));
     }
     
+    
     public ArrayList<User> getUsers() {
         return users;
     }
@@ -34,8 +35,9 @@ public class FakeUserDao {
         return null;
     }
     
-    public boolean addUser(User user) {
-        return users.add(user);
+    public User addUser(User user) {
+        users.add(user);
+        return user;
     
     }
     
