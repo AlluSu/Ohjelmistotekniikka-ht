@@ -20,6 +20,9 @@ public class UserService {
     private SqlUserDao userDao;
     private SqlCourseDao courseDao;
     
+    /**
+     * Parametriton konstruktori.
+     */
     public UserService() { }
     
     
@@ -46,7 +49,7 @@ public class UserService {
     /**
      * Palauttaa listan sovellukseen luoduista käyttäjistä.
      * @return Lista User-olioita
-     * @throws java.sql.SQLException poikkeuskäsittely
+     * @throws SQLException poikkeuskäsittely
      */
     public ArrayList<User> getUsers() throws SQLException {
         return userDao.getUsers();

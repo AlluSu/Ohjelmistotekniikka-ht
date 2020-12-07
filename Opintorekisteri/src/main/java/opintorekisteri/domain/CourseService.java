@@ -67,6 +67,7 @@ public class CourseService {
     
     /**
      * Funktio joka palauttaa listan epäaktiivisista kursseista.
+     * @param loggedIn kirjautuneena oleva käyttäjä
      * @return Listan Course-olioita.
      * @throws SQLException poikkeuskäsittely
      */
@@ -127,9 +128,6 @@ public class CourseService {
             return false;
         }
         Course newCourse = new Course(name, parsedCredits, true, loggedUser);
-        if (!courseDao.creatingCoursesTableIsSuccesful()) {
-            return false;
-        }
         return courseDao.addCourse(newCourse);
     }
     

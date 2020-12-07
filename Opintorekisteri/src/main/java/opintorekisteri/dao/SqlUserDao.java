@@ -135,7 +135,7 @@ public class SqlUserDao {
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT username FROM Users");
         try {
             ResultSet results = preparedStatement.executeQuery();
-            while(results.next()) {
+            while (results.next()) {
                 User user = new User(results.getString("name"), results.getString("username"));
                 users.add(user);
             }
