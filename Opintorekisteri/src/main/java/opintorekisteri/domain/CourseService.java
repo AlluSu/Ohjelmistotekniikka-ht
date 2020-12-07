@@ -53,6 +53,7 @@ public class CourseService {
     
     /**
      * Funktio joka palauttaa listan aktiivisita kursseista.
+     * @param loggedIn kirjautunut käyttäjä
      * @return Listan Course-olioita
      * @throws SQLException Poikkeuskäsittely
      */
@@ -69,7 +70,7 @@ public class CourseService {
      * @return Listan Course-olioita.
      * @throws SQLException poikkeuskäsittely
      */
-    public ArrayList<Course> getUnactiveCourses() throws SQLException {
+    public ArrayList<Course> getUnactiveCourses(User loggedIn) throws SQLException {
         if (loggedIn == null) {
             return new ArrayList<>();
         }
@@ -108,6 +109,7 @@ public class CourseService {
      * Funktio joka lisää kurssin aktiiviseksi.Funtio kutsuu paria eri apufunktiota jotka tarkastavat syötettä.
      * @param name Kurssin nimi joka halutaan lisätä
      * @param credits Kurssin laajuus
+     * @param loggedUser kirjautuneena oleva käyttäjä
      * @return True jos lisäys onnistui, muuten false
      * @throws SQLException poikkeuskäsittely
      */
@@ -166,10 +168,11 @@ public class CourseService {
     /**
      * Metodi joka etsii kurssi-olion nimen perusteella.
      * @param name Kurssin nimi jota etsitään.
+     * @param loggedIn Kirjautuneena oleva käyttäjä
      * @return Nimeä vastaava kurssi-olio
      * @throws SQLException poikkeuskäsittely
      */
-    public Course findCourseByName(String name) throws SQLException {
+    public Course findCourseByName(String name, User loggedIn) throws SQLException {
         courseDao = new SqlCourseDao();
         courses = courseDao.getActiveCoursesByUser(loggedIn);
         for (Course course: courses) {

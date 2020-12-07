@@ -75,7 +75,7 @@ public class StudyRegisterUi extends Application{
        }
        activeCoursesAsObservableList.addAll(helperList);
        
-       helperList = courseService.getUnactiveCourses();
+       helperList = courseService.getUnactiveCourses(loggedUser);
        if (helperList == null) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Virhe");
