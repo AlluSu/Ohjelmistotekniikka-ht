@@ -16,6 +16,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -91,7 +92,7 @@ public class StudyRegisterUi extends Application{
     
     
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws SQLException {
   
        // loginScene alkaa tästä eli ikkuna jossa kirjaudutaan sisään tai vaihtoehtoisesti luodaan uusi käyttäjä.
        //=======================================================================
@@ -149,6 +150,14 @@ public class StudyRegisterUi extends Application{
           stage.setScene(newUserScene);
        });
         
+//       ListView<String> activeUsers = new ListView<>();
+//       ObservableList<String> usernames = FXCollections.observableArrayList();
+//       ArrayList<String> users = userService.getUsernamesAsList();
+//       for (int i = 0; i < users.size(); i++) {
+//           usernames.add(i, users.get(i));
+//       }
+//       activeUsers.setItems(usernames);
+       
        loginPane.getChildren().addAll(loginMessage, inputPane, loginButton, createButton, helpButton, exitButton);
        loginScene = new Scene(loginPane, 300, 300);
        

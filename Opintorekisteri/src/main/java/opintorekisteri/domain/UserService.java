@@ -7,6 +7,7 @@ package opintorekisteri.domain;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import opintorekisteri.dao.SqlCourseDao;
 import opintorekisteri.dao.SqlUserDao;
 
@@ -52,7 +53,23 @@ public class UserService {
      * @throws SQLException poikkeuskäsittely
      */
     public ArrayList<User> getUsers() throws SQLException {
+        userDao = new SqlUserDao();
         return userDao.getUsers();
+    }
+    
+    
+    /**
+     * Funktio hakee sovelluksen käyttäjätunnukset listaksi.
+     * @return Lista käyttäjätunnuksia
+     * @throws SQLException poikkeuskäsittely
+     */
+    public ArrayList<String> getUsernamesAsList() throws SQLException {
+        ArrayList<String> usernames = new ArrayList<>();
+        ArrayList<User> users = getUsers();
+        for (User u: users) {
+            usernames.add(u.getUsername());
+        }
+        return usernames;
     }
     
     
