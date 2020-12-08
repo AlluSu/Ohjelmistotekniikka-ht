@@ -65,27 +65,14 @@ public class CourseServiceCourseTest {
         assertFalse(courseService.createCourse("", "10", userService.getLoggedUser()));     
     }
     
-    
-    @Test
-    public void cannotCreateCourseWithNegativeCredits() throws SQLException {
-        courseService = new CourseService();
-        assertFalse(courseService.createCourse("Kvanttifysiikka 1", "-10", userService.getLoggedUser()));     
-    }
-    
+
     @Test
     public void nullCourseCannotBeMarkedAsDone() throws SQLException {
         courseService = new CourseService();
         Course c = null;
         assertFalse(courseService.markCourseAsDone(c));
     }
-    
-    
-    @Test
-    public void courseWhichDoesNotExistCannotBeFound() throws SQLException {
-        courseService = new CourseService();
-        assertEquals(null, courseService.findCourseByName("nimetön", userService.getLoggedUser()));
-    }
-    
+       
     
     @Test
     public void courseServiceWithSQLDaoExists() {
@@ -93,18 +80,6 @@ public class CourseServiceCourseTest {
         scd = new SqlCourseDao();
         courseService = new CourseService(sud, scd);
         assertTrue(null != courseService);
-    }
-    
-    @Test
-    public void addingCoursesIsSuccessful() throws SQLException {
-        courseService.createCourse("linis 1", "5", userService.getLoggedUser());
-        assertTrue(courseService.courseExists("linis 1", userService.getLoggedUser()));
-    }
-    
-    
-    @Test
-    public void addingDuplicateIsNotAllowed() throws SQLException {
-        assertFalse(courseService.createCourse("linis 1", "5", userService.getLoggedUser()));
     }
     
     
@@ -161,29 +136,9 @@ public class CourseServiceCourseTest {
     
     
     @Test
-    public void courseIsDuplicate() throws SQLException {
-        courseService.createCourse("JYM", "5", userService.getLoggedUser());
-        courseService.createCourse("Linis 2", "5", userService.getLoggedUser());
-        courseService.createCourse("JYM", "5", userService.getLoggedUser());
-        assertTrue(courseService.courseExists("JYM", userService.getLoggedUser()));
-        assertFalse(courseService.createCourse("JYM", "5", userService.getLoggedUser()));
-    }
-    
-    
-    @Test
     public void unactiveCoursesAreEmptyWhenStarted() throws SQLException {
         courseService = new CourseService();
         assertEquals(0, courseService.getUnactiveCourses(userService.getLoggedUser()).size());
-    }
-    
-    
-    @Test
-    public void activeCourseIsSuccesfullySetToUnactive() throws SQLException {
-        ArrayList<Course> c = new ArrayList<>();
-        c = courseService.getActiveCoursesByUser(userService.getLoggedUser());
-        assertTrue(c.get(0).isActive());
-        c.get(0).setUnactive();
-        assertFalse(c.get(0).isActive());
     }
     
 }
