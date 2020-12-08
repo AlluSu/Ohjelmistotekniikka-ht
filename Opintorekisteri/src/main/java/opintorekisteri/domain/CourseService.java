@@ -116,19 +116,19 @@ public class CourseService {
      */
     public boolean createCourse(String name, String credits, User loggedUser) throws SQLException {
         courseDao = new SqlCourseDao();
-        if (!courseDao.creatingCoursesTableIsSuccesful()) {
-            return false;
+        if (courseDao.creatingCoursesTableIsSuccesful()) {
+            String course = checkAndGetName(name, loggedUser);
+            if (course == null) {
+                return false;
+            }
+            int parsedCredits = checkAndGetCredits(credits);
+            if (parsedCredits == -1) {
+                return false;
+            }
+            Course newCourse = new Course(name, parsedCredits, true, loggedUser);
+            return courseDao.addCourse(newCourse); 
         }
-        String course = checkAndGetName(name, loggedUser);
-        if (course == null) {
-            return false;
-        }
-        int parsedCredits = checkAndGetCredits(credits);
-        if (parsedCredits == -1) {
-            return false;
-        }
-        Course newCourse = new Course(name, parsedCredits, true, loggedUser);
-        return courseDao.addCourse(newCourse);
+        return false;
     }
     
     

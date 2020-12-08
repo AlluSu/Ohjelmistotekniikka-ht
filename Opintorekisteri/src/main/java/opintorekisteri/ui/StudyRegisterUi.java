@@ -192,8 +192,14 @@ public class StudyRegisterUi extends Application{
            }
            else {
                try {
-                   if(!userService.createUser(name, username)) {
-                       Alert alert = new Alert(AlertType.INFORMATION);
+                   if(userService.createUser(name, username)) {
+                        loginMessage.setText("Käyttäjä " + username + " luotu onnistuneesti!");
+                        newUsernameInput.setText("");
+                        newNameInput.setText("");
+                        stage.setScene(loginScene);
+                   }
+                   else {
+                        Alert alert = new Alert(AlertType.INFORMATION);
                         alert.setTitle("Virhe");
                         alert.setHeaderText("Käyttäjän luonti epäonnistui!");
                         alert.setContentText("Käyttäjätunnus on varattu! Valitse jokin muu.");
@@ -202,10 +208,7 @@ public class StudyRegisterUi extends Application{
                } catch (SQLException ex) {
                    Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
                }
-               loginMessage.setText("Käyttäjä " + username + " luotu onnistuneesti!");
-               newUsernameInput.setText("");
-               newNameInput.setText("");
-               stage.setScene(loginScene);
+
            }
        });
        
