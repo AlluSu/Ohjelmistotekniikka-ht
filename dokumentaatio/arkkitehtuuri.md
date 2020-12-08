@@ -21,7 +21,7 @@ Seuraavaksi kuvataan ohjelman päätoiminnallisuuksia sekvenssikaavioina.
 
 #### Käyttäjän luonti
 
-![Käyttäjän luonti](kuvat/kayttajan_luonti.png)
+![Käyttäjän luonti](kuvat/kayttajan_luonti.png)  
 Kaavio joka kuvaa uuden käyttäjän luomista onnistuneesti. Kun käyttäjä painaa "luo uusi käyttäjä"-painiketta login-scenessä, vaihtuu scene  newUser-sceneen. Tämän jälkeen kun uuden käyttäjän tiedot on syötetty ja painetaan "luo uusi käyttäjä"-painiketta, käyttöliittymä kutsuu UserService-luokan createUser()-metodia. UserService-luokka taas kutsuu SqlUserDao-luokan metodeja. Ensiksi katsotaan, että onhan tietokanta olemassa, jonka jälkeen katsotaan että eihän käyttäjätunnus ole varattu jota yritetään luoda. Jos edellä mainitut askeleet ovat OK, luodaan uusi User-olio ja sitten lisätään se SqlUserDao-luokan välityksellä tietokantaan. Sitten palataan takaisin käyttöliittymään jossa scene vaihtuu jälleen newUser-scenestä login-sceneen.
 
 ### Käyttäjän kirjautuminen
@@ -41,5 +41,5 @@ Kaavio joka kuvaa tapahtumaketjua kun muutetaan aktiivisen kurssin status epäak
 
 ### Kurssin poistaminen
 
-![Kurssin poisto](kuvat/poisto.png)
+![Kurssin poisto](kuvat/poisto.png)  
 Kaavio joka kuvaa kun poistetaan sovelluksesta kurssi onnistuneesti. Kun painetaan "poista kurssi"-painiketta, käyttöliittymä hakee valitun Course-olion, välittää tiedon siitä CourseServicen deleteCourse-metodille joka taas välittää tiedon SqlCourseDao-luokan deleteCourse-metodille. Sitten palataan takaisin käyttöliittymään, jossa päivitetään käyttöliittymän näkymää käyttäjälle.  
