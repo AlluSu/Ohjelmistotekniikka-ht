@@ -109,12 +109,15 @@ public class CourseService {
     /**
      * Funktio joka lisää kurssin aktiiviseksi.Funtio kutsuu paria eri apufunktiota jotka tarkastavat syötettä.
      * @param name Kurssin nimi joka halutaan lisätä
-     * @param credits Kurssin laajuus
+     * @param credits Kurssin laajuus opintopisteinä
+     * @param faculty Tiedekunta johon kurssi kuuluu
+     * @param formOfStudy Kurssin suoritustapa
+     * @param grading Kurssin arvosteluasteikko
      * @param loggedUser kirjautuneena oleva käyttäjä
      * @return True jos lisäys onnistui, muuten false
      * @throws SQLException poikkeuskäsittely
      */
-    public boolean createCourse(String name, String credits, User loggedUser) throws SQLException {
+    public boolean createCourse(String name, String credits, String faculty, String formOfStudy, String grading, User loggedUser) throws SQLException {
         courseDao = new SqlCourseDao();
         if (courseDao.creatingCoursesTableIsSuccesful()) {
             String course = checkAndGetName(name, loggedUser);
@@ -125,7 +128,7 @@ public class CourseService {
             if (parsedCredits == -1) {
                 return false;
             }
-            Course newCourse = new Course(name, parsedCredits, true, loggedUser);
+            Course newCourse = new Course(name, parsedCredits, faculty, formOfStudy, grading, true, loggedUser);
             return courseDao.addCourse(newCourse); 
         }
         return false;

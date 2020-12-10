@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -20,7 +21,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -42,17 +45,18 @@ import opintorekisteri.domain.UserService;
  * @author Aleksi Suuronen
  */
 public class StudyRegisterUi extends Application{
-    private final CourseService courseService = new CourseService();
+    private CourseService courseService = new CourseService();
     private Scene mainScene;
     private Scene newUserScene;
     private Scene loginScene;
+    private Scene courseScene;
     private TableView activeCoursesTable;
     private TableView pastCoursesTable;
     private ObservableList<Course> activeCoursesAsObservableList;
     private ObservableList<Course> pastCoursesAsObservableList;
     private ArrayList<Course> helperList;
     private Course helperCourse;
-    private final UserService userService = new UserService();
+    private UserService userService = new UserService();
     
     /**
      * Funktio joka hakee jokaiselle käyttäjälle datan.
@@ -93,7 +97,118 @@ public class StudyRegisterUi extends Application{
     
     @Override
     public void start(Stage stage) throws SQLException {
-  
+        
+       // CourseScene alkaa tästä
+       //=======================================================================
+       Label info = new Label("Syötä kurssin tiedot");
+       Label courseName = new Label("Kurssin nimi");
+       Label courseCredits = new Label("Kurssin laajuus");
+       Label faculty = new Label("Kurssin tiedekunta");
+       Label formOfStudy = new Label("Kurssin suoritustapa");
+       Label formOfGrading = new Label("Kurssin arvosteluasteikko");
+       
+       TextField nameInput = new TextField();
+       TextField creditsInput = new TextField();
+       
+       ListView<String> faculties = new ListView<>();
+       ObservableList<String> facultyOptions = FXCollections.observableArrayList(
+       "Bio- ja ympäristötieteellinen", "Eläinlääketieteellinen", "Farmasia", 
+       "Humanistinen", "Kasvatustieteellinen", "Lääketieteellinen", "Maatalous-metsätieteellinen",
+       "Matemaattis-luonnontieteellinen", "Oikeustieteellinen", "Svenska social- och kommunalhögskolan",
+       "Teologinen", "Valtiotieteellinen", "Muu"
+       );
+       faculties.setItems(facultyOptions);
+       
+       ListView<String> formsOfStudy = new ListView<>();
+       ObservableList<String> studyOptions = FXCollections.observableArrayList(
+               "Luentokurssi", "Tentti", "Harjoitustyö/laboratoriotyö", "Essee", "Seminaari",
+               "Luento- tai oppimispäiväkirja", "Suullinen esitys", "Harjoittelujakso", "Muu"
+       );
+       formsOfStudy.setItems(studyOptions);
+       
+       ListView<String> grading = new ListView<>();
+       ObservableList<String> gradingOptions = FXCollections.observableArrayList(
+               "1-5", "Hyväksytty-Hylätty"
+       );
+       grading.setItems(gradingOptions);
+       
+       info.setPadding(new Insets(10));
+       courseName.setPadding(new Insets(10));
+       courseCredits.setPadding(new Insets(10));
+       faculty.setPadding(new Insets(10));
+       formOfStudy.setPadding(new Insets(10));
+       formOfGrading.setPadding(new Insets(10));
+       nameInput.setPadding(new Insets(10));
+       creditsInput.setPadding(new Insets(10));
+       faculties.setPadding(new Insets(10));
+       formsOfStudy.setPadding(new Insets(10));
+       grading.setPadding(new Insets(10));
+       info.setPadding(new Insets(10));
+       info.setPadding(new Insets(10));
+       info.setPadding(new Insets(10));
+       info.setPadding(new Insets(10));
+       
+       Label courseAddedLabel = new Label();
+       Button courseButton = new Button("Lisää kurssi");
+       Button returnButton = new Button("Peruuta");
+       
+       returnButton.setOnAction((ActionEvent e) -> {
+           nameInput.setText("");
+           creditsInput.setText("");
+           courseAddedLabel.setText("");
+           stage.setScene(mainScene);
+       });
+       
+       courseButton.setOnAction((ActionEvent e) -> {
+           String name = nameInput.getText();
+           String credits = creditsInput.getText();
+           String courseFaculty = faculties.getSelectionModel().getSelectedItem();
+           String courseFormOfStudy = formsOfStudy.getSelectionModel().getSelectedItem();
+           String courseGrading = grading.getSelectionModel().getSelectedItem();
+           boolean added = false;
+           try {
+               added = courseService.createCourse(name, credits, courseFaculty, courseFormOfStudy, courseGrading, userService.getLoggedUser());
+           } catch (SQLException ex) {
+               Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
+           }
+           if (added) {
+               try {
+                    refreshData(userService.getLoggedUser());
+               } catch (SQLException ex) {
+                   Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
+               }
+               courseAddedLabel.setText("Kurssi " + name + " on lisätty onnistuneesti!");
+               nameInput.setText("");
+               creditsInput.setText("");
+           }
+           else {
+               Alert alert = new Alert(AlertType.ERROR);
+               alert.setTitle("Virhe");
+               alert.setHeaderText("Kurssin lisäämisessä tapahtui virhe!");
+               alert.setContentText("Mahdollisia virhetilanteita:\nKurssi on jo olemassa\ntila täynnä\nvirhe syötteessä");
+               alert.showAndWait();
+           }
+       });
+       
+       VBox courseVBox = new VBox();
+       VBox buttonsVBox = new VBox();
+       HBox coursePane = new HBox();
+       HBox namingBox = new HBox();
+       namingBox.getChildren().addAll(courseName, nameInput);
+       HBox creditsBox = new HBox();
+       creditsBox.getChildren().addAll(courseCredits, creditsInput);
+       HBox facultiesBox = new HBox();
+       facultiesBox.getChildren().addAll(faculty, faculties);
+       HBox studyFormBox = new HBox();
+       studyFormBox.getChildren().addAll(formOfStudy, formsOfStudy);
+       HBox gradingBox = new HBox();
+       gradingBox.getChildren().addAll(formOfGrading, grading);
+       
+       courseVBox.getChildren().addAll(info, namingBox, creditsBox, facultiesBox, studyFormBox, gradingBox);
+       buttonsVBox.getChildren().addAll(courseButton, returnButton);
+       coursePane.getChildren().addAll(buttonsVBox, courseVBox, courseAddedLabel);
+       courseScene = new Scene(coursePane);
+       
        // loginScene alkaa tästä eli ikkuna jossa kirjaudutaan sisään tai vaihtoehtoisesti luodaan uusi käyttäjä.
        //=======================================================================
        Label logged = new Label("");
@@ -150,16 +265,19 @@ public class StudyRegisterUi extends Application{
           stage.setScene(newUserScene);
        });
         
-//       ListView<String> activeUsers = new ListView<>();
-//       ObservableList<String> usernames = FXCollections.observableArrayList();
-//       ArrayList<String> users = userService.getUsernamesAsList();
-//       for (int i = 0; i < users.size(); i++) {
-//           usernames.add(i, users.get(i));
-//       }
-//       activeUsers.setItems(usernames);
+       ListView<String> activeUsers = new ListView<>();
+       ObservableList<String> usernames = FXCollections.observableArrayList();
+       ArrayList<String> users = userService.getUsernamesAsList();
+       for (int i = 0; i < users.size(); i++) {
+           usernames.add(i, users.get(i));
+       }
+       activeUsers.setItems(usernames);
        
+       Label usersLabel = new Label("Aktiiviset käyttäjät");
+       HBox mainPane = new HBox();
        loginPane.getChildren().addAll(loginMessage, inputPane, loginButton, createButton, helpButton, exitButton);
-       loginScene = new Scene(loginPane, 300, 300);
+       mainPane.getChildren().addAll(loginPane, usersLabel, activeUsers);
+       loginScene = new Scene(mainPane, 300, 300);
        
        // newUserScene alkaa tämän jälkeen eli ikkuna jossa käyttäjä voi luoda uuden käyttäjän sovellukseen.
        //=======================================================================
@@ -247,25 +365,53 @@ public class StudyRegisterUi extends Application{
        
        TableColumn courseNameColumn = new TableColumn("Kurssin nimi");
        TableColumn courseCreditsColumn = new TableColumn("Kurssin laajuus)");
+       TableColumn courseFacultyColumn = new TableColumn("Kurssin tiedekunta");
+       TableColumn courseFormOfStudyColumn = new TableColumn("Kurssin suoritustapa");
+       TableColumn courseFormOfGrading = new TableColumn("Kurssin arvosteluasteikko");
+       
        courseNameColumn.setCellValueFactory(
                new PropertyValueFactory<Course, String>("name")
        );
        courseCreditsColumn.setCellValueFactory(
                new PropertyValueFactory<Course, String>("credits")
        );
+       courseFacultyColumn.setCellValueFactory(
+               new PropertyValueFactory<Course, String>("faculty")
+       );
+       courseFormOfStudyColumn.setCellValueFactory(
+               new PropertyValueFactory<Course, String>("formOfStudy")
+       );
+       courseFormOfGrading.setCellValueFactory(
+               new PropertyValueFactory<Course, String>("grading")
+       );
        
-       activeCoursesTable.getColumns().addAll(courseNameColumn, courseCreditsColumn);
+       activeCoursesTable.getColumns().addAll(courseNameColumn, courseCreditsColumn,
+               courseFacultyColumn, courseFormOfStudyColumn, courseFormOfGrading);
        
        TableColumn pastCoursesNameColumn = new TableColumn("Kurssin nimi");
        TableColumn pastCoursesCreditsColumn = new TableColumn("kurssin laajuus");
+       TableColumn pastCourseFacultyColumn = new TableColumn("Kurssin tiedekunta");
+       TableColumn pastCourseFormOfStudyColumn = new TableColumn("Kurssin suoritustapa");
+       TableColumn pastCourseFormOfGrading = new TableColumn("Kurssin arvosteluasteikko");
+       
        pastCoursesNameColumn.setCellValueFactory(
                new PropertyValueFactory<Course, String>("name")
        );
        pastCoursesCreditsColumn.setCellValueFactory(
                new PropertyValueFactory<Course, String>("credits")
        );
+       pastCourseFacultyColumn.setCellValueFactory(
+               new PropertyValueFactory<Course, String>("faculty")
+       );
+       pastCourseFormOfStudyColumn.setCellValueFactory(
+               new PropertyValueFactory<Course, String>("formOfStudy")
+       );
+       pastCourseFormOfGrading.setCellValueFactory(
+               new PropertyValueFactory<Course, String>("grading")
+       );
        
-       pastCoursesTable.getColumns().addAll(pastCoursesNameColumn,pastCoursesCreditsColumn);
+       pastCoursesTable.getColumns().addAll(pastCoursesNameColumn,pastCoursesCreditsColumn,
+               pastCourseFacultyColumn, pastCourseFormOfStudyColumn, pastCourseFormOfGrading);
        
        VBox leftSideVBox = new VBox();
        VBox rightSideVBox = new VBox();
@@ -281,14 +427,10 @@ public class StudyRegisterUi extends Application{
        Label markAsDoneLabel = new Label("Merkitse kurssi tehdyksi");
        Label pastCoursesLabel = new Label("Menneet kurssit");
        Label activeCoursesLabel = new Label("Aktiiviset kurssit");
-       Label insertCourseNameLabel = new Label("Kurssin nimi");
-       Label insertCourseCreditsLabel = new Label("Kurssin laajuus (opintopisteinä)");
        courseInfoLabel.setPadding(padding);
        markAsDoneLabel.setPadding(padding);
        pastCoursesLabel.setPadding(padding);
        activeCoursesLabel.setPadding(padding);
-       insertCourseNameLabel.setPadding(padding);
-       insertCourseCreditsLabel.setPadding(padding);
        
        leftSideVBox.getChildren().addAll(activeCoursesLabel, activeCoursesTable);
        rightSideVBox.getChildren().addAll(pastCoursesLabel, pastCoursesTable);
@@ -342,33 +484,34 @@ public class StudyRegisterUi extends Application{
        });
        
        addCourseButton.setOnAction((ActionEvent e) -> {
-           String courseName = courseNameInput.getText();
-           String courseCredits = courseCreditsInput.getText();
-           boolean added = false;
-           try {
-               added = courseService.createCourse(courseName, courseCredits, userService.getLoggedUser());
-           } catch (SQLException ex) {
-               Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
-           }
-           if (added) {
-               try {
-                    refreshData(userService.getLoggedUser());
-               } catch (SQLException ex) {
-                   Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
-               }
-               courseNameInput.setText("");
-               courseCreditsInput.setText("");
-           }
-           else {
-               Alert alert = new Alert(AlertType.ERROR);
-               alert.setTitle("Virhe");
-               alert.setHeaderText("Kurssin lisäämisessä tapahtui virhe!");
-               alert.setContentText("Mahdollisia virhetilanteita:\nKurssi on jo olemassa\ntila täynnä\nvirhe syötteessä");
-               alert.showAndWait();
-           }
+//           String courseName = courseNameInput.getText();
+//           String courseCredits = courseCreditsInput.getText();
+//           boolean added = false;
+//           try {
+//               added = courseService.createCourse(courseName, courseCredits, userService.getLoggedUser());
+//           } catch (SQLException ex) {
+//               Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
+//           }
+//           if (added) {
+//               try {
+//                    refreshData(userService.getLoggedUser());
+//               } catch (SQLException ex) {
+//                   Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
+//               }
+//               courseNameInput.setText("");
+//               courseCreditsInput.setText("");
+//           }
+//           else {
+//               Alert alert = new Alert(AlertType.ERROR);
+//               alert.setTitle("Virhe");
+//               alert.setHeaderText("Kurssin lisäämisessä tapahtui virhe!");
+//               alert.setContentText("Mahdollisia virhetilanteita:\nKurssi on jo olemassa\ntila täynnä\nvirhe syötteessä");
+//               alert.showAndWait();
+//           }
+          stage.setScene(courseScene);  
        });
        
-       bottomHBox.getChildren().addAll(courseInfoLabel, insertCourseNameLabel, courseNameInput, insertCourseCreditsLabel, courseCreditsInput, addCourseButton);
+       //bottomHBox.getChildren().addAll(courseInfoLabel, insertCourseNameLabel, courseNameInput, insertCourseCreditsLabel, courseCreditsInput, addCourseButton);
        
        Button markCourseUnactiveButton = new Button("Siirrä kurssi epäaktiiviseksi");
        markCourseUnactiveButton.setPadding(padding);
@@ -395,7 +538,7 @@ public class StudyRegisterUi extends Application{
            }
        });
        
-       middleVBox.getChildren().addAll(markAsDoneLabel, markCourseUnactiveButton, removeCourseButton, logoutButton, logged);
+       middleVBox.getChildren().addAll(markAsDoneLabel, markCourseUnactiveButton, removeCourseButton, addCourseButton, logoutButton, logged);
        borderpane.setLeft(leftSideVBox);
        borderpane.setRight(rightSideVBox);
        borderpane.setCenter(middleVBox);

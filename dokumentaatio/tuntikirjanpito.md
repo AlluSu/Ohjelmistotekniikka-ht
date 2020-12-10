@@ -20,4 +20,5 @@ Päivämäärä | käytetty aika tunneissa | mitä tein
 6.12 | 2 | Luokkien refaktorointia ja sen jäljiltä testien kirjoittamista sekä uusien testiluokkien tekemistä
 7.12 | 4 | Testien korjausta ja lisäämistä luokkien refaktoroinnin jäljiltä. Täydennetty dokumentaatiota.
 8.12 | 4 | Viikon 6 palautusta varten valmistelua. Tehty käyttöohje-dokumentti ja täydennetty arkktiehtuurikuvausta.
-TUNNIT YHTEENSÄ | 59 | TUNNIT YHTEENSÄ
+10.12| 4 | Ohjelman laajentamista loppupalautusta varten. Lisätty uusi oma scene kurssien lisäämiselle ja enemmän attribuutteja kurssille.
+TUNNIT YHTEENSÄ | 63 | TUNNIT YHTEENSÄ

@@ -39,7 +39,7 @@ public class SqlCourseDao {
             return false;
         }
         statement = connection.createStatement();
-        statement.execute("CREATE TABLE IF NOT EXISTS Courses (id INTEGER PRIMARY KEY, name TEXT, credits INTEGER, active BOOLEAN, owner_name REFERENCES Users)");
+        statement.execute("CREATE TABLE IF NOT EXISTS Courses (id INTEGER PRIMARY KEY, name TEXT, credits INTEGER, faculty TEXT, form_of_Study TEXT, form_of_grading TEXT, active BOOLEAN, owner_name REFERENCES Users)");
         connection.close();
         return true;
     }
@@ -136,11 +136,14 @@ public class SqlCourseDao {
         if (connection == null) {
             return false;
         }
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Courses(name, credits, active, owner_name) VALUES (?,?,?,?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Courses(name, credits, faculty, form_of_study, form_of_grading, active, owner_name) VALUES (?,?,?,?,?,?,?)");
         preparedStatement.setString(1, course.getName());
         preparedStatement.setInt(2, course.getCredits());
-        preparedStatement.setBoolean(3, course.isActive());
-        preparedStatement.setString(4, course.getUser().getUsername());
+        preparedStatement.setString(3, course.getFaculty());
+        preparedStatement.setString(4, course.getFormOfStudy());
+        preparedStatement.setString(5, course.getGrading());
+        preparedStatement.setBoolean(6, course.isActive());
+        preparedStatement.setString(7, course.getUser().getUsername());
         try {
             int n = preparedStatement.executeUpdate();
             if (n == 1) {
@@ -172,7 +175,8 @@ public class SqlCourseDao {
         try {
             ResultSet results = preparedStatement.executeQuery();
             while (results.next()) {
-                Course course  = new Course(results.getString("name"), results.getInt("credits"), results.getBoolean("active"), user);
+                Course course  = new Course(results.getString("name"), results.getInt("credits"), results.getString("faculty"),
+                        results.getString("form_of_study"), results.getString("form_of_grading"), results.getBoolean("active"), user);
                 activeCourses.add(course);
             }
             connection.close();
@@ -200,7 +204,8 @@ public class SqlCourseDao {
         try {
             ResultSet results = preparedStatement.executeQuery();
             while (results.next()) {
-                Course course = new Course(results.getString("name"), results.getInt("credits"), results.getBoolean("active"), user);
+                Course course = new Course(results.getString("name"), results.getInt("credits"), results.getString("faculty"),
+                    results.getString("form_of_study"), results.getString("form_of_grading"), results.getBoolean("active"), user);
                 unactiveCourses.add(course);
             }
             connection.close();
