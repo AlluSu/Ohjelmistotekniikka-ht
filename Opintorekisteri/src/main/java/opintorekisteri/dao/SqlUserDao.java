@@ -132,9 +132,9 @@ public class SqlUserDao {
         if (connection == null) {
             return users;
         }
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT username FROM Users");
+        Statement s = connection.createStatement();
         try {
-            ResultSet results = preparedStatement.executeQuery();
+            ResultSet results = s.executeQuery("SELECT username FROM Users");
             while (results.next()) {
                 User user = new User(results.getString("name"), results.getString("username"));
                 users.add(user);
