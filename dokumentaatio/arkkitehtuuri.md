@@ -88,4 +88,9 @@ samaa kaavaa:
 * kysely
   * jos poikkeus, palauta false
 * palauta kyselyn tulos  
-Voisi miettiä voisiko näitä jotenkin refaktoroida.
+
+
+Voisi miettiä voisiko näitä jotenkin refaktoroida.  
+
+Ohjelmasta voisi myös tehdä *parametreittain konfiguroitavan*. Tällä hetkellä ohjelmaan on kovakoodattu, että tietokanta luodaan hakemiston *Opintorekisteri/* alle nimellä *courses.db*. Tähän voisi pohtia mahdollisuutta antaa käyttäjälle valta tiedoston nimem ja sijainnin suhteen.
+
