@@ -137,7 +137,7 @@ public class CourseService {
     
     /**
      * Funktio joka poistaa kurssin nimen perusteella.Nimen perusteella poisto on tässä yhteydessä turvallista, koska nimi on yksilöivä.Ei saa siis tällä hetkellä olla kahta samannimistä kurssia.
-     * @param course Kurssi joka poistetaan.
+     * @param course Kurssi joka poistetaan
      * @return True jos poisto onnistui ja muuten false
      * @throws SQLException Poikkeuskäsittely
      */

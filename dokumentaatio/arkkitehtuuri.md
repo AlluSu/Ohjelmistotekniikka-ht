@@ -35,8 +35,8 @@ Lisäksi toiminnallisista kokonaisuuksita vastaa käyttäjän puolella luokka *U
 käyttäjän luominen ja kirjautumiseen liittyvät toiminnot. *CourseService*-luokan vastuulla on taas kaikki kursseihin liittyvä logiikka kuten kurssin luominen, poisto ja epäaktivointi.  
 
 ## Tietojen pysyväistallennus
-Pakkauksen *opintorekisteri.dao* luokat *SqlUserDao* ja *SqlCourseDao* huolehtivat tietojen tallentamisesta tietokantaan. Käytössä on *SQLite3*-tietokanta, jossa on käytössä kaksi taulua. Tietokannan skeema
-on [seuraavanlainen](kuvat/ot-ht-schema.pdf)  
+Pakkauksen *opintorekisteri.dao* luokat *SqlUserDao* ja *SqlCourseDao* huolehtivat tietojen tallentamisesta tietokantaan. Käytössä on *SQLite3*-tietokanta, jossa on käytössä kaksi taulua ja tietokannan skeema
+on [seuraavanlainen](kuvat/ot-ht-schema.pdf).  
 
 Eli yksittäinen kurssi on liitetty yksittäiseen käyttäjään käyttäjätunnuksen perusteella ja käyttäjätunnus täytyy olla uniikki jokaiselle käyttäjälle. Kursseja voi olla useita kappaleita yhtä käyttäjää kohden.  
 
@@ -48,30 +48,76 @@ Seuraavaksi kuvataan ohjelman päätoiminnallisuuksia sekvenssikaavioina.
 #### Käyttäjän luonti
 
 ![Käyttäjän luonti](kuvat/kayttajan_luonti.png)  
-Kaavio joka kuvaa uuden käyttäjän luomista onnistuneesti. Kun käyttäjä painaa "luo uusi käyttäjä"-painiketta login-scenessä, vaihtuu scene  newUser-sceneen. Tämän jälkeen kun uuden käyttäjän tiedot on syötetty ja painetaan "luo uusi käyttäjä"-painiketta, käyttöliittymä kutsuu UserService-luokan createUser()-metodia. UserService-luokka taas kutsuu SqlUserDao-luokan metodeja. Ensiksi katsotaan, että onhan tietokanta olemassa, jonka jälkeen katsotaan että eihän käyttäjätunnus ole varattu jota yritetään luoda. Jos edellä mainitut askeleet ovat OK, luodaan uusi User-olio ja sitten lisätään se SqlUserDao-luokan välityksellä tietokantaan. Sitten palataan takaisin käyttöliittymään jossa scene vaihtuu jälleen newUser-scenestä login-sceneen.
+
+Kaavio joka kuvaa uuden käyttäjän luomista onnistuneesti. Kun käyttäjä painaa "luo uusi käyttäjä"-painiketta login-scenessä, vaihtuu scene  newUser-sceneen. Tämän jälkeen kun uuden käyttäjän tiedot on syötetty
+
+ ja painetaan "luo uusi käyttäjä"-painiketta, käyttöliittymä kutsuu UserService-luokan createUser()-metodia. UserService-luokka taas kutsuu SqlUserDao-luokan metodeja. Ensiksi katsotaan, että tietokanta on 
+
+olemassa, jonka jälkeen katsotaan ettei käyttäjätunnus ole varattu jonka nimistä yritetään luoda. Jos edellä mainitut askeleet ovat OK, luodaan uusi User-olio ja sitten lisätään se SqlUserDao-luokan 
+
+välityksellä tietokantaan. Sitten palataan takaisin käyttöliittymään jossa scene vaihtuu jälleen newUser-scenestä login-sceneen.
 
 ### Käyttäjän kirjautuminen
 
 ![Kirjautuminen](kuvat/Kirjautuminen.png)  
-Kaavio joka kuvaan käyttäjän kirjautumista sovellukseen onnistuneesti. Kun painetaan "kirjaudu"-painiketta, UserService-luokka pyytää SqlUserDao-luokkaa tarkastamaan, että tietokanta on olemassa ja jos on niin sitten katsotaan onko käyttäjätunnus on olemassa. Sen jälkeen luodaan tiedoista uusi User-olio, jotta saadaan loggedIn-muuttujaan oikea käyttäjä. Sen jälkeen näkymä vaihtuu loginScenestä mainSceneksi. Sen jälkeen suoritetaan refreshdata()-kutsu, missä CourseService hakee SqlCourseDao-luokan avustuksella käyttäjätunnukseen liitetyt aktiiviset ja epäaktiiviset kurssit kirjautuneelle käyttäjälle. Sen jälkeen ne näytetään käyttöliittymän komponenteissa käyttäjälle. Tämän kaiken välissä tapahtuu myös kaikkea pientä, kuten käyttöliittymäkomponenttien luontia ja tekstikenttien tyhjennyksiä. Lisäksi oletetaan, että kaikki tapahtuu oikein, ei tapahdu poikkeuksia tai muuta outoa.  
+
+Kaavio joka kuvaan käyttäjän kirjautumista sovellukseen onnistuneesti. Kun painetaan "kirjaudu"-painiketta, UserService-luokka pyytää SqlUserDao-luokkaa tarkastamaan, että tietokanta on olemassa ja jos on niin
+
+ sitten katsotaan onko käyttäjätunnus on olemassa. Sen jälkeen luodaan tiedoista uusi User-olio, jotta saadaan loggedIn-muuttujaan oikea käyttäjä. Sen jälkeen näkymä vaihtuu loginScenestä mainSceneksi. 
+
+Sen jälkeen suoritetaan refreshdata()-kutsu, missä CourseService hakee SqlCourseDao-luokan avustuksella käyttäjätunnukseen liitetyt aktiiviset ja epäaktiiviset kurssit kirjautuneelle käyttäjälle. 
+
+Sen jälkeen ne näytetään käyttöliittymän komponenteissa käyttäjälle. Tämän kaiken välissä tapahtuu myös kaikkea pientä, kuten käyttöliittymäkomponenttien luontia ja tekstikenttien tyhjennyksiä. Lisäksi 
+
+oletetaan, että kaikki tapahtuu oikein, ei heitetä poikkeuksia tai tapahdu muuta outoa.  
 
 ### Kurssin luonti
 
 ![Kurssin luonti](kuvat/onnistunut_kurssin_luonti.png)  
-Kaavio joka kuvaa uuden kurssin luomista onnistuneesti sovellukseen. Kun painetaan "lisää kurssi"-painiketta tapahtuu suunnilleen seuraavanlainen tapahtumaketju. Käyttöliittymäluokka kutsuu CourseService-luokan createCourse-metodia, jossa on mukana lisättävän kurssin tiedot ja tieto mille käyttäjälle kurssi kuuluu. Sen jälkeen CourseService pyytää SqlCourseDao-luokkaa tarkastamaan, että tietokanta on olemassa ja sen jälkeen suoritetaan CourseService-luokassa kurssin validointi, eli tutkitaan syötteet ja katsotaan, että samalla käyttäjällä ei ole samannimistä aktiivista kurssia. Näiden jälkeen luodaan uus kurssi ja lisätään se tietokantaan ja jälleen päivitetään kirjautuneen käyttäjän data ja näytetään se käyttöliittymässä käyttäjälle.  
+
+Kaavio joka kuvaa uuden kurssin luomista onnistuneesti sovellukseen. Kun painetaan "lisää kurssi"-painiketta tapahtuu suunnilleen seuraavanlainen tapahtumaketju. Käyttöliittymäluokka kutsuu 
+
+CourseService-luokan createCourse-metodia, jossa on mukana lisättävän kurssin tiedot ja tieto mille käyttäjälle kurssi kuuluu. Sen jälkeen CourseService pyytää SqlCourseDao-luokkaa tarkastamaan, että 
+
+tietokanta on olemassa ja sen jälkeen suoritetaan CourseService-luokassa kurssin validointi, eli tutkitaan syötteet ja katsotaan, että samalla käyttäjällä ei ole samannimistä aktiivista kurssia. Näiden 
+
+jälkeen luodaan uus kurssi ja lisätään se tietokantaan ja jälleen päivitetään kirjautuneen käyttäjän data ja näytetään se käyttöliittymässä käyttäjälle.  
 
 ### Kurssin muuttaminen aktiivisesta epäaktiiviseksi
 
 ![Kurssin epäaktivointi](kuvat/epaaktivointi.png)  
-Kaavio joka kuvaa tapahtumaketjua kun muutetaan aktiivisen kurssin status epäaktiiviseksi. Kun painetaan "siirrä kurssi epäaktiiviseksi"-painiketta, tapahtuu suunnilleen seuraavanlainen tapahtumaketju: Haetaan käyttöliittymästä kurssi joka on sillä hetkellä valittuna. Se kurssi välitetään CourseService-luokalle ja sen markCourseAsDone-metodille. Sen jälkeen kutsutaan kurssi-olion omaa setUnactive()-metodia. Tämän jäkeen kutsutaan SqlCourseDao-luokan changeActiveToUnactive joka hoitaa tietokannan puolelta samat operaatiot, eli muuttaa statuksen aktiivisesta epäaktiiviseksi. Tämän jälkeen palataan takaisin käyttöliittymään, jossa suoritetaan muutamia operaatioita kuten poistetaan toisesta käyttöliittymäkomponentista valittu kurssi ja lisätään se toiseen.  
+
+Kaavio joka kuvaa tapahtumaketjua kun muutetaan aktiivisen kurssin status epäaktiiviseksi. Kun painetaan "siirrä kurssi epäaktiiviseksi"-painiketta, tapahtuu suunnilleen seuraavanlainen tapahtumaketju: 
+
+Haetaan käyttöliittymästä kurssi joka on sillä hetkellä valittuna. Se kurssi välitetään CourseService-luokalle ja sen markCourseAsDone-metodille. Sen jälkeen kutsutaan kurssi-olion omaa setUnactive()-metodia.
+
+ Tämän jäkeen kutsutaan SqlCourseDao-luokan changeActiveToUnactive joka hoitaa tietokannan puolelta samat operaatiot, eli muuttaa statuksen aktiivisesta epäaktiiviseksi. Tämän jälkeen palataan takaisin 
+
+käyttöliittymään, jossa suoritetaan muutamia operaatioita kuten poistetaan toisesta käyttöliittymäkomponentista valittu kurssi ja lisätään se toiseen.  
 
 ### Kurssin poistaminen
 
 ![Kurssin poisto](kuvat/poisto.png)  
-Kaavio joka kuvaa kun poistetaan sovelluksesta kurssi onnistuneesti. Kun painetaan "poista kurssi"-painiketta, käyttöliittymä hakee valitun Course-olion, välittää tiedon siitä CourseServicen deleteCourse-metodille joka taas välittää tiedon SqlCourseDao-luokan deleteCourse-metodille. Sitten palataan takaisin käyttöliittymään, jossa päivitetään käyttöliittymän näkymää käyttäjälle.  
+
+Kaavio joka kuvaa kun poistetaan sovelluksesta kurssi onnistuneesti. Kun painetaan "poista kurssi"-painiketta, käyttöliittymä hakee valitun Course-olion, välittää tiedon siitä CourseServicen 
+
+deleteCourse-metodille joka taas välittää tiedon SqlCourseDao-luokan deleteCourse-metodille. Sitten palataan takaisin käyttöliittymään, jossa päivitetään käyttöliittymän näkymää käyttäjälle.  
 
 ## Ohjelman rakenteeseen jääneet heikkoudet  
 
 ## Käyttöliittymä  
 
-## Dao-luokat 
+Kaikki käyttöliittymän rakentava koodi on määritelty metodin *start*-sisällä. Tätä voisi refaktoroida esimerkiksi toteuttamalla jokaisen eri  näkymän eli scenen luonti oman funktion sisään. Lisäksi näkymässä, 
+
+jossa käyttäjä voi tutkia aktiivisia ja epäaktiivisia kurssejaan, olevat *Tableview*-komponentit voisi luoda jotenkin järkevämmin. Ne ovat melko *copy-paste*-menetelmällä tehdyt toistaiseksi. 
+
+## DAO-luokat  
+
+DAO-luokkia voisi refaktoroida jonkin verran, kuten esimerkiksi käyttämällä rajapintoja, jotta sovelluksen laajennettavuus ja testaaminen helpottuisi. Lisäksi koodi on jonkin verran toisteista ja noudattaa 
+samaa kaavaa:
+* Luo yhteys
+  * jos null, palauta false
+* kysely
+  * jos poikkeus, palauta false
+* palauta kyselyn tulos
+Voisi miettiä voisiko näitä jotenkin refaktoroida.

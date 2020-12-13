@@ -475,30 +475,6 @@ public class StudyRegisterUi extends Application{
        });
        
        addCourseButton.setOnAction((ActionEvent e) -> {
-//           String courseName = courseNameInput.getText();
-//           String courseCredits = courseCreditsInput.getText();
-//           boolean added = false;
-//           try {
-//               added = courseService.createCourse(courseName, courseCredits, userService.getLoggedUser());
-//           } catch (SQLException ex) {
-//               Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
-//           }
-//           if (added) {
-//               try {
-//                    refreshData(userService.getLoggedUser());
-//               } catch (SQLException ex) {
-//                   Logger.getLogger(StudyRegisterUi.class.getName()).log(Level.SEVERE, null, ex);
-//               }
-//               courseNameInput.setText("");
-//               courseCreditsInput.setText("");
-//           }
-//           else {
-//               Alert alert = new Alert(AlertType.ERROR);
-//               alert.setTitle("Virhe");
-//               alert.setHeaderText("Kurssin lisäämisessä tapahtui virhe!");
-//               alert.setContentText("Mahdollisia virhetilanteita:\nKurssi on jo olemassa\ntila täynnä\nvirhe syötteessä");
-//               alert.showAndWait();
-//           }
           stage.setScene(courseScene);  
        });
        

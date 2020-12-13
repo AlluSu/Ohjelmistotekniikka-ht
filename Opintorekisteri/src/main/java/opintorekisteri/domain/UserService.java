@@ -28,6 +28,17 @@ public class UserService {
     
     
     /**
+     * Konstruktori jolla on argumenttina Dao-luokat.
+     * @param userDao SqlUserDao-luokan olio
+     * @param courseDao SqlCourseDao-luokan olio
+     */
+    public UserService(SqlUserDao userDao, SqlCourseDao courseDao) {
+        this.userDao = userDao;
+        this.courseDao = courseDao;
+    }
+    
+    
+    /**
      * Funktio joka luo uuden käyttäjän sovellukseen.
      * @param username Käyttäjän käyttäjätunnus
      * @param name Käyttäjän oikea nimi
@@ -36,14 +47,14 @@ public class UserService {
      */
     public boolean createUser(String name, String username) throws SQLException {
         userDao = new SqlUserDao();
-        if (!userDao.creatingUsersTableIsSuccesful()) {
-            return false;
+        if (userDao.creatingUsersTableIsSuccesful()) {
+            if (userDao.usernameExists(username)) {
+                return false;
+            }
+            User user = new User(name, username);
+            return userDao.addUser(user);
         }
-        if (userDao.usernameExists(username)) {
-            return false;
-        }               
-        User user = new User(name, username);
-        return userDao.addUser(user);
+        return false;
     }
     
     
