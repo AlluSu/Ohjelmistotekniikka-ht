@@ -36,9 +36,7 @@ käyttäjän luominen ja kirjautumiseen liittyvät toiminnot. *CourseService*-lu
 
 ## Tietojen pysyväistallennus
 Pakkauksen *opintorekisteri.dao* luokat *SqlUserDao* ja *SqlCourseDao* huolehtivat tietojen tallentamisesta tietokantaan. Käytössä on *SQLite3*-tietokanta, jossa on käytössä kaksi taulua. Tietokannan skeema
-on seuraava:  
-
-![tietokantaskeema](kuvat/ot-ht-schema.pdf)  
+on [seuraavanlainen](kuvat/ot-ht-schema.pdf)  
 
 Eli yksittäinen kurssi on liitetty yksittäiseen käyttäjään käyttäjätunnuksen perusteella ja käyttäjätunnus täytyy olla uniikki jokaiselle käyttäjälle. Kursseja voi olla useita kappaleita yhtä käyttäjää kohden.  
 
