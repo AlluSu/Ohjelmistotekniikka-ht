@@ -13,9 +13,9 @@ public class Course {
     
     private final String name;
     private final int credits;
-    private String faculty;
-    private String formOfStudy;
-    private String grading;
+    private final String faculty;
+    private final String formOfStudy;
+    private final String grading;
     private boolean active;
     private final User user;
     

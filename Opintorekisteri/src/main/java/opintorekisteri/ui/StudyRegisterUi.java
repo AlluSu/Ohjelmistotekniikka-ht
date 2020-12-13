@@ -264,19 +264,10 @@ public class StudyRegisterUi extends Application{
        createButton.setOnAction((ActionEvent e) -> {
           stage.setScene(newUserScene);
        });
-        
-       ListView<String> activeUsers = new ListView<>();
-       ObservableList<String> usernames = FXCollections.observableArrayList();
-       ArrayList<String> users = userService.getUsernamesAsList();
-       for (int i = 0; i < users.size(); i++) {
-           usernames.add(i, users.get(i));
-       }
-       activeUsers.setItems(usernames);
        
-       Label usersLabel = new Label("Aktiiviset käyttäjät");
        HBox mainPane = new HBox();
        loginPane.getChildren().addAll(loginMessage, inputPane, loginButton, createButton, helpButton, exitButton);
-       mainPane.getChildren().addAll(loginPane, usersLabel, activeUsers);
+       mainPane.getChildren().addAll(loginPane);
        loginScene = new Scene(mainPane, 300, 300);
        
        // newUserScene alkaa tämän jälkeen eli ikkuna jossa käyttäjä voi luoda uuden käyttäjän sovellukseen.

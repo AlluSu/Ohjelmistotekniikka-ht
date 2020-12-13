@@ -4,17 +4,45 @@
 Opintorekisteri-ohjelma noudattaa kolmitasoista kerrosarkkitehtuuria, joka on kuvattu alla:  
 ![Arkkitehtuuri](kuvat/Opintorekisteripakkauskaavio.jpg)  
 
-Pakkaus opintorekisteri.ui sisältää graafisen JavaFX käyttöliittymän, opintorekisteri.domain taas varsinainen sovelluslogiikan ja opintorekisteri.dao hoitaa tiedon pysyväistalletuksesta vastaavan koodin. Suhteita on kuvattu katkoviivoilla, koska muun muassa käyttöliittymäpakkaus tarvitsee tietoa sovelluslogiikan puolelta.  
+Pakkaus opintorekisteri.ui sisältää graafisen JavaFX käyttöliittymän, opintorekisteri.domain taas varsinainen sovelluslogiikan ja opintorekisteri.dao hoitaa tiedon pysyväistalletuksesta vastaavan koodin. 
+Suhteita on kuvattu katkoviivoilla, koska muun muassa käyttöliittymäpakkaus tarvitsee tietoa sovelluslogiikan puolelta.  
 
 ![Luokkakaavio](kuvat/Opintorekisteriluokkakaavio.jpg)  
 
 Luokkakaavio Opintorekisteri-ohjelman luokista ja niiden välisistä suhteista. Ruudut joissa on lueteltu luokkien nimet kuvaavat ohjelman pakkauksia.
 
-## Käyttöliittymä
+## Käyttöliittymä  
+Käyttöliittymä sisältää neljä (4) erilaista näkymää:  
+* Kirjautuminen
+* Uuden käyttäjän luominen
+* Kurssilista aktiivisista ja epäaktiivisista kursseista
+* Kurssin tietojen syöttäminen ja lisääminen  
+
+Näistä jokainen näkymä on toteutettu omana *Scene*-olionaan ja jokainen on yksi kerrallaan näkyvänä sijoitettu sovelluksen *Stage*-attribuuttiin. Käyttöliittymä on rakennettu ohjelmallisesti luokassa
+ *opintorekisteri.ui.StudyRegisterUi*.  
+
+Käyttöliittymä on pyritty eristämään täysin sovelluslogiikasta ja se kutsuu tarvittaessa *UserService* ja *CourseService* luokkien metodeja, jotka vastaavast sovelluslogiikasta sovelluksessa.  
+
+Kun kirjautuneena olevan käyttäjän kursseihin tulee muutoksia, kutsutaan funktiota *refreshData*, joka hakee tietokannasta aina ajankohtaisen tiedon ja datan kirjautuneelle käyttäjälle.  
 
 ## Sovelluslogiikka
+Sovelluksen loogisen datamallin muodostavat luokat *Course* ja *User*, jotka kuvaavat käyttäjiä ja käyttäjien kursseja:  
+
+![datamalli](kuvat/OpintorekisteriLuokat.jpg)  
+
+Lisäksi toiminnallisista kokonaisuuksita vastaa käyttäjän puolella luokka *UserService* ja kurssien puolella *CourseService*. *UserService*-luokan vastuulla on kaikki käyttäjiin liittyvä logiikka  muun muassa 
+
+käyttäjän luominen ja kirjautumiseen liittyvät toiminnot. *CourseService*-luokan vastuulla on taas kaikki kursseihin liittyvä logiikka kuten kurssin luominen, poisto ja epäaktivointi.  
 
 ## Tietojen pysyväistallennus
+Pakkauksen *opintorekisteri.dao* luokat *SqlUserDao* ja *SqlCourseDao* huolehtivat tietojen tallentamisesta tietokantaan. Käytössä on *SQLite3*-tietokanta, jossa on käytössä kaksi taulua. Tietokannan skeema
+on seuraava:  
+
+![tietokantaskeema](kuvat/ot-ht-schema.pdf)  
+
+Eli yksittäinen kurssi on liitetty yksittäiseen käyttäjään käyttäjätunnuksen perusteella ja käyttäjätunnus täytyy olla uniikki jokaiselle käyttäjälle. Kursseja voi olla useita kappaleita yhtä käyttäjää kohden.  
+
+Tämän hetkisessä versiossa ohjelman tallettaa kaiken datan *courses.db*-nimiseen tiedostoon joka sijaitsee paikassa *Opintorekisteri/courses.db*.
 
 ## Päätoiminnallisuudet
 Seuraavaksi kuvataan ohjelman päätoiminnallisuuksia sekvenssikaavioina.  
@@ -43,3 +71,9 @@ Kaavio joka kuvaa tapahtumaketjua kun muutetaan aktiivisen kurssin status epäak
 
 ![Kurssin poisto](kuvat/poisto.png)  
 Kaavio joka kuvaa kun poistetaan sovelluksesta kurssi onnistuneesti. Kun painetaan "poista kurssi"-painiketta, käyttöliittymä hakee valitun Course-olion, välittää tiedon siitä CourseServicen deleteCourse-metodille joka taas välittää tiedon SqlCourseDao-luokan deleteCourse-metodille. Sitten palataan takaisin käyttöliittymään, jossa päivitetään käyttöliittymän näkymää käyttäjälle.  
+
+## Ohjelman rakenteeseen jääneet heikkoudet  
+
+## Käyttöliittymä  
+
+## Dao-luokat 

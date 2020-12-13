@@ -23,7 +23,7 @@ Opintorekisteri-sovellus on ohjelma, johon käyttäjän on mahdollista lisätä 
 Oletetaan, että Opintorekisteri-hakemisto on käyttäjän koneella. Jos näin ei ole, niin tämän saa esimerkiksi komentoriviltä komennolla   `git clone https://github.com/AlluSu/Ohjelmistotekniikka-ht.git`   (olettaen, että koneella on git asennettuna).   
 Mennään Opintorekisteri-hakemistoon ja suoritetaan  
 `mvn compile exec:java -Dexec.mainClass=opintorekisteri.ui.StudyRegisterUi`.  
-Vaihtoehtoisesti voi ladata paikasta *Releases* tiedoston `opintorekisteri.jar`. Tällöin täytyy mennä komentorivillä samaan hakemistoon ja suorittaa komennon   `java -jar opintorekisteri.jar`   jolloin ohjelma käynnistyy.  
+Vaihtoehtoisesti voi ladata paikasta *Releases* tiedoston `opintorekisteri.jar`. Tällöin täytyy mennä komentorivillä samaan hakemistoon ja suorittaa komento   `java -jar opintorekisteri.jar`   jolloin ohjelma käynnistyy.  
 
 ### Suoritettavan jarin generointi  
 Mene komentorivillä projektihakemistoon `Opintorekisteri` ja suorita komento   `mvn package`.  
