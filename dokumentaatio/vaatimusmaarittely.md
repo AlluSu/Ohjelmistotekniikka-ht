@@ -5,7 +5,7 @@ Sovelluksen tarkoitus on olla opintojen seurantajärjestelmä. Sovellusta voi k�
 
 ## Käyttäjät
 Aluksi sovelluksessa on vain yhdenlaisia käyttäjiä eli normaaleita käyttäjiä. Ajan puitteissa voitaisiin lisätä myös isommilla oikeuksilla varustettuja Admin-käyttäjiä. Adminit pystyisivät muun muassa
-poistamaan tietokannasta esimerkiksi muita käyttäjiä tms.
+esimerkiksi poistamaan  muita käyttäjiä.
 
 ## Käyttöliittymäluonnos
 ![Kuva käyttöliittymästä](kuvat/OpintorekisterGUI1.jpg)
@@ -18,32 +18,27 @@ Toisessa kuvassa on luonnos millainen modaalinen ikkuna avautuu kun painetaan pa
 
 ## Ennen kirjautumista
 * Käyttäjä voi luoda sovellukseen käyttäjätunnuksen
-  * täytyy olla uniikki, järjestelmä ilmoittaa onko käyttäjä varattu vai ei  
-** Tehty
+  * Käyttäjätunnuksen täytyy olla uniikki, järjestelmä ilmoittaa onko käyttäjä varattu vai ei  
+  * Käyttäjätunnuksen täytyy olla vähintään kolme (3) merkkiä pitkä  
+  * Nimen täytyy olla vähintään kolme (3) merkkiä pitkä  
 
 * Käyttäjä voi kirjautua järjestelmään
   * Jos kirjautuminen ei onnistu, niin siitä ilmoitetaan  
-** Tehty
-  * Jos käyttäjää ei ole olemassa, niin siitä ilmoitetaan
 
 ## Kirjautumisen jälkeen
 * Käyttäjä näkee omat aktiiviset kurssinsa  
-** Tehty
 * Käyttäjä voi lisätä uuden kurssin aktiivisten kurssien listaan  
-** Tehty
 * Käyttäjä voi merkitä aktiivisen kurssin epäaktiiviseksi jolloin se muuttuu menneeksi kurssiksi  
-** Tehty
 * Käyttäjä näkee menneet kurssinsa  
-** Tehty
-* Käyttäjä voi kirjautua ulos järjestelmästä  
-** tehty
+* Käyttäjä voi poistaa aktiivisen tai menneen kurssin listasta  
+* Käyttäjä voi kirjautua ulos järjestelmästä
 # Jatkokehitysideoita
 * Salasana kirjautumisen yhteyteen
-* Kirjautumisnäkymään lista aktiivista käyttäjistä
 * Mahdollisuus käyttäjän ja käyttäjätietojen poistoon
   * Admin-käyttäjä järjestelmään
 * Statistiikkaa kursseista ja opinnoista
   * Esimerkiksi kaikkien suoritettujen opintojen keskiarvo, opintopistelaskuri
-* Aktiivisten ja menneiden kurssien lajittelu ja haku  
-** TableView-komponentti osaa lajitella sarakkeittain suuruusjärjestykseen itsessään, joten käytännössä lajittelu on tehty
-* Kurssin luomiseen erillinen ikkuna/lomake, johon voi tallettaa enemmän tietoja kurssista, kuten suoritustapa, tiedekunta, aloituspäivämäärä yms.
+* Aktiivisten ja menneiden kurssien hakeminen listasta hakukentän avulla
+* Kursseihin lisää tietoa. Esimerkiksi:  
+  * Mahdollisuus merkitä kurssit jaksottain tai aloituspäivämäärä ja lopetuspäivämäärä
+  * Mahdollisuus merkitä saamansa arvosana sen jälkeen kun kurssi on siirretty aktiivisesta epäaktiiviseksi, jotta saa kerättyä edellämainittua statistiikkaa  
