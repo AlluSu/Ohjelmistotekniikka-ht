@@ -1,10 +1,8 @@
-# Käyttöohje
-
-## Konfigurointi
-käyttäjän ei tarvitse konfiguroida itse ohjelmaa mitenkään.
+# Käyttöohje  
 
 ## Ohjelman käynnistäminen  
 Oletetaan, että tietokoneelle on ladattu ohjelmasta uusin versio esimerkiksi [täältä](https://github.com/AlluSu/Ohjelmistotekniikka-ht/releases). Tällöin ohjelma käynnistyy komentoriviltä samassa hakemistossa ollessa komennolla `java -jar opintorekisteri.jar`.  
+Vaihtoehtoinen ns. "hardcore"-tapa löytyy [täältä](https://github.com/AlluSu/Ohjelmistotekniikka-ht#ohjelman-ajaminen-komentorivilt%C3%A4)  
 
 ## Kirjautuminen  
 Sovellus käynnistyy aluksi kirjautumisnäkymään:  
@@ -21,7 +19,7 @@ Opintorekisterin ikkuna jossa tapahtuu kaikki päätoiminnallisuus näyttää se
 ![pääikkuna](kuvat/topgunmain1.png)  
 Ohjelman tarkoitus on, että käyttäjä voi pitää kirjaa aktiivisista ja menneistä opinnoistaan. Vasemmalla on aktiiviset kurssit ja oikealla menneet kurssit. Vasemmalla alakulmassa näkyy kirjautunut käyttäjä.  
 ### Kurssin luonti  
-Kurssi luodaan painamalla *Lisää kurssi*-painiektta, jolloin avautuu uusi *scene* eli kurssin luonti näkymä.  
+Kurssi luodaan painamalla *Lisää kurssi*-painiketta, jolloin avautuu uusi *scene* eli kurssin luonti näkymä.  
 ![kurssin lisäys](kuvat/kurssinluonti.png)  
 Kurssista talletetaan ylläolevassa kuvassa olevat tiedot eli nimi, laajuus, tiedekunta, suoritustapa ja arvosteluasteikko. Jos jokin kenttä jää täyttämättä tai valitsematta tai on annettu virheellinen arvo,  niin siitä ilmoitetaan. Jos kurssin luonti onnistuu niin siitä ilmoitetaan tekstillä.  
 ![kurssin lisäys onnistui](kuvat/kurssinluonti2.png)  

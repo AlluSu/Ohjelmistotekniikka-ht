@@ -20,6 +20,10 @@ public class SqlUserDao {
     private Statement statement;
     private String db = "jdbc:sqlite:courses.db";
     
+    /**
+     * Konstrukotri.
+     * @param db Tietokannan nimi
+     */
     public SqlUserDao(String db) {
         this.db = db;
     }

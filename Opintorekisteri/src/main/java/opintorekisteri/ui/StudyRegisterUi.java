@@ -333,10 +333,10 @@ public class StudyRegisterUi extends Application{
        createNewUserButton.setOnAction((ActionEvent e) -> {
            String username = newUsernameInput.getText();
            String name = newNameInput.getText();
-           if (username.length() < 3) {
+           if (username.trim().length() < 3) {
                notificationLabel.setText("Käyttäjätunnuksen minimipituus on 3 merkkiä!");
            }
-           else if (name.length() < 3) {
+           else if (name.trim().length() < 3) {
                notificationLabel.setText("Nimen minimipituus on 3 merkkiä!");
            }
            else {

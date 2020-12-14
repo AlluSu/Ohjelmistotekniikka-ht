@@ -21,8 +21,9 @@ public class SqlCourseDao {
     private Statement statement;
     private String db = "jdbc:sqlite:courses.db";
     
+    
     /**
-     * Konstruktori
+     * Konstruktori.
      * @param db tietokannan nimi
      */
     public SqlCourseDao(String db) {
@@ -183,8 +184,7 @@ public class SqlCourseDao {
         try {
             ResultSet results = preparedStatement.executeQuery();
             while (results.next()) {
-                Course course  = new Course(results.getString("name"), results.getInt("credits"), results.getString("faculty"),
-                        results.getString("form_of_study"), results.getString("form_of_grading"), results.getBoolean("active"), user);
+                Course course  = new Course(results.getString("name"), results.getInt("credits"), results.getString("faculty"), results.getString("form_of_study"), results.getString("form_of_grading"), results.getBoolean("active"), user);
                 activeCourses.add(course);
             }
             connection.close();
@@ -212,8 +212,7 @@ public class SqlCourseDao {
         try {
             ResultSet results = preparedStatement.executeQuery();
             while (results.next()) {
-                Course course = new Course(results.getString("name"), results.getInt("credits"), results.getString("faculty"),
-                    results.getString("form_of_study"), results.getString("form_of_grading"), results.getBoolean("active"), user);
+                Course course = new Course(results.getString("name"), results.getInt("credits"), results.getString("faculty"), results.getString("form_of_study"), results.getString("form_of_grading"), results.getBoolean("active"), user);
                 unactiveCourses.add(course);
             }
             connection.close();

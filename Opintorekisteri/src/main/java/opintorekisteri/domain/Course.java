@@ -21,7 +21,7 @@ public class Course {
     
     
     /**
-     * Course-olion konstruktori
+     * Course-olion konstruktori.
      * @param name Kurssin nimi
      * @param credits Kurssin opintopisteet
      * @param faculty Kurssin tiedekunta
