@@ -20,6 +20,10 @@ public class SqlUserDao {
     private Statement statement;
     private String db = "jdbc:sqlite:courses.db";
     
+    public SqlUserDao(String db) {
+        this.db = db;
+    }
+    
     
     /**
      * Funktio joka luo tietokantataulun käyttäjille.

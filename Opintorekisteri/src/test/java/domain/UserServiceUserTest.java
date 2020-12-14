@@ -5,6 +5,7 @@
  */
 package domain;
 
+import opintorekisteri.dao.SqlUserDao;
 import opintorekisteri.domain.UserService;
 import org.junit.Test;
 
@@ -13,11 +14,6 @@ import org.junit.Test;
  * @author Aleksi Suuronen
  */
 public class UserServiceUserTest {
-    UserService us;
-    FakeUserDao fakeUser;
-    
-    @Test
-    public void creatingUserIsSuccesfulWhenEmptyDB() {    
-    }
-    
+
+    private SqlUserDao sud;
 }

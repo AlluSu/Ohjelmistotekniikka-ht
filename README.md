@@ -11,6 +11,8 @@ Opintorekisteri-sovellus on ohjelma, johon käyttäjän on mahdollista lisätä 
 
 [Arkkitehtuurikuvaus](dokumentaatio/arkkitehtuuri.md)  
 
+[Testausdokumentti](dokumentaatio/testaus.md)
+
 [Työaikakirjanpito](dokumentaatio/tuntikirjanpito.md)  
 
 ## Releaset
@@ -34,7 +36,8 @@ Ohjelman voi ajaa komennolla   `java -jar Opintorekisteri-1.0-SNAPSHOT.jar`
 Testit voidaan suorittaa komennolla  
 `mvn test`.  
 
-Testikattavuusraportti voidaan luoda komennolla   `mvn jacoco:report`  
+Testikattavuusraportti voidaan luoda komennolla 
+ `mvn jacoco:report`  
 Raportti on luettavissa siirtymällä hakemistossa paikkaan `target/site/jacoco/index.html` ja avaamalla index.html esimerkiksi selaimessa.
 
 ### Checkstyle
@@ -42,4 +45,4 @@ Tiedostoon [checkstyle.xml](Opintorekisteri/checkstyle.xml) määrittelemät tar
 Raportti voidaan avata esimerkiksi selaimessa ja raportti löytyy paikasta `target/site/checkstyle.html`.
 
 ### JavaDoc  
-JavaDoc tehdään komennolla   `mvn javadoc:javadoc`   JavaDocia voi tarkastella esimerkiksi selaimella ja se löytyy paikasta *target/site/apidocs/index.html*.
+JavaDoc tehdään komennolla  `mvn javadoc:javadoc`.  JavaDocia voi tarkastella esimerkiksi selaimella ja se löytyy paikasta *target/site/apidocs/index.html*.

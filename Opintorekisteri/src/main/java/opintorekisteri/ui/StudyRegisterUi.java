@@ -1,6 +1,5 @@
 package opintorekisteri.ui;
 
-import com.sun.javafx.application.HostServicesDelegate;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -11,12 +10,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -30,9 +27,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import opintorekisteri.dao.SqlCourseDao;
+import opintorekisteri.dao.SqlUserDao;
 import opintorekisteri.domain.Course;
 import opintorekisteri.domain.CourseService;
 import opintorekisteri.domain.User;
@@ -44,8 +42,6 @@ import opintorekisteri.domain.UserService;
  * @author Aleksi Suuronen
  */
 public class StudyRegisterUi extends Application{
-    private final CourseService courseService = new CourseService();
-    private final UserService userService = new UserService();
     private Scene mainScene;
     private Scene newUserScene;
     private Scene loginScene;
@@ -56,6 +52,11 @@ public class StudyRegisterUi extends Application{
     private ObservableList<Course> pastCoursesAsObservableList;
     private ArrayList<Course> helperList;
     private Course helperCourse;
+    private final String db = "jdbc:sqlite:courses.db";
+    private final SqlUserDao userDao = new SqlUserDao(db);
+    private final SqlCourseDao courseDao = new SqlCourseDao(db);
+    private final CourseService courseService = new CourseService(userDao, courseDao);
+    private final UserService userService = new UserService(userDao, courseDao);
 
     
     /**

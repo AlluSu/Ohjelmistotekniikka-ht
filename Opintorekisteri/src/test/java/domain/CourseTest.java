@@ -19,9 +19,9 @@ public class CourseTest {
     
     @Test
     public void courseExists() {
-        user = new User("keijo", "Johtaja88");
-        Course course = new Course("Ohjelmistotekniikka", 5, true, user);
-        assertTrue(null != course);
+        user = new User("lauri markkanen", "finnisher");
+        Course course = new Course("Ohjelmistotekniikka", 5, "Matemaattis-luonnontieteellinen", "Harjoitustyö", "1-5", true, user);
+        assertTrue(course != null);
     }
     
 }

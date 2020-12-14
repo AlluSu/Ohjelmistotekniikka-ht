@@ -22,6 +22,7 @@ public class CourseService {
     private User loggedIn;
     private SqlUserDao userDao;
     private SqlCourseDao courseDao;
+    private String db = "jdbc:sqlite:courses.db";
     
     
     /**
@@ -44,12 +45,7 @@ public class CourseService {
         this.courses = active;
         this.unactive = unactive;
     }
-    
-    /**
-     * Parametriton konstruktori.
-     */
-    public CourseService() {}
-    
+
     
     /**
      * Funktio joka palauttaa listan aktiivisita kursseista.
@@ -86,7 +82,7 @@ public class CourseService {
      * @throws SQLException Poikkeuskäsittely
      */
     public ArrayList<Course> getActiveCoursesByUser(User user) throws SQLException {
-        courseDao = new SqlCourseDao();
+        courseDao = new SqlCourseDao(db);
         if (courseDao.creatingCoursesTableIsSuccesful()) {
             return courseDao.getActiveCoursesByUser(user);
         }
@@ -101,7 +97,7 @@ public class CourseService {
      * @throws SQLException poikkeuskäsittely
      */
     public ArrayList<Course> getUnactiveCoursesByUser(User user) throws SQLException {
-        courseDao = new SqlCourseDao();
+        courseDao = new SqlCourseDao(db);
         return courseDao.getUnactiveCoursesByUser(user);
     }
     
@@ -118,7 +114,7 @@ public class CourseService {
      * @throws SQLException poikkeuskäsittely
      */
     public boolean createCourse(String name, String credits, String faculty, String formOfStudy, String grading, User loggedUser) throws SQLException {
-        courseDao = new SqlCourseDao();
+        courseDao = new SqlCourseDao(db);
         if (courseDao.creatingCoursesTableIsSuccesful()) {
             String course = checkAndGetName(name, loggedUser);
             if (course == null) {
@@ -145,7 +141,7 @@ public class CourseService {
         if (course == null) {
             return false;
         }
-        courseDao = new SqlCourseDao();
+        courseDao = new SqlCourseDao(db);
         return courseDao.deleteCourse(course);
     }
     
@@ -157,7 +153,7 @@ public class CourseService {
      * @throws SQLException Poikkeuskäsittely
      */
     public boolean markCourseAsDone(Course course) throws SQLException {
-        courseDao = new SqlCourseDao();
+        courseDao = new SqlCourseDao(db);
         Course done = course;
         if (done == null) {
             return false;
@@ -174,7 +170,7 @@ public class CourseService {
      * @throws SQLException poikkeuskäsittely
      */
     public Course findCourseByName(String name, User loggedIn) throws SQLException {
-        courseDao = new SqlCourseDao();
+        courseDao = new SqlCourseDao(db);
         courses = courseDao.getActiveCoursesByUser(loggedIn);
         for (Course course: courses) {
             if (course.getName().equals(name)) {
@@ -230,7 +226,7 @@ public class CourseService {
      * @throws SQLException poikkeuskäsittely
      */
     public boolean courseExists(String name, User loggedUser) throws SQLException {
-        courseDao = new SqlCourseDao();
+        courseDao = new SqlCourseDao(db);
         return courseDao.courseExistsWithUser(name, loggedUser);
     }
     

@@ -21,6 +21,14 @@ public class SqlCourseDao {
     private Statement statement;
     private String db = "jdbc:sqlite:courses.db";
     
+    /**
+     * Konstruktori
+     * @param db tietokannan nimi
+     */
+    public SqlCourseDao(String db) {
+        this.db = db;
+    }
+    
     
     /**
      * Funktio joka luo tietokantaan Courses-taulun kursseja varten.

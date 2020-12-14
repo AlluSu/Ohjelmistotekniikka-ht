@@ -7,6 +7,8 @@ package domain;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import opintorekisteri.dao.SqlCourseDao;
+import opintorekisteri.dao.SqlUserDao;
 import opintorekisteri.domain.Course;
 import opintorekisteri.domain.CourseService;
 import opintorekisteri.domain.User;
@@ -23,23 +25,19 @@ import org.junit.Test;
  */
 public class CourseServiceUserTest {
     
-    CourseService service;
-    UserService userService;
-    private ArrayList<Course> courses;
-    private ArrayList<Course> unactive;
-    private ArrayList<User> users;
-    FakeCourseDao fcd;
-    FakeUserDao fud;
+    private CourseService service;
+    private UserService userService;
+    private SqlUserDao sud;
+    private SqlCourseDao scd;
     
     @Before
-    public void setUp() {
-        service = new CourseService(courses, unactive);
-        courses = new ArrayList<>();
-        unactive = new ArrayList<>();
-        users = new ArrayList<>();
-        userService = new UserService();
-        fcd = new FakeCourseDao();
-        fud = new FakeUserDao();
+    public void setUp() throws SQLException {
+        sud = new SqlUserDao("jdbc:sqlite::memory");
+        scd = new SqlCourseDao("jdbc:sqlite::memory");
+        userService = new UserService(sud, scd);
+        service = new CourseService(sud, scd);
+        User u1 = new User("tom cruise", "topgun");
+        User u2 = new User("lauri markkanen", "finnisher");
     }
     
     

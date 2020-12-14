@@ -7,7 +7,6 @@ package opintorekisteri.domain;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import opintorekisteri.dao.SqlCourseDao;
 import opintorekisteri.dao.SqlUserDao;
 
@@ -19,13 +18,8 @@ public class UserService {
     
     private User loggedIn;
     private SqlUserDao userDao;
-    private SqlCourseDao courseDao;
-    
-    /**
-     * Parametriton konstruktori.
-     */
-    public UserService() { }
-    
+    private final SqlCourseDao courseDao;
+    private String db = "jdbc:sqlite:courses.db";
     
     /**
      * Konstruktori jolla on argumenttina Dao-luokat.
@@ -46,7 +40,7 @@ public class UserService {
      * @throws SQLException poikkeuskäsittely
      */
     public boolean createUser(String name, String username) throws SQLException {
-        userDao = new SqlUserDao();
+        userDao = new SqlUserDao(db);
         if (userDao.creatingUsersTableIsSuccesful()) {
             if (userDao.usernameExists(username)) {
                 return false;
@@ -64,7 +58,7 @@ public class UserService {
      * @throws SQLException poikkeuskäsittely
      */
     public ArrayList<User> getUsers() throws SQLException {
-        userDao = new SqlUserDao();
+        userDao = new SqlUserDao(db);
         return userDao.getUsers();
     }
     
@@ -109,7 +103,7 @@ public class UserService {
      * @throws SQLException poikkeuskäsittely
      */
     public boolean login(String username) throws SQLException {
-        userDao = new SqlUserDao();
+        userDao = new SqlUserDao(db);
         if (userDao.creatingUsersTableIsSuccesful()) {
             User user = userDao.getUserByUsername(username);
             if (user == null) {

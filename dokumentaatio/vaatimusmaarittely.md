@@ -36,9 +36,11 @@ Toisessa kuvassa on luonnos millainen modaalinen ikkuna avautuu kun painetaan pa
 * Salasana kirjautumisen yhteyteen
 * Mahdollisuus käyttäjän ja käyttäjätietojen poistoon
   * Admin-käyttäjä järjestelmään
-* Statistiikkaa kursseista ja opinnoista
-  * Esimerkiksi kaikkien suoritettujen opintojen keskiarvo, opintopistelaskuri
+* Statistiikkaa kursseista ja opinnoista. Esimerkiksi:
+  * suoritettujen opintojen keskiarvo
+  * opintopistelaskuri
 * Aktiivisten ja menneiden kurssien hakeminen listasta hakukentän avulla
 * Kursseihin lisää tietoa. Esimerkiksi:  
   * Mahdollisuus merkitä kurssit jaksottain tai aloituspäivämäärä ja lopetuspäivämäärä
   * Mahdollisuus merkitä saamansa arvosana sen jälkeen kun kurssi on siirretty aktiivisesta epäaktiiviseksi, jotta saa kerättyä edellämainittua statistiikkaa  
+* Käyttöliittymän ja samalla UI/UX-alueiden parantaminen, kuten selkeämmät virheilmoitukset, käyttöliittymän komponenttien parempi asemointi ym.
