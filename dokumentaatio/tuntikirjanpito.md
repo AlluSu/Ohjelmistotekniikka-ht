@@ -23,4 +23,5 @@ Päivämäärä | käytetty aika tunneissa | mitä tein
 10.12| 4 | Ohjelman laajentamista loppupalautusta varten. Lisätty uusi oma scene kurssien lisäämiselle ja enemmän attribuutteja kurssille.
 13.12| 3 | Arkkitehtuurikuvauksen tekoa loppupalautusta varten.
 14.12| 4 | Testien kirjoittamista ja dokumentaation täydennystä loppupalautusta varten.
-TUNNIT YHTEENSÄ | 70 | TUNNIT YHTEENSÄ
+15.12| 4 | Dokumentaation täydentämistä loppupalautusta varten. Loppupalautuksen release tehty ja testausta tehty etätyöasemassa.
+TUNNIT YHTEENSÄ | 74 | TUNNIT YHTEENSÄ
