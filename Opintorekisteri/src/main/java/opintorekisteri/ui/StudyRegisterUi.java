@@ -263,11 +263,6 @@ public class StudyRegisterUi extends Application{
                     }
                 }).start();
             }
-//        Desktop desktop = Desktop.getDesktop();
-//        try {
-//            URI uri = new URI("https://www.google.com");
-//            desktop.browse(uri);
-//        } catch (URISyntaxException | IOException ex) {}
        });
        
        
