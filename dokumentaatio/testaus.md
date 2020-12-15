@@ -4,7 +4,7 @@ Ohjelmaa on testattu yksikkö- ja integraatiotestein JUnitilla sekä manuaalises
 
 ## Yksikkö- ja integraatiotestaus  
  
-### sovelluslogiikka  
+### Sovelluslogiikka  
 Integraatiotestit ovat testiluokat *CourseServiceCourseTest* ja *UserServiceUserTest*. Ne simuloivat pakkauksen *opintorekisteri.domain* sovelluslogiikkaa, jota *CourseService*- ja *UserService*-luokat suorittavat. Tällä hetkellä ei ole valitettavasti käytössä mitään erillistä  testitietokantaa, vaan testit suoritetaan samaan tietokantaan mihin talletetaan oikeakin data.  
 *User*- ja *Course*-luokille on suoritettu pari pientä yksikkötestiä. 
 ### DAO-luokat
