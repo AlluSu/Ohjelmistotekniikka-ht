@@ -2,7 +2,7 @@
 Tämä repositorio sisältää Helsingin yliopiston _Ohjelmistotekniikka_-kurssin **harjoitustyön** ja laskarit.
 
 # Opintorekisteri
-Opintorekisteri-sovellus on ohjelma, johon käyttäjän on mahdollista lisätä kursseja ja siten pitää kirjaa tällä hetkellä meneillään olevista kursseista ja menneistä kursseistaan. Sovellukseen on mahdollista usean käyttäjän luoda oma käyttäjätunnus, jolloin jokaisella käyttäjällä on oma yksilöllinen lista opinnoistaan.
+Opintorekisteri on ohjelma, johon käyttäjän on mahdollista lisätä kursseja ja siten pitää kirjaa tällä hetkellä meneillään olevista kursseista ja menneistä kursseistaan. Sovellukseen on mahdollista usean käyttäjän luoda oma käyttäjätunnus, jolloin jokaisella käyttäjällä on oma yksilöllinen lista opinnoistaan.
 
 ## Dokumentaatio  
 [Käyttöohje](dokumentaatio/kayttoohje.md)  
@@ -19,6 +19,8 @@ Opintorekisteri-sovellus on ohjelma, johon käyttäjän on mahdollista lisätä 
 [viikko 5](https://github.com/AlluSu/Ohjelmistotekniikka-ht/releases/tag/viikko5)
 
 [viikko 6](https://github.com/AlluSu/Ohjelmistotekniikka-ht/releases/tag/vk6v3.0)
+
+[Viikko 7 (loppupalautus)](https://github.com/AlluSu/Ohjelmistotekniikka-ht/releases/tag/loppupalautus)
 ## Komentorivitoiminnot
 
 ### Ohjelman ajaminen komentoriviltä
