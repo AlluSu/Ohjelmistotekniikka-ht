@@ -37,51 +37,15 @@ public class CourseService {
     
     
     /**
-     * CourseService-luokan konstruktori.
-     * @param active aktiiviset
-     * @param unactive epäaktiiviset
-     */
-    public CourseService(ArrayList<Course> active, ArrayList<Course> unactive) {
-        this.courses = active;
-        this.unactive = unactive;
-    }
-
-    
-    /**
-     * Funktio joka palauttaa listan aktiivisita kursseista.
-     * @param loggedIn kirjautunut käyttäjä
-     * @return Listan Course-olioita
-     * @throws SQLException Poikkeuskäsittely
-     */
-    public ArrayList<Course> getCourses(User loggedIn) throws SQLException {
-        if (loggedIn == null) {
-            return new ArrayList<>();
-        }
-        return getActiveCoursesByUser(loggedIn);
-    }
-    
-    
-    /**
-     * Funktio joka palauttaa listan epäaktiivisista kursseista.
-     * @param loggedIn kirjautuneena oleva käyttäjä
-     * @return Listan Course-olioita.
-     * @throws SQLException poikkeuskäsittely
-     */
-    public ArrayList<Course> getUnactiveCourses(User loggedIn) throws SQLException {
-        if (loggedIn == null) {
-            return new ArrayList<>();
-        }
-        return getUnactiveCoursesByUser(loggedIn);
-    }
-    
-    
-    /**
      * Funktio joka palauttaa listan parametrina tulevan käyttäjän kursseista.
      * @param user Käyttäjä kenen kurssit halutaan
      * @return Lista Course-olioita.
      * @throws SQLException Poikkeuskäsittely
      */
     public ArrayList<Course> getActiveCoursesByUser(User user) throws SQLException {
+        if (user == null) {
+            return new ArrayList<>();
+        }
         courseDao = new SqlCourseDao(db);
         if (courseDao.creatingCoursesTableIsSuccesful()) {
             return courseDao.getActiveCoursesByUser(user);
@@ -97,6 +61,9 @@ public class CourseService {
      * @throws SQLException poikkeuskäsittely
      */
     public ArrayList<Course> getUnactiveCoursesByUser(User user) throws SQLException {
+        if (user == null) {
+            return new ArrayList<>();
+        }
         courseDao = new SqlCourseDao(db);
         return courseDao.getUnactiveCoursesByUser(user);
     }

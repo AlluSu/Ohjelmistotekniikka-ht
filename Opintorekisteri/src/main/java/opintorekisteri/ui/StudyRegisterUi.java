@@ -71,7 +71,7 @@ public class StudyRegisterUi extends Application{
        activeCoursesAsObservableList = FXCollections.observableArrayList();
        pastCoursesAsObservableList = FXCollections.observableArrayList();
        
-       helperList = courseService.getCourses(loggedUser);
+       helperList = courseService.getActiveCoursesByUser(loggedUser);
        if (helperList == null) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Virhe");
@@ -81,7 +81,7 @@ public class StudyRegisterUi extends Application{
        }
        activeCoursesAsObservableList.addAll(helperList);
        
-       helperList = courseService.getUnactiveCourses(loggedUser);
+       helperList = courseService.getUnactiveCoursesByUser(loggedUser);
        if (helperList == null) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Virhe");

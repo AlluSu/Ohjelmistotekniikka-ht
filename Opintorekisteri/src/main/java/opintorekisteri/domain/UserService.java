@@ -53,32 +53,6 @@ public class UserService {
     
     
     /**
-     * Palauttaa listan sovellukseen luoduista käyttäjistä.
-     * @return Lista User-olioita
-     * @throws SQLException poikkeuskäsittely
-     */
-    public ArrayList<User> getUsers() throws SQLException {
-        userDao = new SqlUserDao(db);
-        return userDao.getUsers();
-    }
-    
-    
-    /**
-     * Funktio hakee sovelluksen käyttäjätunnukset listaksi.
-     * @return Lista käyttäjätunnuksia
-     * @throws SQLException poikkeuskäsittely
-     */
-    public ArrayList<String> getUsernamesAsList() throws SQLException {
-        ArrayList<String> usernames = new ArrayList<>();
-        ArrayList<User> users = getUsers();
-        for (User u: users) {
-            usernames.add(u.getUsername());
-        }
-        return usernames;
-    }
-    
-    
-    /**
      * Funktio palauttaa kirjautuneena olevan käyttäjä-olion.
      * @return kirjautuneena oleva käyttäjä-olio
      */

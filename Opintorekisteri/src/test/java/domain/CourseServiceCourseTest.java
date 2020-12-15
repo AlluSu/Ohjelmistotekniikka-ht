@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import java.sql.SQLException;
@@ -35,21 +30,40 @@ public class CourseServiceCourseTest {
     
     @Before
     public void setup() throws SQLException {
-        sud = new SqlUserDao("jdbc:sqlite::memory");
-        scd = new SqlCourseDao("jdbc:sqlite::memory");
+        sud = new SqlUserDao("jdbc:sqlite:memory:");
+        scd = new SqlCourseDao("jdbc:sqlite:memory:");
         userService = new UserService(sud, scd);
         courseService = new CourseService(sud, scd);
-        User u1 = new User("tom cruise", "topgun");
-        User u2 = new User("lauri markkanen", "finnisher");
-        userService.login("topgun");
-        courseService.createCourse("Ohjelmointi 1", "5", "Informaatioteknologian tiedekunta", "Luentokurssi", "1-5", new User("teppo testaaja", "testaaja"));
+        userService.createUser("teppo testaaja", "testaaja");
+        userService.login("testaaja");
+        courseService.createCourse("Ohjelmointi 1", "5", "Informaatioteknologian tiedekunta", "Luentokurssi", "1-5", userService.getLoggedUser());
     }
+    
+    
+    @Test
+    public void courseIsFoundByName() throws SQLException {
+        userService.logout();
+        userService.login("testaaja");
+        Course course = courseService.findCourseByName("Ohjelmointi 1", userService.getLoggedUser());
+        assertTrue(course != null);
+        assertEquals("Ohjelmointi 1", course.getName());
+    }
+    
+    
+    @Test
+    public void courseIsNotFoundByName() throws SQLException {
+        userService.logout();
+        userService.login("testaaja");
+        Course course = courseService.findCourseByName("Säieteoria", userService.getLoggedUser());
+        assertEquals(null, course);
+    }
+    
     
     @Test
     public void activeCoursesAreEmptyWhenStarted() throws SQLException{
-        userService.createUser("lars ahlfors", "testman");
-        userService.login("testman");
-        assertEquals(0, courseService.getCourses(userService.getLoggedUser()).size());
+        userService.createUser("lars ahlfors", "testaaja2");
+        userService.login("testaaja2");
+        assertEquals(0, courseService.getActiveCoursesByUser(userService.getLoggedUser()).size());
     }
     
     
@@ -63,6 +77,21 @@ public class CourseServiceCourseTest {
     public void nullCourseCannotBeMarkedAsDone() throws SQLException {
         Course c = null;
         assertFalse(courseService.markCourseAsDone(c));
+    }
+    
+    
+    @Test
+    public void courseIsSetUnactive() throws SQLException {
+        userService.logout();
+        userService.login("testaaja");
+        boolean courseAdded = courseService.createCourse("säieteoria", "10", "matemaattis-luonnontieteellinen", "Luentokurssi", "1-5", userService.getLoggedUser());
+        assertTrue(courseAdded);
+        Course c = courseService.findCourseByName("säieteoria", userService.getLoggedUser());
+        boolean done = courseService.markCourseAsDone(c);
+        c.setUnactive();
+        assertFalse(c.isActive());
+        assertTrue(done);
+        courseService.deleteCourse(c);
     }
        
     
@@ -82,6 +111,15 @@ public class CourseServiceCourseTest {
     
     
     @Test
+    public void creatingCourseWithNegativeCreditsAndLegitNameDoesNotPass() throws SQLException {
+        userService.logout();
+        userService.login("testaaja");
+        boolean result = courseService.createCourse("taloustieteen perusteet", "-5", "valtiotieteellinen", "luentokurssi", "1-5", userService.getLoggedUser());
+        assertFalse(result);
+    }
+    
+    
+    @Test
     public void randomStringAsInputDoesNotPass() {
         String credits = "Kissa istuu puussa";
         assertEquals(-1, courseService.checkAndGetCredits(credits));
@@ -90,10 +128,11 @@ public class CourseServiceCourseTest {
     
     @Test
     public void cannotDeleteNullCourse() throws SQLException {
-        userService.login("finnisher");
+        userService.login("testaaja");
         Course c = null;
         assertFalse(courseService.deleteCourse(c));
     }
+    
     
     @Test
     public void validInputPasses() {
@@ -102,16 +141,9 @@ public class CourseServiceCourseTest {
     }
     
     
-//    @Test
-//    public void legitCourseNameIsReturnedSuccesfully() throws SQLException {
-//        String name = "lineaarialgebra ja matriisilaskenta 1";
-//        assertEquals("lineaarialgebra ja matriisilaskenta 1", courseService.checkAndGetName(name, userService.getLoggedUser()));
-//    }
-    
     @Test
     public void emptyCourseNameDoesNotPass() throws SQLException {
-        userService.createUser("lauri markkanen", "finnisher");
-        userService.login("finnisher");
+        userService.login("testaaja");
         String name = "";
         assertEquals(null, courseService.checkAndGetName(name, userService.getLoggedUser()));
         assertTrue(courseService.isEmptyString(name));
@@ -119,8 +151,19 @@ public class CourseServiceCourseTest {
     
     
     @Test
+    public void activecoursesAreNullWhenNotLoggedIn() throws SQLException {
+        userService.logout();
+        ArrayList<Course> courses = courseService.getActiveCoursesByUser(userService.getLoggedUser());
+        assertEquals(null, userService.getLoggedUser());
+        assertEquals(0, courses.size());
+    }
+    
+    
+    @Test
     public void unactiveCoursesAreEmptyWhenStarted() throws SQLException {
-        assertEquals(0, courseService.getUnactiveCourses(userService.getLoggedUser()).size());
+        userService.logout();
+        userService.login("testaaja2");
+        assertEquals(0, courseService.getUnactiveCoursesByUser(userService.getLoggedUser()).size());
     }
     
 }

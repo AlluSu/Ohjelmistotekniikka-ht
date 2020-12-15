@@ -22,4 +22,5 @@ Päivämäärä | käytetty aika tunneissa | mitä tein
 8.12 | 4 | Viikon 6 palautusta varten valmistelua. Tehty käyttöohje-dokumentti ja täydennetty arkktiehtuurikuvausta.
 10.12| 4 | Ohjelman laajentamista loppupalautusta varten. Lisätty uusi oma scene kurssien lisäämiselle ja enemmän attribuutteja kurssille.
 13.12| 3 | Arkkitehtuurikuvauksen tekoa loppupalautusta varten.
-TUNNIT YHTEENSÄ | 66 | TUNNIT YHTEENSÄ
+14.12| 4 | Testien kirjoittamista ja dokumentaation täydennystä loppupalautusta varten.
+TUNNIT YHTEENSÄ | 70 | TUNNIT YHTEENSÄ

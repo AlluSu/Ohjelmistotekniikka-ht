@@ -19,6 +19,7 @@ public class SqlUserDao {
     private Connection connection;
     private Statement statement;
     private String db = "jdbc:sqlite:courses.db";
+
     
     /**
      * Konstrukotri.
@@ -125,33 +126,6 @@ public class SqlUserDao {
         } catch (SQLException exception) {
             connection.close();
             return false;
-        }
-    }
-    
-    
-    /**
-     * Funktio joka palauttaa käyttäjät jotka ovat sovelluksen tietokannassa.
-     * @return Lista User-olioita
-     * @throws SQLException Poikkeuskäsittely
-     */
-    public ArrayList<User> getUsers() throws SQLException {
-        ArrayList<User> users = new ArrayList<>();
-        connection = DriverManager.getConnection(db);
-        if (connection == null) {
-            return users;
-        }
-        Statement s = connection.createStatement();
-        try {
-            ResultSet results = s.executeQuery("SELECT username FROM Users");
-            while (results.next()) {
-                User user = new User(results.getString("name"), results.getString("username"));
-                users.add(user);
-            }
-            connection.close();
-            return users;
-        } catch (SQLException exception) {
-            connection.close();
-            return users;
         }
     }
 }
