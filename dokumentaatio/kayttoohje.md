@@ -1,4 +1,5 @@
 # Käyttöohje  
+Tässä ohjeessa oletetaan, että käyttäjä osaa käyttää sujuvasti komentoriviä, käyttäjän koneella on oikea java-versio joka suostuu toimimaan JavaFX kanssa (esim. 11) ja käyttäjän kone on Linux-pohjainen. Jos jokin edellämainituista ehdoista **EI** täyty, varaudu käyttämään aikaa, hermoja ja Googlea.  
 
 ## Ohjelman käynnistäminen  
 Oletetaan, että tietokoneelle on ladattu ohjelmasta uusin versio esimerkiksi [täältä](https://github.com/AlluSu/Ohjelmistotekniikka-ht/releases). Tällöin ohjelma käynnistyy komentoriviltä samassa hakemistossa ollessa komennolla `java -jar opintorekisteri.jar`.  
