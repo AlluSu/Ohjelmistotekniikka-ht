@@ -21,9 +21,9 @@ Käyttöliittymä sisältää neljä (4) erilaista näkymää:
 Näistä jokainen näkymä on toteutettu omana *Scene*-olionaan ja jokainen on yksi kerrallaan näkyvänä sijoitettu sovelluksen *Stage*-attribuuttiin. Käyttöliittymä on rakennettu ohjelmallisesti luokassa
  *opintorekisteri.ui.StudyRegisterUi*.  
 
-Käyttöliittymä on pyritty eristämään täysin sovelluslogiikasta ja se kutsuu tarvittaessa *UserService* ja *CourseService* luokkien metodeja, jotka vastaavast sovelluslogiikasta sovelluksessa.  
+Käyttöliittymä on pyritty eristämään täysin sovelluslogiikasta ja se kutsuu tarvittaessa *UserService* ja *CourseService* luokkien metodeja, jotka vastaavat sovelluksen sovelluslogiikasta.  
 
-Kun kirjautuneena olevan käyttäjän kursseihin tulee muutoksia, kutsutaan funktiota *refreshData*, joka hakee tietokannasta aina ajankohtaisen tiedon ja datan kirjautuneelle käyttäjälle.  
+Kun kirjautuneena olevan käyttäjän kursseihin tulee muutoksia, kutsutaan funktiota *refreshData()*, joka hakee tietokannasta aina ajankohtaisen tiedon ja datan kirjautuneelle käyttäjälle.  
 
 ## Sovelluslogiikka
 Sovelluksen loogisen datamallin muodostavat luokat *Course* ja *User*, jotka kuvaavat käyttäjiä ja käyttäjien kursseja:  
